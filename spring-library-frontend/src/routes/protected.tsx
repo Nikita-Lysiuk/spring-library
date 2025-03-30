@@ -1,4 +1,4 @@
-import { useAuthStore } from '@/features/auth/hooks/use-auth-store';
+import { useAuthStore } from '@/store';
 import { Navigate, Outlet } from 'react-router';
 
 const Protected = () => {

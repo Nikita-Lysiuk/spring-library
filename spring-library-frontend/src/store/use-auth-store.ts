@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist, PersistOptions } from 'zustand/middleware';
-import { User } from '../types';
+import { User } from '../features/auth/types';
 import { jwtDecode } from 'jwt-decode';
 
 export interface DecodedToken {

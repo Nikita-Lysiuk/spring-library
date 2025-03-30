@@ -1,17 +1,33 @@
-import { MainLayout } from '@/components/layouts';
+import { DashboardLayout, MainLayout } from '@/components/layouts';
 import { MainPage } from '@/pages';
 import {
   createBrowserRouter,
   createRoutesFromElements,
   Route,
 } from 'react-router';
+import Protected from './protected';
+import isAuthenticated from './helpers';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route path="/" element={<MainLayout />}>
-      <Route index element={<MainPage />} />
-      <Route path="*" element={<h1>404</h1>} />
-    </Route>
+    <>
+      <Route path="/" element={<MainLayout />}>
+        <Route index element={<MainPage />} />
+        <Route path="*" element={<h1>404</h1>} />
+        <Route path="sign-in" loader={async () => isAuthenticated()} />
+        <Route path="sign-up" loader={async () => isAuthenticated()} />
+      </Route>
+
+      {/* Dashboard routes can be added here */}
+      <Route path="/dashboard" element={<Protected />}>
+        <Route element={<DashboardLayout />}>
+          <Route path="library" element={<div>My Library</div>} />
+          <Route path="store" element={<div>Store</div>} />
+          <Route path="recommendations" element={<div>Recommendations</div>} />
+          <Route path="download-pdf" element={<div>Download PDF</div>} />
+        </Route>
+      </Route>
+    </>
   )
 );
 
