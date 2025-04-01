@@ -1,13 +1,12 @@
-import { useEffect } from 'react';
-import { Button } from '@/components/ui/button';
-import { Link, Outlet, useLocation, useNavigate } from 'react-router';
-import { useAuthStore, useModalStore } from '@/store';
+import { Suspense, useEffect } from 'react';
+import { Outlet, useLocation, useNavigate } from 'react-router';
+import { useModalStore } from '@/store';
+import { Header } from '..';
 
 const MainLayout = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { open } = useModalStore();
-  const { isAuthenticated, logout } = useAuthStore();
 
   useEffect(() => {
     console.log(`${location.pathname}`);
@@ -21,35 +20,12 @@ const MainLayout = () => {
   }, [location.pathname, open, navigate]);
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <nav className="bg-card shadow-md p-4">
-        <div className="container mx-auto flex justify-between items-center">
-          <Link to="/" className="text-lg font-bold">
-            MyLibrary
-          </Link>
-          <div>
-            {isAuthenticated ? (
-              <>
-                <span className="mr-4">
-                  Welcome, {useAuthStore.getState().user?.email}
-                </span>
-                <Button onClick={logout}>Logout</Button>
-              </>
-            ) : (
-              <>
-                <Button asChild className="mr-2">
-                  <Link to="/sign-in">Sign In</Link>
-                </Button>
-                <Button asChild variant="outline">
-                  <Link to="/sign-up">Sign Up</Link>
-                </Button>
-              </>
-            )}
-          </div>
-        </div>
-      </nav>
+    <main className="min-h-screen">
+      <Suspense>
+        <Header />
+      </Suspense>
       <Outlet />
-    </div>
+    </main>
   );
 };
 

@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import { persist, PersistOptions } from 'zustand/middleware';
 import { User } from '../features/auth/types';
 import { jwtDecode } from 'jwt-decode';
+import toast from 'react-hot-toast';
 
 export interface DecodedToken {
   id: string;
@@ -55,6 +56,7 @@ export const useAuthStore = create<AuthStore>()(
       },
 
       logout: () => {
+        toast.success('Logout successful');
         set({ token: null, user: null, isAuthenticated: false });
       },
 
