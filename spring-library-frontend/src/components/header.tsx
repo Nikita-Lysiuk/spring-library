@@ -4,6 +4,7 @@ import { Link } from 'react-router';
 import { Button } from './ui/button';
 import ProfileButton from './profile-button';
 import { useState } from 'react';
+import { Link as ScrollLink } from 'react-scroll';
 
 interface Props {
   className?: string;
@@ -61,15 +62,30 @@ const Header = ({ className }: Props) => {
         {/* Desktop Navigation */}
         <div className="hidden sm:flex items-center justify-between gap-15">
           <nav className="flex items-end gap-8 font-space-grotesk text-md">
-            <Link to="/#about" className="hover:text-gray-500">
-              About us
-            </Link>
-            <Link to="/#features" className="hover:text-gray-500">
+            <ScrollLink
+              to="features"
+              smooth={true}
+              duration={500}
+              className="hover:text-gray-500 cursor-pointer"
+            >
               Features
-            </Link>
-            <Link to="/#pricing" className="hover:text-gray-500">
+            </ScrollLink>
+            <ScrollLink
+              to="pricing"
+              smooth={true}
+              duration={500}
+              className="hover:text-gray-500 cursor-pointer"
+            >
               Pricing
-            </Link>
+            </ScrollLink>
+            <ScrollLink
+              to="about"
+              smooth={true}
+              duration={500}
+              className="hover:text-gray-500 cursor-pointer"
+            >
+              About us
+            </ScrollLink>
           </nav>
 
           <span className="hidden sm:block text-gray-500 text-2xl">|</span>
@@ -106,15 +122,30 @@ const Header = ({ className }: Props) => {
       {isMenuOpen && (
         <div className="sm:hidden flex flex-col items-center gap-5 py-5 bg-gray-100">
           <nav className="flex flex-col items-center gap-4 font-space-grotesk text-md">
-            <Link to="/#about" className="hover:text-gray-500">
-              About us
-            </Link>
-            <Link to="/#features" className="hover:text-gray-500">
+            <ScrollLink
+              to="features"
+              smooth={true}
+              duration={500}
+              className="hover:text-gray-500 cursor-pointer"
+            >
               Features
-            </Link>
-            <Link to="/#pricing" className="hover:text-gray-500">
+            </ScrollLink>
+            <ScrollLink
+              to="pricing"
+              smooth={true}
+              duration={500}
+              className="hover:text-gray-500 cursor-pointer"
+            >
               Pricing
-            </Link>
+            </ScrollLink>
+            <ScrollLink
+              to="about"
+              smooth={true}
+              duration={500}
+              className="hover:text-gray-500 cursor-pointer"
+            >
+              About us
+            </ScrollLink>
           </nav>
 
           <div className="flex flex-col items-center gap-3">
