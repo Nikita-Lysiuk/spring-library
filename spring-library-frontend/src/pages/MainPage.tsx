@@ -1,8 +1,9 @@
+import { HeroSection } from '@/components';
+
 const MainPage = () => {
   return (
-    <div>
-      <h1>Main Page</h1>
-      <p>Welcome to the main page!</p>
+    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+      <HeroSection />
     </div>
   );
 };

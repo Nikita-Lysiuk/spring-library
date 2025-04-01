@@ -1,8 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Boldonse&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap');
 @import 'tailwindcss';
 @import 'tw-animate-css';
-
-@custom-variant dark (&:is(.dark *));
 
 :root {
   --radius: 0.625rem;
@@ -110,6 +109,7 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
   --font-boldonse: 'Boldonse', sans-serif;
+  --font-space-grotesk: 'Space Grotesk', sans-serif;
 }
 
 @layer base {
@@ -119,4 +119,19 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+@keyframes loop-scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-loop-scroll {
+  animation: loop-scroll 20s linear infinite;
+  display: flex;
+  flex-shrink: 0;
 }

@@ -3,6 +3,7 @@ import { useAuthStore } from '@/store';
 import { Link } from 'react-router';
 import { Button } from './ui/button';
 import ProfileButton from './profile-button';
+import { useState } from 'react';
 
 interface Props {
   className?: string;
@@ -10,11 +11,12 @@ interface Props {
 
 const Header = ({ className }: Props) => {
   const { isAuthenticated, user, logout } = useAuthStore();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
     <header className={cn('border-b shadow-md', className)}>
       <div className="flex items-center justify-between py-5 px-10">
-        {/* Logo and title*/}
+        {/* Logo and title */}
         <Link to="/">
           <div className="flex items-center gap-4">
             <img
@@ -35,24 +37,102 @@ const Header = ({ className }: Props) => {
           </div>
         </Link>
 
-        {/* auth buttons */}
-        <div className="flex items-center gap-3">
-          {isAuthenticated && user ? (
-            <>
+        {/* Hamburger Menu Button */}
+        <button
+          className="sm:hidden text-gray-500 focus:outline-none"
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={2}
+            stroke="currentColor"
+            className="w-6 h-6"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M4 6h16M4 12h16M4 18h16"
+            />
+          </svg>
+        </button>
+
+        {/* Desktop Navigation */}
+        <div className="hidden sm:flex items-center justify-between gap-15">
+          <nav className="flex items-end gap-8 font-space-grotesk text-md">
+            <Link to="/#about" className="hover:text-gray-500">
+              About us
+            </Link>
+            <Link to="/#features" className="hover:text-gray-500">
+              Features
+            </Link>
+            <Link to="/#pricing" className="hover:text-gray-500">
+              Pricing
+            </Link>
+          </nav>
+
+          <span className="hidden sm:block text-gray-500 text-2xl">|</span>
+
+          <div className="flex items-center gap-3">
+            {isAuthenticated && user ? (
               <ProfileButton user={user} logout={logout} />
-            </>
-          ) : (
-            <>
-              <Button variant="outline" asChild>
-                <Link to="/sign-in">Sign In</Link>
-              </Button>
-              <Button variant="outline" asChild>
-                <Link to="/sign-up">Sign Up</Link>
-              </Button>
-            </>
-          )}
+            ) : (
+              <>
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="rounded-lg border-gray-500"
+                  asChild
+                >
+                  <Link to="/sign-in">Sign In</Link>
+                </Button>
+                <span className="text-gray-500">or</span>
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="rounded-lg border-gray-500"
+                  asChild
+                >
+                  <Link to="/sign-up">Sign Up</Link>
+                </Button>
+              </>
+            )}
+          </div>
         </div>
       </div>
+
+      {/* Mobile Navigation */}
+      {isMenuOpen && (
+        <div className="sm:hidden flex flex-col items-center gap-5 py-5 bg-gray-100">
+          <nav className="flex flex-col items-center gap-4 font-space-grotesk text-md">
+            <Link to="/#about" className="hover:text-gray-500">
+              About us
+            </Link>
+            <Link to="/#features" className="hover:text-gray-500">
+              Features
+            </Link>
+            <Link to="/#pricing" className="hover:text-gray-500">
+              Pricing
+            </Link>
+          </nav>
+
+          <div className="flex flex-col items-center gap-3">
+            {isAuthenticated && user ? (
+              <ProfileButton user={user} logout={logout} />
+            ) : (
+              <Button
+                variant="outline"
+                size="lg"
+                className="rounded-lg border-gray-500"
+                asChild
+              >
+                <Link to="/sign-in">Sign In</Link>
+              </Button>
+            )}
+          </div>
+        </div>
+      )}
     </header>
   );
 };
