@@ -1,7 +1,8 @@
 import { Suspense, useEffect } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router';
 import { useModalStore } from '@/store';
-import { Header } from '..';
+import { Footer, Header } from '@/components';
+import { ModalProvider } from '@/components/providers';
 
 const MainLayout = () => {
   const location = useLocation();
@@ -9,7 +10,6 @@ const MainLayout = () => {
   const { open } = useModalStore();
 
   useEffect(() => {
-    console.log(`${location.pathname}`);
     if (location.pathname === '/sign-in') {
       open('signIn');
       navigate('/', { replace: true });
@@ -20,12 +20,15 @@ const MainLayout = () => {
   }, [location.pathname, open, navigate]);
 
   return (
-    <main className="min-h-screen">
-      <Suspense>
-        <Header />
-      </Suspense>
-      <Outlet />
-    </main>
+    <ModalProvider>
+      <main className="min-h-screen">
+        <Suspense>
+          <Header />
+        </Suspense>
+        <Outlet />
+        <Footer />
+      </main>
+    </ModalProvider>
   );
 };
 

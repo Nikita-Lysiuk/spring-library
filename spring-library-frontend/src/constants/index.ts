@@ -1,3 +1,9 @@
+import {
+  faGithub,
+  faLinkedin,
+  faTwitter,
+} from '@fortawesome/free-brands-svg-icons';
+
 export const features = [
   {
     text: 'Search in the huge library',
@@ -73,3 +79,35 @@ export const pricingPlans = [
     backgroundColor: 'white',
   },
 ];
+
+export const socialData = [
+  {
+    name: 'LinkedIn',
+    icon: faLinkedin,
+    link: 'https://www.linkedin.com/in/nikita-lysiuk-7682b42ab/',
+  },
+  {
+    github: 'Github',
+    icon: faGithub,
+    link: 'https://github.com/Nikita-Lysiuk',
+  },
+  {
+    name: 'Twitter',
+    icon: faTwitter,
+    link: 'https://x.com/Nikita_Lysiuk06',
+  },
+];
+
+export const FIELD_NAMES = {
+  firstName: 'Fist Name',
+  lastName: 'Last Name',
+  email: 'Email',
+  password: 'Password',
+};
+
+export const FIELD_TYPES = {
+  firstName: 'text',
+  lastName: 'text',
+  email: 'email',
+  password: 'password',
+};

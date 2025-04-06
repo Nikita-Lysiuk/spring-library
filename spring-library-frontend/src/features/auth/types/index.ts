@@ -5,3 +5,4 @@ export type User = {
   avatarUrl?: string;
   role?: string;
 };
+

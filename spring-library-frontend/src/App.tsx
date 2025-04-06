@@ -1,13 +1,8 @@
 import { RouterProvider } from 'react-router';
 import router from './routes';
-import { ModalProvider } from './components/providers';
 
 const App = () => {
-  return (
-    <ModalProvider>
-      <RouterProvider router={router} />
-    </ModalProvider>
-  );
+  return <RouterProvider router={router} />;
 };
 
 export default App;

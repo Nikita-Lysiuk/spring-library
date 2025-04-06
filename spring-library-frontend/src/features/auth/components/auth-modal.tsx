@@ -1,11 +1,11 @@
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
 import { ModalType } from '@/store';
+import { SignInForm, SignUpForm } from '@/features/auth/components';
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -19,11 +19,9 @@ const AuthModal = ({ isOpen, mode, onClose }: AuthModalProps) => {
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>{mode === 'signIn' ? 'Sign In' : 'Sign Up'}</DialogTitle>
-          <DialogDescription>
-            This action cannot be undone. This will permanently delete your
-            account and remove your data from our servers.
-          </DialogDescription>
         </DialogHeader>
+
+        {mode === 'signIn' ? <SignInForm /> : <SignUpForm />}
       </DialogContent>
     </Dialog>
   );

@@ -9,3 +9,4 @@ export { default as PricingSection } from './pricing-section';
 export { default as PricingCard } from './pricing-card';
 export { default as AboutUsSection } from './aboutus-section';
 export { default as SectionName } from './section-name';
+export { default as Footer } from './footer';
