@@ -2,7 +2,7 @@ import { cn } from '@/lib/utils';
 import { useAuthStore } from '@/store';
 import { Link } from 'react-router';
 import { Button } from './ui/button';
-import ProfileButton from './profile-button';
+import { ProfileButton } from '@/components';
 import { useState } from 'react';
 import { Link as ScrollLink } from 'react-scroll';
 

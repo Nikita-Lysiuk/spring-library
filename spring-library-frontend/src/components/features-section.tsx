@@ -1,6 +1,7 @@
 import { cn } from '@/lib/utils';
-import { FeatureCard } from '@/components';
+import { FeatureBanner, FeatureCard, SectionName } from '@/components';
 import { useNavigate } from 'react-router';
+import { features } from '@/constants';
 
 interface Props {
   className?: string;
@@ -12,52 +13,18 @@ const FeaturesSection = ({ className }: Props) => {
     navigate('/dashboard');
   };
 
-  const features = [
-    {
-      text: 'Search in the huge library',
-      backgroundColor: '#f3f3f3',
-      textColor: '#b9ff66',
-      img: '/search.svg',
-      alt: 'Search',
-    },
-    {
-      text: 'Make notes and highlights',
-      backgroundColor: '#b9ff66',
-      textColor: '#f3f3f3',
-      img: '/notes.svg',
-      alt: 'Notes',
-    },
-    {
-      text: 'Friendly inteface and easy to use',
-      backgroundColor: '#b9ff66',
-      textColor: '#f3f3f3',
-      img: '/friendly.svg',
-      alt: 'Friendly',
-    },
-    {
-      text: 'Everything in one place',
-      backgroundColor: '#f3f3f3',
-      textColor: '#b9ff66',
-      img: '/everything.svg',
-      alt: 'Everything',
-    },
-  ];
-
   return (
-    <section id="features" className={cn('max-w-full my-10', className)}>
-      <div className="flex justify-start py-10 px-30">
-        <div className="flex justify-between gap-10">
-          <h2 className="text-3xl font-bold opacity-90 bg-[#b9ff66] text-black px-4 py-2 rounded-md">
-            Features
-          </h2>
-          <p className="text-lg text-gray-700 max-w-lg">
-            At our platform, we offer a range of features designed to enhance
-            your experience. These include:
-          </p>
-        </div>
-      </div>
+    <section
+      id="features"
+      className={cn('container mx-auto px-8 lg:px-16 my-15', className)}
+    >
+      <SectionName
+        name="Features"
+        description=" At our platform, we offer a range of features designed to enhance
+            your experience. These include:"
+      />
 
-      <div className="grid grid-cols-2 gap-10 justify-center items-center w-3/4 mx-auto">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-10 2xl:gap-20 justify-center items-center w-full mx-auto px-4 sm:px-2">
         {features.map((feature, index) => (
           <FeatureCard
             key={index}
@@ -70,6 +37,10 @@ const FeaturesSection = ({ className }: Props) => {
             onClick={handleClick}
           />
         ))}
+      </div>
+
+      <div className="flex justify-center mt-15 sm:mt-20">
+        <FeatureBanner onClick={handleClick} className="w-full" />
       </div>
     </section>
   );

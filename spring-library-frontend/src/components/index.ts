@@ -4,3 +4,8 @@ export { default as HeroSection } from './hero-section';
 export { default as RotatingLogos } from './rotating-logos';
 export { default as FeaturesSection } from './features-section';
 export { default as FeatureCard } from './feature-card';
+export { default as FeatureBanner } from './feature-banner';
+export { default as PricingSection } from './pricing-section';
+export { default as PricingCard } from './pricing-card';
+export { default as AboutUsSection } from './aboutus-section';
+export { default as SectionName } from './section-name';

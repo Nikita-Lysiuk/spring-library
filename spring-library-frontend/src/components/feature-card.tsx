@@ -32,26 +32,23 @@ const FeatureCard = ({
         style={{ background: backgroundColor }}
         onClick={onClick}
       >
-        <div className="flex flex-col justify-start gap-20">
+        <div className="flex flex-col justify-start gap-20 w-1/2">
           <div
-            className="text-center font-space-grotesk text-4xl sm:text-lg rounded-sm p-1"
+            className="text-center font-space-grotesk text-xl sm:text-2xl rounded-sm p-1"
             style={{ background: textColor }}
           >
             <h3>{text}</h3>
           </div>
-          <div className="flex justify-start items-center h-auto">
+          <div className="flex justify-start items-center">
             <ArrowBigRightDash className="text-black mr-2" size={30} />
             <span className="text-black text-xl font-space-grotesk">
               Get started
             </span>
           </div>
         </div>
-        <div className="flex justify-center items-center h-auto">
-          <img
-            src={img}
-            alt={alt}
-            className=" h-auto object-cover rounded-xl"
-          />
+
+        <div className="flex justify-center items-center h-auto w-1/2">
+          <img src={img} alt={alt} className="object-cover rounded-xl" />
         </div>
       </div>
     </div>
