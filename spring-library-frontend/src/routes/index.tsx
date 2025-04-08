@@ -7,6 +7,7 @@ import {
 } from 'react-router';
 import Protected from './protected';
 import isAuthenticated from './helpers';
+import SignRedirect from './sign-redirect';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -14,8 +15,16 @@ const router = createBrowserRouter(
       <Route path="/" element={<MainLayout />}>
         <Route index element={<MainPage />} />
         <Route path="*" element={<h1>404</h1>} />
-        <Route path="sign-in" loader={async () => isAuthenticated()} />
-        <Route path="sign-up" loader={async () => isAuthenticated()} />
+        <Route
+          path="sign-in"
+          element={<SignRedirect redirectTo="signIn" />}
+          loader={async () => isAuthenticated()}
+        />
+        <Route
+          path="sign-up"
+          element={<SignRedirect redirectTo="signUp" />}
+          loader={async () => isAuthenticated()}
+        />
       </Route>
 
       {/* Dashboard routes can be added here */}

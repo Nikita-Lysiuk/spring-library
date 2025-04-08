@@ -1,23 +1,11 @@
-import { Suspense, useEffect } from 'react';
-import { Outlet, useLocation, useNavigate } from 'react-router';
-import { useModalStore } from '@/store';
+import { Suspense } from 'react';
+import { Outlet } from 'react-router';
 import { Footer, Header } from '@/components';
 import { ModalProvider } from '@/components/providers';
+import { useModalStore } from '@/store';
 
 const MainLayout = () => {
-  const location = useLocation();
-  const navigate = useNavigate();
-  const { open } = useModalStore();
-
-  useEffect(() => {
-    if (location.pathname === '/sign-in') {
-      open('signIn');
-      navigate('/', { replace: true });
-    } else if (location.pathname === '/sign-up') {
-      open('signUp');
-      navigate('/', { replace: true });
-    }
-  }, [location.pathname, open, navigate]);
+  const { isOpen } = useModalStore();
 
   return (
     <ModalProvider>
@@ -26,7 +14,7 @@ const MainLayout = () => {
           <Header />
         </Suspense>
         <Outlet />
-        <Footer />
+        {!isOpen && <Footer />}
       </main>
     </ModalProvider>
   );

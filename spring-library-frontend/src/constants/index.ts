@@ -103,6 +103,7 @@ export const FIELD_NAMES = {
   lastName: 'Last Name',
   email: 'Email',
   password: 'Password',
+  confirmPassword: 'Confirm Password',
 };
 
 export const FIELD_TYPES = {
@@ -110,4 +111,5 @@ export const FIELD_TYPES = {
   lastName: 'text',
   email: 'email',
   password: 'password',
+  confirmPassword: 'password',
 };

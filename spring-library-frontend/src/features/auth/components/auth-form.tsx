@@ -25,7 +25,7 @@ import { Button } from '@/components/ui/button';
 interface Props<T extends FieldValues> {
   schema: ZodType<T>;
   defaultValues: T;
-  onSubmit?: (date: T) => Promise<{ success: boolean; error?: string }>;
+  onSubmit: (date: T) => Promise<{ success: boolean; error?: string }>;
   type: 'SIGN_IN' | 'SIGN_UP';
   children?: React.ReactNode;
 }
@@ -37,7 +37,7 @@ const AuthForm = <T extends FieldValues>({
   onSubmit,
   children,
 }: Props<T>) => {
-  //const navigate = useNavigate();
+  const navigate = useNavigate();
   const isSignIn = type === 'SIGN_IN';
 
   const form: UseFormReturn<T> = useForm({
@@ -46,22 +46,22 @@ const AuthForm = <T extends FieldValues>({
   });
 
   const handleSubmit: SubmitHandler<T> = async data => {
-    // const { success, error } = await onSubmit?.(data);
-    // if (success) {
-    //   toast.success(isSignIn ? 'Login successful' : 'Registration successful');
-    //   navigate('/', { replace: true });
-    // } else {
-    //   console.error('Error:', error);
-    //   toast.error(isSignIn ? 'Login failed' : 'Registration failed');
-    // }
+    const { success, error } = await onSubmit(data);
+    if (success) {
+      toast.success(isSignIn ? 'Login successful' : 'Registration successful');
+      navigate('/', { replace: true });
+    } else {
+      console.error('Error:', error);
+      toast.error(isSignIn ? 'Login failed' : 'Registration failed');
+    }
   };
 
   return (
-    <div className="flex flex-col gap-4">
-      <h1 className="text-2xl font-bold text-white">
+    <div className="flex flex-col gap-3">
+      <h1 className="text-2xl font-bold text-black">
         {isSignIn ? 'Welcome back!' : 'Create an account'}
       </h1>
-      <p className="text-light-100">
+      <p className="text-gray-400 text-base font-medium">
         {isSignIn
           ? 'Continue adventure with future library.'
           : 'Join us and start your adventure.'}
@@ -69,7 +69,7 @@ const AuthForm = <T extends FieldValues>({
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(handleSubmit)}
-          className="space-y-6 w-full"
+          className="space-y-3 w-full"
         >
           {Object.keys(defaultValues).map(field => (
             <FormField
@@ -78,7 +78,7 @@ const AuthForm = <T extends FieldValues>({
               name={field as Path<T>}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="">
+                  <FormLabel className="text-base font-space-grotesk text-gray-700">
                     {FIELD_NAMES[field.name as keyof typeof FIELD_NAMES]}
                   </FormLabel>
                   <FormControl>
@@ -95,12 +95,15 @@ const AuthForm = <T extends FieldValues>({
             />
           ))}
 
-          <Button type="submit" className="">
+          <Button
+            type="submit"
+            className="w-full py-5 mt-2 hover:translate-y-1 transition-all duration-200 cursor-pointer"
+          >
             {isSignIn ? 'Sign In' : 'Sign Up'}
           </Button>
         </form>
       </Form>
-      {children && <div className="">{children}</div>}
+      {children && <div>{children}</div>}
       <p className="text-center text-base font-medium">
         {isSignIn ? "Don't have an account?" : 'Already have an account?'}
 
@@ -108,7 +111,7 @@ const AuthForm = <T extends FieldValues>({
           to={isSignIn ? '/sign-up' : '/sign-in'}
           className="font-bold text-green-400"
         >
-          {isSignIn ? 'Create an account' : 'Sign In'}
+          {isSignIn ? ' Create an account' : ' Sign In'}
         </Link>
       </p>
     </div>
