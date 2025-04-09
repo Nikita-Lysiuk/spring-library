@@ -21,6 +21,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { FIELD_NAMES, FIELD_TYPES } from '@/constants';
 import { Button } from '@/components/ui/button';
+import { useModalStore } from '@/store';
 
 interface Props<T extends FieldValues> {
   schema: ZodType<T>;
@@ -39,6 +40,7 @@ const AuthForm = <T extends FieldValues>({
 }: Props<T>) => {
   const navigate = useNavigate();
   const isSignIn = type === 'SIGN_IN';
+  const { close, isOpen } = useModalStore();
 
   const form: UseFormReturn<T> = useForm({
     resolver: zodResolver(schema),
@@ -49,10 +51,14 @@ const AuthForm = <T extends FieldValues>({
     const { success, error } = await onSubmit(data);
     if (success) {
       toast.success(isSignIn ? 'Login successful' : 'Registration successful');
+      isOpen && close();
       navigate('/', { replace: true });
     } else {
-      console.error('Error:', error);
-      toast.error(isSignIn ? 'Login failed' : 'Registration failed');
+      console.error('AuthForm Error:', error);
+      const errorMessage = isSignIn
+        ? 'Invalid email or password'
+        : error || 'An error occurred during registration';
+      toast.error(errorMessage);
     }
   };
 

@@ -18,8 +18,15 @@ export const signIn = async (data: SignInType) => {
 };
 
 export const signUp = async (data: SignUpType) => {
-  const response = await axiosInstance.post('/auth/register', data);
-  return response.data as { token: string };
+  try {
+    const response = await axiosInstance.post('/auth/register', data);
+    return response.data as { token: string };
+  } catch (error: any) {
+    if (error.response?.status === 409) {
+      throw new Error('Email already exists');
+    }
+    throw new Error('An error occurred during registration');
+  }
 };
 
 export const validateToken = async (token: string) => {

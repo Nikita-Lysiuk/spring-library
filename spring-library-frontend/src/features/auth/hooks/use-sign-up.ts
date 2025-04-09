@@ -15,7 +15,7 @@ const useSignUp = () => {
       login(data.token);
     },
     onError: error => {
-      console.error('Error: ', error);
+      console.error('useSignUp Error: ', error);
     },
   });
 
@@ -32,10 +32,9 @@ const useSignUp = () => {
       await mutation.mutateAsync(registerData);
       return { success: true };
     } catch (error: any) {
-      console.error('Error: ', error);
       return {
         success: false,
-        error: error.response?.data?.message || 'An error occurred',
+        error: error.message || 'An error occurred',
       };
     } finally {
       toast.dismiss();
