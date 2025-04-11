@@ -1,4 +1,4 @@
-package pl.umcs.springlibrarybackend.controller.authDto;
+package pl.umcs.springlibrarybackend.model.authDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

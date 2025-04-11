@@ -1,4 +1,4 @@
-package pl.umcs.springlibrarybackend.controller.authDto;
+package pl.umcs.springlibrarybackend.model.authDto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
