@@ -4,19 +4,28 @@ import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
-import pl.umcs.springlibrarybackend.model.CustomUserDetails;
+import pl.umcs.springlibrarybackend.model.auth.CustomUserDetails;
+import pl.umcs.springlibrarybackend.security.interfaces.JwtService;
+import pl.umcs.springlibrarybackend.security.interfaces.RefreshTokenService;
+import pl.umcs.springlibrarybackend.service.interfaces.BlackListService;
 
 import javax.crypto.SecretKey;
 import java.security.Key;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.stream.Collectors;
 
 @Component
+@RequiredArgsConstructor
 public class JwtTokenProvider implements JwtService {
+    private final BlackListService blackListService;
+    private final RefreshTokenService refreshTokenService;
+
     @Value("${app.jwt-secret}")
     private String jwtSecret;
 
@@ -61,17 +70,40 @@ public class JwtTokenProvider implements JwtService {
 
     @Override
     public boolean validateToken(String token) {
-        //TODO: Add redis blacklist check
         try {
-            Jwts.parser()
+            Date expirationDate = Jwts.parser()
                     .verifyWith((SecretKey) key())
                     .build()
-                    .parseSignedClaims(token);
-            return true;
+                    .parseSignedClaims(token)
+                    .getPayload()
+                    .getExpiration();
 
-        } catch (JwtException e) {
+            String userId = Jwts.parser()
+                    .verifyWith((SecretKey) key())
+                    .build()
+                    .parseSignedClaims(token)
+                    .getPayload()
+                    .get("id", String.class);
+
+            refreshTokenService.deleteExpiredTokens(userId, LocalDateTime.now());
+
+            return !expirationDate.before(new Date()) && !blackListService.isBlackListed(token);
+        } catch (JwtException | IllegalArgumentException e) {
             System.err.println("Invalid JWT token: " + e.getMessage());
             return false;
         }
+    }
+
+    @Override
+    public void addAccessTokenToBlackList(String token) {
+        long expirationDate = Jwts.parser()
+                .verifyWith((SecretKey) key())
+                .build()
+                .parseSignedClaims(token)
+                .getPayload()
+                .getExpiration()
+                .getTime();
+
+        blackListService.addToBlackList(token, expirationDate);
     }
 }

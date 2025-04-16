@@ -1,8 +1,9 @@
-package pl.umcs.springlibrarybackend.model;
+package pl.umcs.springlibrarybackend.model.auth;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import pl.umcs.springlibrarybackend.model.User;
 
 import java.util.Collection;
 import java.util.Optional;

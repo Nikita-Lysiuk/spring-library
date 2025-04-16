@@ -5,16 +5,23 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
+import pl.umcs.springlibrarybackend.exception.RefreshTokenNotValid;
 import pl.umcs.springlibrarybackend.exception.UserAlreadyExistsException;
 import pl.umcs.springlibrarybackend.model.Role;
 import pl.umcs.springlibrarybackend.model.User;
+import pl.umcs.springlibrarybackend.model.auth.RefreshToken;
+import pl.umcs.springlibrarybackend.model.authDto.JwtAuthResponse;
 import pl.umcs.springlibrarybackend.model.authDto.LoginDto;
 import pl.umcs.springlibrarybackend.model.authDto.RegisterDto;
 import pl.umcs.springlibrarybackend.repository.RoleRepository;
 import pl.umcs.springlibrarybackend.repository.UserRepository;
 import pl.umcs.springlibrarybackend.security.JwtTokenProvider;
+import pl.umcs.springlibrarybackend.service.interfaces.AuthService;
+import pl.umcs.springlibrarybackend.security.interfaces.RefreshTokenService;
 
 import java.util.Set;
 
@@ -25,9 +32,11 @@ public class AuthServiceImpl implements AuthService {
     private final JwtTokenProvider jwtTokenProvider;
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+    private final RefreshTokenService refreshTokenService;
+    private final CustomUserDetailsService userDetailsService;
 
     @Override
-    public String login(LoginDto loginDto) {
+    public JwtAuthResponse login(LoginDto loginDto) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginDto.getEmail(),
@@ -35,11 +44,17 @@ public class AuthServiceImpl implements AuthService {
                 ));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        return jwtTokenProvider.generateToken(authentication);
+        String accessToken = jwtTokenProvider.generateToken(authentication);
+
+        User user = userRepository.findByEmail(loginDto.getEmail())
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + loginDto.getEmail()));
+
+        RefreshToken refreshToken = refreshTokenService.createRefreshToken(user);
+        return new JwtAuthResponse(accessToken, refreshToken.getToken());
     }
 
     @Override
-    public String register(RegisterDto registerDto) {
+    public JwtAuthResponse register(RegisterDto registerDto) {
         String fullName = String.format("%s %s", registerDto.getFirstName(), registerDto.getLastName());
         var user = userRepository.findByEmail(registerDto.getEmail());
 
@@ -66,7 +81,43 @@ public class AuthServiceImpl implements AuthService {
                 ));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        return jwtTokenProvider.generateToken(authentication);
+        String accessToken = jwtTokenProvider.generateToken(authentication);
+
+        RefreshToken refreshToken = refreshTokenService.createRefreshToken(newUser);
+        return new JwtAuthResponse(accessToken, refreshToken.getToken());
+    }
+
+    @Override
+    public boolean validateAccessToken(String token) {
+        String tokenWithoutBearer = token.substring(7);
+        return jwtTokenProvider.validateToken(tokenWithoutBearer);
+    }
+
+    @Override
+    public JwtAuthResponse refreshToken(String refreshToken) throws RefreshTokenNotValid {
+        refreshTokenService.validateRefreshToken(refreshToken);
+        User user = refreshTokenService.getUserFromToken(refreshToken);
+        UserDetails userDetails = userDetailsService.loadUserByUsername(user.getEmail());
+
+        var authenticationToken = new UsernamePasswordAuthenticationToken(
+                userDetails,
+                null,
+                userDetails.getAuthorities()
+        );
+
+        String accessToken = jwtTokenProvider.generateToken(authenticationToken);
+        String newRefreshToken = refreshTokenService.createRefreshToken(user).getToken();
+        refreshTokenService.revokeToken(refreshToken);
+        return new JwtAuthResponse(accessToken, newRefreshToken);
+    }
+
+    @Override
+    public void logout(String token, String refreshToken) {
+        String accessToken = token.substring(7);
+        jwtTokenProvider.addAccessTokenToBlackList(accessToken);
+        User user = refreshTokenService.getUserFromToken(refreshToken);
+        refreshTokenService.revokeAllUserTokens(user);
+        SecurityContextHolder.clearContext();
     }
 
     private String hashPassword(String password) {

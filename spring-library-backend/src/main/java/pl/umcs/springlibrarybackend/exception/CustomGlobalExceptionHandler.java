@@ -12,4 +12,9 @@ public class CustomGlobalExceptionHandler {
     public ResponseEntity<String> handleUserAlreadyExistsException(UserAlreadyExistsException ex) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
     }
+
+    @ExceptionHandler(RefreshTokenNotValid.class)
+    public ResponseEntity<String> handleRefreshTokenNotExistsException(RefreshTokenNotValid ex) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ex.getMessage());
+    }
 }

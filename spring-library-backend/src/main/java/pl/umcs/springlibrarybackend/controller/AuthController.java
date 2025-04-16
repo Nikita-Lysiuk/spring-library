@@ -3,14 +3,9 @@ package pl.umcs.springlibrarybackend.controller;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import pl.umcs.springlibrarybackend.model.authDto.JwtAuthResponse;
-import pl.umcs.springlibrarybackend.model.authDto.LoginDto;
-import pl.umcs.springlibrarybackend.model.authDto.RegisterDto;
-import pl.umcs.springlibrarybackend.service.AuthService;
+import org.springframework.web.bind.annotation.*;
+import pl.umcs.springlibrarybackend.model.authDto.*;
+import pl.umcs.springlibrarybackend.service.interfaces.AuthService;
 
 @AllArgsConstructor
 @RestController
@@ -20,21 +15,28 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<JwtAuthResponse> login(@Valid @RequestBody LoginDto loginDto) {
-        String token = authService.login(loginDto);
-
-        JwtAuthResponse jwtAuthResponse = new JwtAuthResponse();
-        jwtAuthResponse.setToken(token);
-
-        return ResponseEntity.ok(jwtAuthResponse);
+        return ResponseEntity.ok(authService.login(loginDto));
     }
 
     @PostMapping("/register")
     public ResponseEntity<JwtAuthResponse> register(@Valid @RequestBody RegisterDto registerDto) {
-        String token = authService.register(registerDto);
+        return ResponseEntity.ok(authService.register(registerDto));
+    }
 
-        JwtAuthResponse jwtAuthResponse = new JwtAuthResponse();
-        jwtAuthResponse.setToken(token);
+    @PostMapping("/validate-token")
+    public ResponseEntity<Boolean> validate(@RequestHeader("Authorization") String token) {
+        return ResponseEntity.ok(authService.validateAccessToken(token));
+    }
 
-        return ResponseEntity.ok(jwtAuthResponse);
+    @PostMapping("/refresh-token")
+    public ResponseEntity<JwtAuthResponse> refreshToken(@Valid @RequestBody RefreshTokenRequest refreshTokenRequest) {
+        return ResponseEntity.ok(authService.refreshToken(refreshTokenRequest.getRefreshToken()));
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<String> logout(@RequestHeader("Authorization") String token,
+                                         @Valid @RequestBody RefreshTokenRequest refreshTokenRequest) {
+        authService.logout(token, refreshTokenRequest.getRefreshToken());
+        return ResponseEntity.ok("Logged out successfully");
     }
 }

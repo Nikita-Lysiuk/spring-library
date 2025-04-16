@@ -21,8 +21,6 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id", updatable = false, nullable = false)
-    @NotBlank(message = "ID cannot be blank")
-    @Size(min=36, max=36, message = "ID must be 36 characters long")
     private String id;
 
     @Column(name = "full_name", nullable = false)
