@@ -9,7 +9,6 @@ import {
 import { Link, useNavigate } from 'react-router';
 import { ZodType } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import toast from 'react-hot-toast';
 import {
   Form,
   FormControl,
@@ -21,12 +20,18 @@ import {
 import { Input } from '@/components/ui/input';
 import { FIELD_NAMES, FIELD_TYPES } from '@/constants';
 import { Button } from '@/components/ui/button';
-import { useModalStore } from '@/store';
+import { useAuthStore, useModalStore } from '@/store';
+import toast from 'react-hot-toast';
+import { JwtAuthResponse } from '@/features/auth/types';
 
 interface Props<T extends FieldValues> {
   schema: ZodType<T>;
   defaultValues: T;
-  onSubmit: (date: T) => Promise<{ success: boolean; error?: string }>;
+  onSubmit: (date: T) => Promise<{
+    success: boolean;
+    error?: string;
+    tokens: JwtAuthResponse | undefined;
+  }>;
   type: 'SIGN_IN' | 'SIGN_UP';
   children?: React.ReactNode;
 }
@@ -41,6 +46,7 @@ const AuthForm = <T extends FieldValues>({
   const navigate = useNavigate();
   const isSignIn = type === 'SIGN_IN';
   const { close, isOpen } = useModalStore();
+  const { login } = useAuthStore();
 
   const form: UseFormReturn<T> = useForm({
     resolver: zodResolver(schema),
@@ -48,10 +54,11 @@ const AuthForm = <T extends FieldValues>({
   });
 
   const handleSubmit: SubmitHandler<T> = async data => {
-    const { success, error } = await onSubmit(data);
-    if (success) {
+    const { success, error, tokens } = await onSubmit(data);
+    if (success && tokens) {
       toast.success(isSignIn ? 'Login successful' : 'Registration successful');
       isOpen && close();
+      login(tokens.accessToken, tokens.refreshToken);
       navigate('/', { replace: true });
     } else {
       console.error('AuthForm Error:', error);

@@ -1,19 +1,19 @@
 import { AuthForm } from '@/features/auth/components';
-import { signInSchema } from '../types/authTypes';
+import { signInSchema } from '../types/authSchemas';
 import { Button } from '@/components/ui/button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGoogle, faGithub } from '@fortawesome/free-brands-svg-icons';
 import { useSignIn } from '@/features/auth/hooks';
 
 const SignInForm = () => {
-  const { onSubmit } = useSignIn();
+  const { handleLogin } = useSignIn();
 
   return (
     <AuthForm
       type="SIGN_IN"
       schema={signInSchema}
       defaultValues={{ email: '', password: '' }}
-      onSubmit={onSubmit}
+      onSubmit={handleLogin}
     >
       <div className="flex justify-start items-center mb-4 w-1/3 text-gray-500 hover:text-gray-700 cursor-pointer">
         <h2>Forget password?</h2>

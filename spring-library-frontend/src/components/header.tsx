@@ -1,18 +1,39 @@
 import { cn } from '@/lib/utils';
 import { useAuthStore } from '@/store';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import { Button } from './ui/button';
 import { ProfileButton } from '@/components';
 import { useState } from 'react';
 import { Link as ScrollLink } from 'react-scroll';
+import { useLogout } from '@/features/auth/hooks';
+import toast from 'react-hot-toast';
 
 interface Props {
   className?: string;
 }
 
 const Header = ({ className }: Props) => {
-  const { isAuthenticated, user, logout } = useAuthStore();
+  const { isAuthenticated, user, logout, accessToken, refreshToken } =
+    useAuthStore();
+  const { handleLogout } = useLogout();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const onSubmit = async () => {
+    try {
+      if (!accessToken || !refreshToken) {
+        throw new Error('Tokens are missing');
+      }
+
+      await handleLogout({ accessToken, refreshToken });
+      toast.success('Logout successful');
+    } catch (error) {
+      console.error('Logout failed:', error);
+    } finally {
+      logout();
+      navigate('/', { replace: true });
+    }
+  };
 
   return (
     <header className={cn('border-b shadow-md', className)}>
@@ -92,7 +113,7 @@ const Header = ({ className }: Props) => {
 
           <div className="flex items-center gap-3">
             {isAuthenticated && user ? (
-              <ProfileButton user={user} logout={logout} />
+              <ProfileButton user={user} logout={onSubmit} />
             ) : (
               <>
                 <Button
@@ -150,7 +171,7 @@ const Header = ({ className }: Props) => {
 
           <div className="flex flex-col items-center gap-3">
             {isAuthenticated && user ? (
-              <ProfileButton user={user} logout={logout} />
+              <ProfileButton user={user} logout={onSubmit} />
             ) : (
               <Button
                 variant="outline"

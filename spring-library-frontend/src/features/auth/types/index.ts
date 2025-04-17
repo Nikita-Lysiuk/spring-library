@@ -5,3 +5,25 @@ export type User = {
   avatarUrl?: string;
   role: string;
 };
+
+export type JwtAuthResponse = {
+  accessToken: string;
+  refreshToken: string;
+};
+
+export type SignInType = {
+  email: string;
+  password: string;
+};
+
+export type SignUpType = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+};
+
+export type LogoutType = {
+  accessToken: string;
+  refreshToken: string;
+};

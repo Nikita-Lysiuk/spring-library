@@ -1,8 +1,8 @@
 import { create } from 'zustand';
 import { persist, PersistOptions } from 'zustand/middleware';
-import { User } from '../features/auth/types';
+import { User } from '@/features/auth/types';
 import { jwtDecode } from 'jwt-decode';
-import { useTokenValidation } from '@/features/auth/hooks';
+import { validateToken } from '@/features/auth/api/auth-api';
 
 export interface DecodedToken {
   id: string;
@@ -14,12 +14,15 @@ export interface DecodedToken {
 }
 
 export interface AuthStore {
-  token: string | null;
+  accessToken: string | null;
+  refreshToken: string | null;
   isAuthenticated: boolean;
   user: User | null;
-  login: (token: string) => void;
+  login: (accessToken: string, refreshToken: string) => void;
   logout: () => void;
-  isTokenExpired: () => Promise<boolean>;
+  isTokenExpired: (
+    refreshTokenHandler: () => Promise<{ success: boolean; error?: string }>
+  ) => Promise<boolean>;
 }
 
 const persistConfig: PersistOptions<AuthStore> = {
@@ -29,36 +32,59 @@ const persistConfig: PersistOptions<AuthStore> = {
 export const useAuthStore = create<AuthStore>()(
   persist(
     (set, get) => ({
-      token: null,
+      accessToken: null,
+      refreshToken: null,
       user: null,
       isAuthenticated: false,
 
-      login: (token: string) => {
-        const { exp, ...userData }: DecodedToken = jwtDecode(token);
+      login: (accessToken: string, refreshToken: string) => {
+        const { exp, ...userData }: DecodedToken = jwtDecode(accessToken);
 
         set({
-          token,
+          accessToken,
+          refreshToken,
           user: userData,
           isAuthenticated: true,
         });
       },
 
       logout: () => {
-        set({ token: null, user: null, isAuthenticated: false });
+        set({
+          accessToken: null,
+          refreshToken: null,
+          user: null,
+          isAuthenticated: false,
+        });
       },
 
-      isTokenExpired: async () => {
-        const { token } = get();
+      isTokenExpired: async (
+        refreshTokenHandler: () => Promise<{ success: boolean; error?: string }>
+      ): Promise<boolean> => {
+        const accessToken = get().accessToken;
 
-        if (!token) return true;
+        console.log('Checking if token is expired...');
 
-        const { data, isError } = useTokenValidation(token);
-
-        if (data?.isValid && !isError) {
-          return false;
+        if (accessToken) {
+          console.log('Validating access token...');
+          try {
+            const { isValid } = await validateToken(accessToken);
+            if (isValid) {
+              return false;
+            }
+          } catch (error) {
+            console.error('Error validating token:', error);
+          }
         }
 
-        return true;
+        console.log('Access token is invalid or expired.');
+
+        // If there is some problem with the access token, try to refresh it
+        const { success, error } = await refreshTokenHandler();
+        if (error) {
+          console.log(`Error refreshing token: ${error}`);
+        }
+
+        return !success;
       },
     }),
     persistConfig

@@ -10,3 +10,4 @@ export { default as PricingCard } from './pricing-card';
 export { default as AboutUsSection } from './aboutus-section';
 export { default as SectionName } from './section-name';
 export { default as Footer } from './footer';
+export { default as Spinner } from './spinner';

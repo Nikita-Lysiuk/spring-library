@@ -1,55 +1,55 @@
 import { axiosInstance } from '@/lib';
+import {
+  SignInType,
+  SignUpType,
+  JwtAuthResponse,
+  LogoutType,
+} from '@/features/auth/types';
 
-export type SignInType = {
-  email: string;
-  password: string;
+export const signIn = async (data: SignInType): Promise<JwtAuthResponse> => {
+  const response = await axiosInstance.post('/api/auth/login', data);
+  return response.data as JwtAuthResponse;
 };
 
-export type SignUpType = {
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
-};
-
-export const signIn = async (data: SignInType) => {
-  const response = await axiosInstance.post('/auth/login', data);
-  return response.data as { token: string };
-};
-
-export const signUp = async (data: SignUpType) => {
-  try {
-    const response = await axiosInstance.post('/auth/register', data);
-    return response.data as { token: string };
-  } catch (error: any) {
-    if (error.response?.status === 409) {
-      throw new Error('Email already exists');
-    }
-    throw new Error('An error occurred during registration');
-  }
+export const signUp = async (data: SignUpType): Promise<JwtAuthResponse> => {
+  const response = await axiosInstance.post('/api/auth/register', data);
+  return response.data as JwtAuthResponse;
 };
 
 export const validateToken = async (token: string) => {
-  const response = await axiosInstance.post(
-    '/auth/validate-token',
-    { token },
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
-  return response.data as { isValid: boolean };
-};
-
-// TODO: Add a hook to handle the logout process.
-export const logout = async (token: string) => {
-  const response = await axiosInstance.post('/auth/logout', null, {
+  const response = await axiosInstance.post('/api/auth/validate-token', null, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   });
-  return response.data as { success: boolean };
+  return response.data as { isValid: boolean };
+};
+
+export const refreshTokenApi = async (
+  refreshToken: string
+): Promise<JwtAuthResponse> => {
+  const response = await axiosInstance.post('/api/auth/refresh-token', {
+    refreshToken,
+  });
+  return response.data as JwtAuthResponse;
+};
+
+export const logout = async ({
+  accessToken,
+  refreshToken,
+}: LogoutType): Promise<string> => {
+  const response = await axiosInstance.post(
+    'api/auth/logout',
+    {
+      refreshToken,
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    }
+  );
+  return response.data as string;
 };
 
 // TODO: Add a hook to handle the password reset process.

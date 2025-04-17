@@ -1,47 +1,42 @@
-import { useAuthStore } from '@/store';
 import { useMutation } from '@tanstack/react-query';
-import { signUp, SignUpType } from '@/features/auth/api/auth-api';
+import { signUp } from '@/features/auth/api/auth-api';
+import { JwtAuthResponse, SignUpType } from '@/features/auth/types';
 import toast from 'react-hot-toast';
 
 const useSignUp = () => {
-  const { login } = useAuthStore();
-
   const mutation = useMutation({
     mutationFn: (data: SignUpType) => signUp(data),
     onMutate: () => {
       toast.loading('Register user...');
     },
     onSuccess: data => {
-      login(data.token);
+      console.log('Successfully signed up: ', data);
     },
-    onError: error => {
-      console.error('useSignUp Error: ', error);
+    onError: (error: any) => {
+      console.log('Error signing up: ', error.response?.data);
+    },
+    onSettled: () => {
+      toast.dismiss();
     },
   });
 
-  const onSubmit = async (
+  const handleRegister = async (
     data: SignUpType
-  ): Promise<{ success: boolean; error?: string }> => {
+  ): Promise<{
+    success: boolean;
+    error?: string;
+    tokens: JwtAuthResponse | undefined;
+  }> => {
     try {
-      const registerData: SignUpType = {
-        firstName: data.firstName,
-        lastName: data.lastName,
-        email: data.email,
-        password: data.password,
-      };
-      await mutation.mutateAsync(registerData);
-      return { success: true };
+      const result = await mutation.mutateAsync(data);
+      return { success: true, tokens: result };
     } catch (error: any) {
-      return {
-        success: false,
-        error: error.message || 'An error occurred',
-      };
-    } finally {
-      toast.dismiss();
+      console.log('Error signing up', error);
+      return { success: false, error: error.response?.data, tokens: undefined };
     }
   };
 
-  return { onSubmit };
+  return { handleRegister };
 };
 
 export default useSignUp;

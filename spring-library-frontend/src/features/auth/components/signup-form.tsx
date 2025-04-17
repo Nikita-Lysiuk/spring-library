@@ -1,9 +1,9 @@
 import { AuthForm } from '@/features/auth/components';
-import { signUpSchema } from '../types/authTypes';
+import { signUpSchema } from '../types/authSchemas';
 import { useSignUp } from '@/features/auth/hooks';
 
 const SignUpForm = () => {
-  const { onSubmit } = useSignUp();
+  const { handleRegister } = useSignUp();
 
   return (
     <AuthForm
@@ -16,7 +16,7 @@ const SignUpForm = () => {
         password: '',
         confirmPassword: '',
       }}
-      onSubmit={onSubmit}
+      onSubmit={handleRegister}
     />
   );
 };
