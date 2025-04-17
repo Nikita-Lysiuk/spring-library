@@ -2,7 +2,6 @@ import { create } from 'zustand';
 import { persist, PersistOptions } from 'zustand/middleware';
 import { User } from '@/features/auth/types';
 import { jwtDecode } from 'jwt-decode';
-import { validateToken } from '@/features/auth/api/auth-api';
 
 export interface DecodedToken {
   id: string;
@@ -20,9 +19,6 @@ export interface AuthStore {
   user: User | null;
   login: (accessToken: string, refreshToken: string) => void;
   logout: () => void;
-  isTokenExpired: (
-    refreshTokenHandler: () => Promise<{ success: boolean; error?: string }>
-  ) => Promise<boolean>;
 }
 
 const persistConfig: PersistOptions<AuthStore> = {
@@ -31,7 +27,7 @@ const persistConfig: PersistOptions<AuthStore> = {
 
 export const useAuthStore = create<AuthStore>()(
   persist(
-    (set, get) => ({
+    set => ({
       accessToken: null,
       refreshToken: null,
       user: null,
@@ -55,36 +51,6 @@ export const useAuthStore = create<AuthStore>()(
           user: null,
           isAuthenticated: false,
         });
-      },
-
-      isTokenExpired: async (
-        refreshTokenHandler: () => Promise<{ success: boolean; error?: string }>
-      ): Promise<boolean> => {
-        const accessToken = get().accessToken;
-
-        console.log('Checking if token is expired...');
-
-        if (accessToken) {
-          console.log('Validating access token...');
-          try {
-            const { isValid } = await validateToken(accessToken);
-            if (isValid) {
-              return false;
-            }
-          } catch (error) {
-            console.error('Error validating token:', error);
-          }
-        }
-
-        console.log('Access token is invalid or expired.');
-
-        // If there is some problem with the access token, try to refresh it
-        const { success, error } = await refreshTokenHandler();
-        if (error) {
-          console.log(`Error refreshing token: ${error}`);
-        }
-
-        return !success;
       },
     }),
     persistConfig

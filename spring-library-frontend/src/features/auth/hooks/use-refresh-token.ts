@@ -1,17 +1,12 @@
-import { useAuthStore } from '@/store';
 import { useMutation } from '@tanstack/react-query';
-import { refreshTokenApi } from '@/features/auth/api/auth-api';
+import { refreshToken } from '@/features/auth/api/auth-api';
+import { JwtAuthResponse } from '@/features/auth/types';
 
 const useRefreshToken = () => {
-  const { refreshToken, login, logout } = useAuthStore();
-
   const mutation = useMutation({
-    mutationFn: (data: string) => refreshTokenApi(data),
-    onMutate: () => {
-      console.log('Refreshing token...');
-    },
+    mutationFn: (data: string) => refreshToken(data),
     onSuccess: data => {
-      login(data.accessToken, data.refreshToken);
+      console.log('Token refreshed successfully: ', data);
     },
     onError: (error: any) => {
       if (error.response?.status === 401) {
@@ -19,20 +14,22 @@ const useRefreshToken = () => {
       } else {
         console.log('Error refreshing token', error.response?.data);
       }
-      logout();
     },
   });
 
-  const onSubmit = async (): Promise<{ success: boolean; error?: string }> => {
-    if (!refreshToken) {
-      logout();
-      return { success: false, error: 'No refresh token available' };
+  const onSubmit = async (
+    data: string
+  ): Promise<{
+    tokens: JwtAuthResponse | undefined;
+    error?: string;
+  }> => {
+    try {
+      const response = await mutation.mutateAsync(data);
+      return { tokens: response };
+    } catch (error: any) {
+      console.log('Error refreshing token', error);
+      return { tokens: undefined, error: error.response?.data };
     }
-
-    await mutation.mutateAsync(refreshToken);
-    return mutation.isSuccess
-      ? { success: true }
-      : { success: false, error: mutation.error as string };
   };
 
   return { onSubmit };

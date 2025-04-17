@@ -2,9 +2,9 @@ import { useAuthStore } from '@/store';
 import { redirect } from 'react-router';
 
 const isAuthenticated = () => {
-  const { isAuthenticated, isTokenExpired } = useAuthStore.getState();
+  const { isAuthenticated } = useAuthStore.getState();
 
-  if (isAuthenticated && !isTokenExpired()) throw redirect('/dashboard');
+  if (isAuthenticated) throw redirect('/dashboard');
   return null;
 };
 

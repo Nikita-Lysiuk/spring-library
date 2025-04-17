@@ -16,16 +16,18 @@ export const signUp = async (data: SignUpType): Promise<JwtAuthResponse> => {
   return response.data as JwtAuthResponse;
 };
 
-export const validateToken = async (token: string) => {
+export const validateToken = async (
+  token: string
+): Promise<{ isValid: boolean }> => {
   const response = await axiosInstance.post('/api/auth/validate-token', null, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   });
-  return response.data as { isValid: boolean };
+  return response.data;
 };
 
-export const refreshTokenApi = async (
+export const refreshToken = async (
   refreshToken: string
 ): Promise<JwtAuthResponse> => {
   const response = await axiosInstance.post('/api/auth/refresh-token', {
