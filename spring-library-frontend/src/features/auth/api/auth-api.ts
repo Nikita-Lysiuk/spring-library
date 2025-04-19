@@ -56,18 +56,8 @@ export const logout = async ({
 
 // TODO: Add a hook to handle the password reset process.
 export const forgotPassword = async (email: string) => {
-  const response = await axiosInstance.post('/auth/forgot-password', { email });
+  const response = await axiosInstance.post('/api/auth/forgot-password', {
+    email,
+  });
   return response.data as { success: boolean; message: string };
-};
-
-// TODO: Add a hook to handle the o2auth google process.
-export const signInWithGoogle = async () => {
-  const response = await axiosInstance.get('/auth/google');
-  return response.data as { token: string };
-};
-
-// TODO: Add a hook to handle the o2auth github process.
-export const signInWithGithub = async () => {
-  const response = await axiosInstance.get('/auth/github');
-  return response.data as { token: string };
 };

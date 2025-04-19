@@ -1,5 +1,5 @@
 import { AuthForm } from '@/features/auth/components';
-import { signInSchema } from '../types/authSchemas';
+import { signInSchema } from '@/features/auth/types/authSchemas';
 import { Button } from '@/components/ui/button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGoogle, faGithub } from '@fortawesome/free-brands-svg-icons';
@@ -17,7 +17,9 @@ const SignInForm = () => {
       onSubmit={handleLogin}
     >
       <div className="flex justify-start items-center mb-4 w-1/3 text-gray-500 hover:text-gray-700 cursor-pointer">
-        <h2>Forget password?</h2>
+        <Link to="/forgot-password">
+          <h2>Forget password?</h2>
+        </Link>
       </div>
       <div className="flex flex-col gap-3">
         <Button variant={'outline'} size={'lg'} className="cursor-pointer">

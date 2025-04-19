@@ -5,7 +5,11 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { ModalType } from '@/store';
-import { SignInForm, SignUpForm } from '@/features/auth/components';
+import {
+  ForgotPasswordForm,
+  SignInForm,
+  SignUpForm,
+} from '@/features/auth/components';
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -18,10 +22,19 @@ const AuthModal = ({ isOpen, mode, onClose }: AuthModalProps) => {
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>{mode === 'signIn' ? 'Sign In' : 'Sign Up'}</DialogTitle>
+          <DialogTitle>
+            {{
+              signIn: 'Sign In',
+              signUp: 'Sign Up',
+              forgotPassword: 'Forgot Password',
+              resetPassword: 'Reset Password',
+            }[mode] || 'Unknown Mode'}
+          </DialogTitle>
         </DialogHeader>
 
-        {mode === 'signIn' ? <SignInForm /> : <SignUpForm />}
+        {mode === 'signIn' && <SignInForm />}
+        {mode === 'signUp' && <SignUpForm />}
+        {mode === 'forgotPassword' && <ForgotPasswordForm />}
       </DialogContent>
     </Dialog>
   );

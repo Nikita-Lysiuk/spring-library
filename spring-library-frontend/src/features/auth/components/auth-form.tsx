@@ -99,7 +99,6 @@ const AuthForm = <T extends FieldValues>({
                       required
                       type={FIELD_TYPES[field.name as keyof typeof FIELD_TYPES]}
                       {...field}
-                      className=""
                     />
                   </FormControl>
                   <FormMessage />

@@ -18,12 +18,17 @@ const router = createBrowserRouter(
         <Route
           path="sign-in"
           element={<SignRedirect redirectTo="signIn" />}
-          loader={async () => isAuthenticated()}
+          loader={() => isAuthenticated()}
         />
         <Route
           path="sign-up"
           element={<SignRedirect redirectTo="signUp" />}
-          loader={async () => isAuthenticated()}
+          loader={() => isAuthenticated()}
+        />
+        <Route
+          path="forgot-password"
+          element={<SignRedirect redirectTo="forgotPassword" />}
+          loader={() => isAuthenticated()}
         />
         <Route path="/oauth2-redirect" element={<OAuthRedirectPage />} />
       </Route>

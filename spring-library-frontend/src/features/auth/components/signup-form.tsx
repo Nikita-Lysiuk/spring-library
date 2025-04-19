@@ -1,5 +1,5 @@
 import { AuthForm } from '@/features/auth/components';
-import { signUpSchema } from '../types/authSchemas';
+import { signUpSchema } from '@/features/auth/types/authSchemas';
 import { useSignUp } from '@/features/auth/hooks';
 
 const SignUpForm = () => {

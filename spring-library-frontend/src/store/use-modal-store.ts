@@ -1,6 +1,10 @@
 import { create } from 'zustand';
 
-export type ModalType = 'signIn' | 'signUp';
+export type ModalType =
+  | 'signIn'
+  | 'signUp'
+  | 'forgotPassword'
+  | 'resetPassword';
 
 export interface ModalState {
   isOpen: boolean;
