@@ -1,4 +1,21 @@
 spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${GOOGLE_CLIENT_ID}
+            client-secret: ${GOOGLE_CLIENT_SECRET}
+            scope:
+              - openid
+              - profile
+              - email
+          github:
+            client-id: ${GITHUB_CLIENT_ID}
+            client-secret: ${GITHUB_CLIENT_SECRET}
+            scope:
+              - read:user
+              - user:email
   application:
     name: spring-library-backend
   datasource:
@@ -7,7 +24,7 @@ spring:
     password: ${DB_PASSWORD}
     driver-class-name: org.mariadb.jdbc.Driver
     hikari:
-      max-life-time: 300000 # 5 minutes
+      max-life-time: 30000000 # 30 minutes
       idle-timeout: 600000 # 10 minutes
       maximum-pool-size: 10
   sql:
@@ -28,6 +45,9 @@ spring:
       host: ${REDIS_HOST}
       port: ${REDIS_PORT}
       password: ${REDIS_PASSWORD}
+  devtools:
+    restart:
+      enabled: false
 
 app:
   frontend-url: ${FRONTEND_URL}

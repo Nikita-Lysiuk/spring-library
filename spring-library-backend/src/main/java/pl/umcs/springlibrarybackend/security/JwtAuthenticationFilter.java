@@ -29,7 +29,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
         String token = getTokenFromRequest(request);
-
+//        System.out.println("Token: " + token);
+//        System.out.println("Request URI: " + request.getRequestURI());
+//        System.out.println("String hasText: " + StringUtils.hasText(token));
+//        System.out.println("Token valid: " + jwtService.validateToken(token));
         if (StringUtils.hasText(token) && jwtService.validateToken(token)) {
             String email = jwtService.extractUsername(token);
 
@@ -45,7 +48,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
             } catch (UsernameNotFoundException e) {
-                logger.error(e.getMessage());
+                System.out.println("User not found: " + e.getMessage());
                 response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid token");
                 return;
             }
@@ -56,7 +59,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private String getTokenFromRequest(HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");
-
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
             return bearerToken.substring(7);
         }

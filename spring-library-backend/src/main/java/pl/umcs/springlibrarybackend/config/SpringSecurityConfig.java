@@ -1,11 +1,12 @@
 package pl.umcs.springlibrarybackend.config;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -15,19 +16,17 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.cors.CorsConfiguration;
 import pl.umcs.springlibrarybackend.security.JwtAuthenticationFilter;
+import pl.umcs.springlibrarybackend.service.CustomOAuth2UserService;
+import pl.umcs.springlibrarybackend.service.CustomOidcUserService;
 
-import java.util.List;
 
 @Configuration
 @EnableMethodSecurity
 @RequiredArgsConstructor
 public class SpringSecurityConfig {
     private final JwtAuthenticationFilter authenticationFilter;
-
-    @Value("${app.frontend-url}")
-    private String frontendUrl;
+    private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
 
     @Bean
     public static PasswordEncoder passwordEncoder() {
@@ -35,17 +34,9 @@ public class SpringSecurityConfig {
     }
 
     @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity http, AuthenticationEntryPoint authenticationEntryPoint) throws Exception {
+    SecurityFilterChain securityFilterChain(HttpSecurity http, AuthenticationEntryPoint authenticationEntryPoint, CustomOAuth2UserService customOAuth2UserService, CustomOidcUserService customOidcUserService) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
-                .cors(cors -> cors.configurationSource(request -> {
-                    var config = new CorsConfiguration();
-                    //TODO: ADD PRODUCTION URL
-                    config.setAllowedOrigins(List.of("http://localhost:5173", frontendUrl));
-                    config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-                    config.setAllowedHeaders(List.of("Authorization", "Content-Type", "Accept"));
-                    config.setAllowCredentials(true);
-                    return config;
-                }))
+                .cors(Customizer.withDefaults())
                 .authorizeHttpRequests((authorize) -> {
                     authorize.requestMatchers("/api/auth/logout").authenticated();
                     authorize.requestMatchers("/api/auth/validate-token").authenticated();
@@ -53,6 +44,16 @@ public class SpringSecurityConfig {
                     authorize.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll();
                     authorize.anyRequest().authenticated();
                 });
+
+        http.oauth2Login(oauth2 ->
+                oauth2
+                        .userInfoEndpoint(
+                                userInfo -> userInfo
+                                        .userService(customOAuth2UserService)
+                                        .oidcUserService(customOidcUserService)
+                        )
+                        .successHandler(oAuth2AuthenticationSuccessHandler)
+        );
 
         http.exceptionHandling(exception ->
                 exception.authenticationEntryPoint(authenticationEntryPoint));

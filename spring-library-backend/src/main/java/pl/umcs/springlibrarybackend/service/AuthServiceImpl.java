@@ -2,17 +2,21 @@ package pl.umcs.springlibrarybackend.service;
 
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
+import pl.umcs.springlibrarybackend.exception.CustomAuthException;
+import pl.umcs.springlibrarybackend.exception.OAuthOnlyAccountException;
 import pl.umcs.springlibrarybackend.exception.RefreshTokenNotValid;
 import pl.umcs.springlibrarybackend.exception.UserAlreadyExistsException;
+import pl.umcs.springlibrarybackend.model.auth.AuthProvider;
 import pl.umcs.springlibrarybackend.model.Role;
 import pl.umcs.springlibrarybackend.model.User;
+import pl.umcs.springlibrarybackend.model.auth.CustomUserDetails;
 import pl.umcs.springlibrarybackend.model.auth.RefreshToken;
 import pl.umcs.springlibrarybackend.model.authDto.JwtAuthResponse;
 import pl.umcs.springlibrarybackend.model.authDto.LoginDto;
@@ -33,21 +37,30 @@ public class AuthServiceImpl implements AuthService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final RefreshTokenService refreshTokenService;
-    private final CustomUserDetailsService userDetailsService;
 
     @Override
     public JwtAuthResponse login(LoginDto loginDto) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        loginDto.getEmail(),
-                        loginDto.getPassword()
-                ));
+        // TODO if two-factor is enabled redirect to 2fa page
+        // TODO add isTwoFactorEnabled to user in CustomUserDetails and jwt token
+        Authentication authentication;
+        try {
+            authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            loginDto.getEmail(),
+                            loginDto.getPassword()
+                    ));
+        } catch (BadCredentialsException e) {
+            throw new CustomAuthException("Invalid username or password");
+        }
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String accessToken = jwtTokenProvider.generateToken(authentication);
 
-        User user = userRepository.findByEmail(loginDto.getEmail())
-                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + loginDto.getEmail()));
+        User user = ((CustomUserDetails) authentication.getPrincipal()).getUser();
+
+        if (user.getProvider() != AuthProvider.LOCAL) {
+            throw new OAuthOnlyAccountException("User is authenticated with OAuth2 provider. Please use OAuth2 login.");
+        }
 
         RefreshToken refreshToken = refreshTokenService.createRefreshToken(user);
         return new JwtAuthResponse(accessToken, refreshToken.getToken());
@@ -70,6 +83,7 @@ public class AuthServiceImpl implements AuthService {
         newUser.setFullName(fullName);
         newUser.setPassword(hashPassword(registerDto.getPassword()));
         newUser.setRoles(Set.of(userRole));
+        newUser.setProvider(AuthProvider.LOCAL);
         newUser.setAvatarUrl(null);
 
         userRepository.save(newUser);
@@ -97,9 +111,9 @@ public class AuthServiceImpl implements AuthService {
     public JwtAuthResponse refreshToken(String refreshToken) throws RefreshTokenNotValid {
         refreshTokenService.validateRefreshToken(refreshToken);
         User user = refreshTokenService.getUserFromToken(refreshToken);
-        UserDetails userDetails = userDetailsService.loadUserByUsername(user.getEmail());
+        UserDetails userDetails = new CustomUserDetails(user);
 
-        var authenticationToken = new UsernamePasswordAuthenticationToken(
+        Authentication authenticationToken = new UsernamePasswordAuthenticationToken(
                 userDetails,
                 null,
                 userDetails.getAuthorities()

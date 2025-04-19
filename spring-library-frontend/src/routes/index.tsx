@@ -1,5 +1,5 @@
 import { DashboardLayout, MainLayout } from '@/components/layouts';
-import { MainPage } from '@/pages';
+import { MainPage, OAuthRedirectPage } from '@/pages';
 import {
   createBrowserRouter,
   createRoutesFromElements,
@@ -25,6 +25,7 @@ const router = createBrowserRouter(
           element={<SignRedirect redirectTo="signUp" />}
           loader={async () => isAuthenticated()}
         />
+        <Route path="/oauth2-redirect" element={<OAuthRedirectPage />} />
       </Route>
 
       {/* Dashboard routes can be added here */}

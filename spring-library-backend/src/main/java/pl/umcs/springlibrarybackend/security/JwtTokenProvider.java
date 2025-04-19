@@ -87,7 +87,7 @@ public class JwtTokenProvider implements JwtService {
 
             refreshTokenService.deleteExpiredTokens(userId, LocalDateTime.now());
 
-            return !expirationDate.before(new Date()) && !blackListService.isBlackListed(token);
+            return (!expirationDate.before(new Date()) && !blackListService.isBlackListed(token));
         } catch (JwtException | IllegalArgumentException e) {
             System.err.println("Invalid JWT token: " + e.getMessage());
             return false;
@@ -104,6 +104,6 @@ public class JwtTokenProvider implements JwtService {
                 .getExpiration()
                 .getTime();
 
-        blackListService.addToBlackList(token, expirationDate);
+        blackListService.addToBlackList(token, expirationDate - System.currentTimeMillis());
     }
 }

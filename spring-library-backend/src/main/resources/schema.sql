@@ -3,6 +3,10 @@ CREATE TABLE IF NOT EXISTS users (
     full_name VARCHAR(50) NOT NULL,
     email VARCHAR(100) NOT NULL UNIQUE,
     password VARCHAR(100) NOT NULL,
+    provider VARCHAR(50) NOT NULL,
+    provider_id VARCHAR(255),
+    two_factor_enabled BOOLEAN DEFAULT FALSE,
+    otp_secret VARCHAR(255),
     avatar_url VARCHAR(255)
 );
 
@@ -29,3 +33,10 @@ CREATE TABLE IF NOT EXISTS refresh_tokens (
 
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
+
+
+DELETE FROM roles;
+
+INSERT INTO roles (name) VALUES
+('ROLE_ADMIN'),
+('ROLE_USER');

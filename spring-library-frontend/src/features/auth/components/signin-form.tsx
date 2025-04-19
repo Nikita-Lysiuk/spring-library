@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGoogle, faGithub } from '@fortawesome/free-brands-svg-icons';
 import { useSignIn } from '@/features/auth/hooks';
+import { Link } from 'react-router';
 
 const SignInForm = () => {
   const { handleLogin } = useSignIn();
@@ -19,13 +20,21 @@ const SignInForm = () => {
         <h2>Forget password?</h2>
       </div>
       <div className="flex flex-col gap-3">
-        <Button variant={'outline'} size={'lg'} className="">
-          <FontAwesomeIcon icon={faGoogle} className="text-" />
-          <span className="text-black mr-4">Sign in with Google</span>
+        <Button variant={'outline'} size={'lg'} className="cursor-pointer">
+          <Link
+            to={`${import.meta.env.VITE_API_URL}/oauth2/authorization/google`}
+          >
+            <FontAwesomeIcon icon={faGoogle} className="text-2xl" />
+            <span className="text-black ml-2">Sign in with Google</span>
+          </Link>
         </Button>
-        <Button variant={'outline'} size={'lg'} className="">
-          <FontAwesomeIcon icon={faGithub} className="text-" />
-          <span className="text-black mr-4">Sign in with Github</span>
+        <Button variant={'outline'} size={'lg'} className="cursor-pointer">
+          <Link
+            to={`${import.meta.env.VITE_API_URL}/oauth2/authorization/github`}
+          >
+            <FontAwesomeIcon icon={faGithub} className="text-2xl" />
+            <span className="text-black ml-2">Sign in with Github</span>
+          </Link>
         </Button>
       </div>
     </AuthForm>

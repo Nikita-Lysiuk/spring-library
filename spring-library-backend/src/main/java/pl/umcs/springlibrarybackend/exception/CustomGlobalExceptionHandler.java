@@ -23,4 +23,14 @@ public class CustomGlobalExceptionHandler {
     public ResponseEntity<String> handleUsernameNotFoundException(UsernameNotFoundException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
+
+    @ExceptionHandler(CustomAuthException.class)
+    public ResponseEntity<String> handleCustomAuthException(CustomAuthException ex) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(OAuthOnlyAccountException.class)
+    public ResponseEntity<String> handleOAuthOnlyAccountException(OAuthOnlyAccountException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
+    }
 }

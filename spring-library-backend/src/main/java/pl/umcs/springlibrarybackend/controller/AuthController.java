@@ -24,8 +24,8 @@ public class AuthController {
     }
 
     @PostMapping("/validate-token")
-    public ResponseEntity<Boolean> validate(@RequestHeader("Authorization") String token) {
-        return ResponseEntity.ok(authService.validateAccessToken(token));
+    public ResponseEntity<ValidateResponse> validate(@RequestHeader("Authorization") String token) {
+        return ResponseEntity.ok(new ValidateResponse(authService.validateAccessToken(token)));
     }
 
     @PostMapping("/refresh-token")
