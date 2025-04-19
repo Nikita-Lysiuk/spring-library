@@ -1,6 +1,8 @@
 package pl.umcs.springlibrarybackend.service;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -21,22 +23,32 @@ import pl.umcs.springlibrarybackend.model.auth.RefreshToken;
 import pl.umcs.springlibrarybackend.model.authDto.JwtAuthResponse;
 import pl.umcs.springlibrarybackend.model.authDto.LoginDto;
 import pl.umcs.springlibrarybackend.model.authDto.RegisterDto;
+import pl.umcs.springlibrarybackend.model.mail.MailRequest;
 import pl.umcs.springlibrarybackend.repository.RoleRepository;
 import pl.umcs.springlibrarybackend.repository.UserRepository;
 import pl.umcs.springlibrarybackend.security.JwtTokenProvider;
 import pl.umcs.springlibrarybackend.service.interfaces.AuthService;
 import pl.umcs.springlibrarybackend.security.interfaces.RefreshTokenService;
+import pl.umcs.springlibrarybackend.service.interfaces.MailService;
 
+import java.time.Duration;
+import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider jwtTokenProvider;
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final RefreshTokenService refreshTokenService;
+    private final MailService mailService;
+    private final RedisTemplate<String, Object> redisTemplate;
+
+    @Value("${app.frontend-url}")
+    private String frontendUrl;
 
     @Override
     public JwtAuthResponse login(LoginDto loginDto) {
@@ -132,6 +144,30 @@ public class AuthServiceImpl implements AuthService {
         User user = refreshTokenService.getUserFromToken(refreshToken);
         refreshTokenService.revokeAllUserTokens(user);
         SecurityContextHolder.clearContext();
+    }
+
+    @Override
+    public void forgotPassword(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new CustomAuthException("User with this email does not exist"));
+
+        if (user.getProvider() != AuthProvider.LOCAL) {
+            throw new OAuthOnlyAccountException("User is authenticated with OAuth2 provider. Please use OAuth2 login.");
+        }
+
+        String token = UUID.randomUUID().toString();
+        String redisKey = "forgot-password:" + token;
+        redisTemplate.opsForValue().set(redisKey, user.getEmail(), Duration.ofMinutes(15));
+        String resetLink = String.format("%s/reset-password?token=%s", frontendUrl, token);
+
+        mailService.sendEmail(MailRequest.builder()
+                .to(user.getEmail())
+                .subject("Reset your password")
+                .templateName("forgot-password")
+                .variables(Map.of(
+                        "username", user.getFullName(),
+                        "resetLink", resetLink
+                )).build());
     }
 
     private String hashPassword(String password) {

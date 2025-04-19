@@ -39,4 +39,15 @@ public class AuthController {
         authService.logout(token, refreshTokenRequest.getRefreshToken());
         return ResponseEntity.ok("Logged out successfully");
     }
+
+    @PostMapping("/forgot-password")
+    public ResponseEntity<ForgotPasswordResponse> forgotPassword(@Valid @RequestBody ForgotPasswordRequest forgotPasswordRequest) {
+        // TODO: handle errors properly
+        try {
+            authService.forgotPassword(forgotPasswordRequest.getEmail());
+            return ResponseEntity.ok(new ForgotPasswordResponse(true, "Password reset link sent to your email"));
+        } catch (Exception e) {
+            return ResponseEntity.ok(new ForgotPasswordResponse(false, "Failed to send password reset link"));
+        }
+    }
 }

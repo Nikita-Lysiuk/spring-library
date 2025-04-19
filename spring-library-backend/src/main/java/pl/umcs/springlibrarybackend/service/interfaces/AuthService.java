@@ -10,4 +10,5 @@ public interface AuthService {
     boolean validateAccessToken(String token);
     JwtAuthResponse refreshToken(String refreshToken);
     void logout(String Token, String refreshToken);
+    void forgotPassword(String email);
 }

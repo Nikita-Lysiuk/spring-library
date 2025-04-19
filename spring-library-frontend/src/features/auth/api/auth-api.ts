@@ -54,7 +54,6 @@ export const logout = async ({
   return response.data as string;
 };
 
-// TODO: Add a hook to handle the password reset process.
 export const forgotPassword = async (email: string) => {
   const response = await axiosInstance.post('/api/auth/forgot-password', {
     email,

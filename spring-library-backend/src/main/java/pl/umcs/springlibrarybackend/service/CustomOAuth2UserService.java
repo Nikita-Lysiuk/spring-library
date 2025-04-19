@@ -21,7 +21,6 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
     private final OAuth2UserExtractorFactory oAuth2UserExtractorFactory;
     private final DefaultOAuth2UserService delegate = new DefaultOAuth2UserService();
 
-    // TODO: add another service for google
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         String provider = userRequest.getClientRegistration().getRegistrationId();

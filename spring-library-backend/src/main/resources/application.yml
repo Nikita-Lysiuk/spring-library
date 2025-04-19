@@ -49,6 +49,19 @@ spring:
     restart:
       enabled: false
 
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${GMAIL_USERNAME}
+    password: ${GMAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+
 app:
   frontend-url: ${FRONTEND_URL}
   jwt-secret: ${JWT_SECRET}

@@ -19,8 +19,10 @@ const useForgotPassword = () => {
       if (response.success) {
         toast.success('Check your email for password reset instructions!');
       } else {
-        toast.error('Failed to send password reset email. Please try again.');
+        toast.error(response.message);
       }
+
+      return response.success;
     } catch (error) {
       console.error('Error in handleForgotPassword:', error);
       toast.error('An error occurred while sending the password reset email.');
