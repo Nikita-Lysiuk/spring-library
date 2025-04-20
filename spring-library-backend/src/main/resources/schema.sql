@@ -1,0 +1,42 @@
+CREATE TABLE IF NOT EXISTS users (
+    id VARCHAR(36) PRIMARY KEY DEFAULT (UUID()),
+    full_name VARCHAR(50) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    password VARCHAR(100) NOT NULL,
+    provider VARCHAR(50) NOT NULL,
+    provider_id VARCHAR(255),
+    two_factor_enabled BOOLEAN DEFAULT FALSE,
+    otp_secret VARCHAR(255),
+    avatar_url VARCHAR(255)
+);
+
+CREATE TABLE IF NOT EXISTS roles (
+    id VARCHAR(36) PRIMARY KEY DEFAULT (UUID()),
+    name VARCHAR(25) NOT NULL UNIQUE
+);
+
+CREATE TABLE IF NOT EXISTS users_roles (
+    user_id VARCHAR(36) NOT NULL,
+    role_id VARCHAR(36) NOT NULL,
+    PRIMARY KEY (user_id, role_id),
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (role_id) REFERENCES roles(id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS refresh_tokens (
+    id VARCHAR(36) PRIMARY KEY DEFAULT (UUID()),
+    user_id VARCHAR(36) NOT NULL,
+    token VARCHAR(255) NOT NULL UNIQUE,
+    expiration_date TIMESTAMP NOT NULL,
+    revoked BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+
+DELETE FROM roles;
+
+INSERT INTO roles (name) VALUES
+('ROLE_ADMIN'),
+('ROLE_USER');
