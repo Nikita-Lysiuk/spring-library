@@ -1,4 +1,4 @@
-package pl.umcs.springlibrarybackend.service;
+package pl.umcs.springlibrarybackend.service.auth;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest;
@@ -12,7 +12,7 @@ import pl.umcs.springlibrarybackend.model.auth.AuthProvider;
 import pl.umcs.springlibrarybackend.model.auth.CustomUserDetails;
 import pl.umcs.springlibrarybackend.model.auth.OAuth2UserDetailsAdapter;
 import pl.umcs.springlibrarybackend.repository.UserRepository;
-import pl.umcs.springlibrarybackend.utils.OAuth2UserExtractorFactory;
+import pl.umcs.springlibrarybackend.utils.oauthFactory.OAuth2UserExtractorFactory;
 
 @Service
 @RequiredArgsConstructor

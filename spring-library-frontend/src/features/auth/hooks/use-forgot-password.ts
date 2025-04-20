@@ -8,25 +8,21 @@ const useForgotPassword = () => {
     onMutate: () => {
       toast.loading('Sending password reset email...');
     },
+    onError: (error: any) => {
+      console.error('Error:', error);
+    },
     onSettled: () => {
       toast.dismiss();
     },
   });
 
   const handleForgotPassword = async (email: string) => {
-    try {
-      const response = await mutation.mutateAsync(email);
-      if (response.success) {
-        toast.success('Check your email for password reset instructions!');
-      } else {
-        toast.error(response.message);
-      }
+    const response = await mutation.mutateAsync(email);
+    response.success
+      ? toast.success(response.message)
+      : toast.error(response.message);
 
-      return response.success;
-    } catch (error) {
-      console.error('Error in handleForgotPassword:', error);
-      toast.error('An error occurred while sending the password reset email.');
-    }
+    return response.success;
   };
 
   return { handleForgotPassword };

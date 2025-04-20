@@ -17,8 +17,6 @@ const OAuthRedirectPage = () => {
     }
 
     login(accessToken, refreshToken);
-    console.log('Access token:', accessToken);
-    console.log('Refresh token:', refreshToken);
 
     navigate('/dashboard', { replace: true });
   }, []);

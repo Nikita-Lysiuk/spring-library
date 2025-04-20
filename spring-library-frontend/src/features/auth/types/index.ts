@@ -27,3 +27,8 @@ export type LogoutType = {
   accessToken: string;
   refreshToken: string;
 };
+
+export type ResetPasswordType = {
+  password: string;
+  token: string;
+};

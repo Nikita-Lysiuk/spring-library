@@ -1,8 +1,8 @@
 package pl.umcs.springlibrarybackend.service.interfaces;
 
-import pl.umcs.springlibrarybackend.model.authDto.JwtAuthResponse;
-import pl.umcs.springlibrarybackend.model.authDto.LoginDto;
-import pl.umcs.springlibrarybackend.model.authDto.RegisterDto;
+import pl.umcs.springlibrarybackend.dto.auth.JwtAuthResponse;
+import pl.umcs.springlibrarybackend.dto.auth.LoginDto;
+import pl.umcs.springlibrarybackend.dto.auth.RegisterDto;
 
 public interface AuthService {
     JwtAuthResponse login(LoginDto loginDto);

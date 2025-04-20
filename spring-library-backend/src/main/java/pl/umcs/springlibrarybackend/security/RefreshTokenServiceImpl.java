@@ -1,65 +1,40 @@
 package pl.umcs.springlibrarybackend.security;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import pl.umcs.springlibrarybackend.exception.RefreshTokenNotValid;
 import pl.umcs.springlibrarybackend.model.User;
-import pl.umcs.springlibrarybackend.model.auth.RefreshToken;
-import pl.umcs.springlibrarybackend.repository.RefreshTokenRepository;
+import pl.umcs.springlibrarybackend.model.auth.CustomUserDetails;
+import pl.umcs.springlibrarybackend.dto.auth.JwtAuthResponse;
 import pl.umcs.springlibrarybackend.security.interfaces.RefreshTokenService;
-
-import java.time.LocalDateTime;
-import java.util.UUID;
+import pl.umcs.springlibrarybackend.utils.refreshToken.RefreshTokenManager;
+import pl.umcs.springlibrarybackend.utils.refreshToken.RefreshTokenValidator;
 
 @Service
 @RequiredArgsConstructor
 public class RefreshTokenServiceImpl implements RefreshTokenService {
-    private final RefreshTokenRepository refreshTokenRepository;
+    private final JwtTokenProvider jwtTokenProvider;
+    private final RefreshTokenValidator refreshTokenValidator;
+    private final RefreshTokenManager refreshTokenManager;
+
 
     @Override
-    public RefreshToken createRefreshToken(User user) {
-        RefreshToken refreshToken = new RefreshToken();
-        refreshToken.setUser(user);
-        refreshToken.setToken(UUID.randomUUID().toString());
-        refreshToken.setExpirationDate(LocalDateTime.now().plusDays(7));
-        refreshToken.setRevoked(false);
-        refreshToken.setCreatedAt(LocalDateTime.now());
-        return refreshTokenRepository.save(refreshToken);
-    }
+    public JwtAuthResponse refreshToken(String refreshToken) throws RefreshTokenNotValid {
+        User user = refreshTokenValidator.validate(refreshToken).getUser();
+        UserDetails userDetails = new CustomUserDetails(user);
 
-    @Override
-    public void validateRefreshToken(String token) {
-        RefreshToken refreshToken = refreshTokenRepository.findByToken(token)
-                .orElseThrow(() -> new RefreshTokenNotValid("Refresh token not found"));
+        Authentication authentication = new UsernamePasswordAuthenticationToken(
+                userDetails,
+                null,
+                userDetails.getAuthorities()
+        );
 
-        if (refreshToken.isRevoked() || refreshToken.getExpirationDate().isBefore(LocalDateTime.now())) {
-            throw new RefreshTokenNotValid("Refresh token is revoked or expired");
-        }
-
-    }
-
-    @Override
-    public void revokeToken(String token) {
-        refreshTokenRepository.revokeToken(token);
-    }
-
-    @Override
-    public void revokeAllUserTokens(User user) {
-        refreshTokenRepository.findAllByUser(user)
-                .forEach(token -> {
-                    refreshTokenRepository.revokeToken(token.getToken());
-                });
-    }
-
-    @Override
-    public User getUserFromToken(String token) {
-        RefreshToken refreshToken = refreshTokenRepository.findByToken(token)
-                .orElseThrow(() -> new RefreshTokenNotValid("Refresh token not found"));
-        return refreshToken.getUser();
-    }
-
-    @Override
-    public void deleteExpiredTokens(String userId, LocalDateTime currentDate) {
-        refreshTokenRepository.deleteExpiredTokens(userId, currentDate);
+        String accessToken = jwtTokenProvider.generateToken(authentication);
+        String newRefreshToken = refreshTokenManager.createRefreshToken(user).getToken();
+        refreshTokenManager.revokeToken(refreshToken);
+        return new JwtAuthResponse(accessToken, newRefreshToken);
     }
 }

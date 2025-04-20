@@ -7,6 +7,7 @@ import {
 import { ModalType } from '@/store';
 import {
   ForgotPasswordForm,
+  ResetPasswordForm,
   SignInForm,
   SignUpForm,
 } from '@/features/auth/components';
@@ -35,6 +36,7 @@ const AuthModal = ({ isOpen, mode, onClose }: AuthModalProps) => {
         {mode === 'signIn' && <SignInForm />}
         {mode === 'signUp' && <SignUpForm />}
         {mode === 'forgotPassword' && <ForgotPasswordForm />}
+        {mode === 'resetPassword' && <ResetPasswordForm />}
       </DialogContent>
     </Dialog>
   );

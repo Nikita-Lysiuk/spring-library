@@ -1,4 +1,4 @@
-package pl.umcs.springlibrarybackend.model.authDto;
+package pl.umcs.springlibrarybackend.dto.auth;
 
 public record ValidateResponse(boolean isValid) {
 }

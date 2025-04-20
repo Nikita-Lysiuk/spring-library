@@ -13,6 +13,7 @@ import pl.umcs.springlibrarybackend.model.auth.CustomUserDetails;
 import pl.umcs.springlibrarybackend.security.interfaces.JwtService;
 import pl.umcs.springlibrarybackend.security.interfaces.RefreshTokenService;
 import pl.umcs.springlibrarybackend.service.interfaces.BlackListService;
+import pl.umcs.springlibrarybackend.utils.refreshToken.RefreshTokenManager;
 
 import javax.crypto.SecretKey;
 import java.security.Key;
@@ -24,7 +25,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class JwtTokenProvider implements JwtService {
     private final BlackListService blackListService;
-    private final RefreshTokenService refreshTokenService;
+    private final RefreshTokenManager refreshTokenService;
 
     @Value("${app.jwt-secret}")
     private String jwtSecret;

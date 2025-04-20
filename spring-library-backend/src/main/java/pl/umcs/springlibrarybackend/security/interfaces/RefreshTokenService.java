@@ -1,14 +1,8 @@
 package pl.umcs.springlibrarybackend.security.interfaces;
 
-import pl.umcs.springlibrarybackend.model.User;
-import pl.umcs.springlibrarybackend.model.auth.RefreshToken;
-import java.time.LocalDateTime;
+import pl.umcs.springlibrarybackend.exception.RefreshTokenNotValid;
+import pl.umcs.springlibrarybackend.dto.auth.JwtAuthResponse;
 
 public interface RefreshTokenService {
-    RefreshToken createRefreshToken(User user);
-    void validateRefreshToken(String token);
-    void revokeToken(String token);
-    void revokeAllUserTokens(User user);
-    User getUserFromToken(String token);
-    void deleteExpiredTokens(String userId, LocalDateTime currentDate);
+    JwtAuthResponse refreshToken(String refreshToken) throws RefreshTokenNotValid;
 }

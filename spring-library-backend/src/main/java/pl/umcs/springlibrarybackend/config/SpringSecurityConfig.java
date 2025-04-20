@@ -1,7 +1,6 @@
 package pl.umcs.springlibrarybackend.config;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -17,8 +16,8 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import pl.umcs.springlibrarybackend.security.JwtAuthenticationFilter;
-import pl.umcs.springlibrarybackend.service.CustomOAuth2UserService;
-import pl.umcs.springlibrarybackend.service.CustomOidcUserService;
+import pl.umcs.springlibrarybackend.service.auth.CustomOAuth2UserService;
+import pl.umcs.springlibrarybackend.service.auth.CustomOidcUserService;
 
 
 @Configuration
@@ -41,6 +40,7 @@ public class SpringSecurityConfig {
                     authorize.requestMatchers("/api/auth/logout").authenticated();
                     authorize.requestMatchers("/api/auth/validate-token").authenticated();
                     authorize.requestMatchers("/api/auth/**").permitAll();
+                    authorize.requestMatchers("/api/user/reset-password").permitAll();
                     authorize.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll();
                     authorize.anyRequest().authenticated();
                 });

@@ -59,7 +59,7 @@ const AuthForm = <T extends FieldValues>({
       toast.success(isSignIn ? 'Login successful' : 'Registration successful');
       isOpen && close();
       login(tokens.accessToken, tokens.refreshToken);
-      navigate('/', { replace: true });
+      navigate('/dashboard', { replace: true });
     } else {
       console.error('AuthForm Error:', error);
       const errorMessage = isSignIn

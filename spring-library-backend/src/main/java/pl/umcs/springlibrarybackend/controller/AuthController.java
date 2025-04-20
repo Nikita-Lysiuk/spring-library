@@ -4,7 +4,8 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pl.umcs.springlibrarybackend.model.authDto.*;
+import pl.umcs.springlibrarybackend.dto.auth.*;
+import pl.umcs.springlibrarybackend.dto.ApiResponse;
 import pl.umcs.springlibrarybackend.service.interfaces.AuthService;
 
 @AllArgsConstructor
@@ -41,13 +42,8 @@ public class AuthController {
     }
 
     @PostMapping("/forgot-password")
-    public ResponseEntity<ForgotPasswordResponse> forgotPassword(@Valid @RequestBody ForgotPasswordRequest forgotPasswordRequest) {
-        // TODO: handle errors properly
-        try {
-            authService.forgotPassword(forgotPasswordRequest.getEmail());
-            return ResponseEntity.ok(new ForgotPasswordResponse(true, "Password reset link sent to your email"));
-        } catch (Exception e) {
-            return ResponseEntity.ok(new ForgotPasswordResponse(false, "Failed to send password reset link"));
-        }
+    public ResponseEntity<ApiResponse<Void>> forgotPassword(@Valid @RequestBody ForgotPasswordRequest forgotPasswordRequest) {
+        authService.forgotPassword(forgotPasswordRequest.getEmail());
+        return ResponseEntity.ok(ApiResponse.success("Password reset link sent to your email"));
     }
 }

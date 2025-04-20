@@ -1,4 +1,4 @@
-package pl.umcs.springlibrarybackend.model.authDto;
+package pl.umcs.springlibrarybackend.dto.auth;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;

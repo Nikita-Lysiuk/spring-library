@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 import pl.umcs.springlibrarybackend.model.auth.CustomUserDetails;
 import pl.umcs.springlibrarybackend.model.auth.OAuth2UserDetailsAdapter;
 import pl.umcs.springlibrarybackend.security.interfaces.JwtService;
-import pl.umcs.springlibrarybackend.security.interfaces.RefreshTokenService;
+import pl.umcs.springlibrarybackend.utils.refreshToken.RefreshTokenManager;
 
 import java.io.IOException;
 
@@ -25,7 +25,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccessHandler {
     private final JwtService jwtTokenProvider;
-    private final RefreshTokenService refreshTokenService;
+    private final RefreshTokenManager refreshTokenService;
 
     @Value("${app.frontend-url}")
     private String frontendUrl;

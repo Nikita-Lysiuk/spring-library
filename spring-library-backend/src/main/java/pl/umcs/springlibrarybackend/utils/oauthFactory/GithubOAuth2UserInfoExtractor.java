@@ -1,8 +1,7 @@
-package pl.umcs.springlibrarybackend.utils;
+package pl.umcs.springlibrarybackend.utils.oauthFactory;
 
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
@@ -25,9 +24,9 @@ import java.util.*;
 
 @Component
 @Qualifier("github")
+@Slf4j
 @RequiredArgsConstructor
 public class GithubOAuth2UserInfoExtractor implements OAuth2UserInfoExtractor {
-    private static final Logger logger = LoggerFactory.getLogger(GithubOAuth2UserInfoExtractor.class);
     private final RestTemplate restTemplate = new RestTemplate();
     private final String GITHUB_API_URL = "https://api.github.com/user/emails";
 
@@ -41,7 +40,7 @@ public class GithubOAuth2UserInfoExtractor implements OAuth2UserInfoExtractor {
         if (email == null) {
             // GitHub does not provide email if user has not set it to public
 
-            logger.info("Email not found in OAuth2 user attributes for GitHub. Attempting to fetch from /user/emails endpoint.");
+            log.info("Email not found in OAuth2 user attributes for GitHub. Attempting to fetch from /user/emails endpoint.");
             try {
                 String accessToken = userRequest.getAccessToken().getTokenValue();
 
@@ -64,18 +63,18 @@ public class GithubOAuth2UserInfoExtractor implements OAuth2UserInfoExtractor {
                     for (var emailEntry : emails) {
                         if (Boolean.TRUE.equals(emailEntry.get("primary")) && Boolean.TRUE.equals(emailEntry.get("verified"))) {
                             email = (String) emailEntry.get("email");
-                            logger.info("Primary verified email found: {}", email);
+                            log.info("Primary verified email found: {}", email);
                             break;
                         }
                     }
                 }
 
                 if (email == null) {
-                    logger.warn("No primary verified email found in Github response. ");
+                    log.warn("No primary verified email found in Github response. ");
                     throw new OAuth2AuthenticationException("Email not found in OAuth2 user attributes");
                 }
             } catch (Exception e) {
-                logger.error("Failed to fetch email from GitHub /user/emails endpoint", e);
+                log.error("Failed to fetch email from GitHub /user/emails endpoint", e);
                 throw new OAuth2AuthenticationException("Failed to fetch email from GitHub API." + e.getMessage());
             }
         }
@@ -108,7 +107,7 @@ public class GithubOAuth2UserInfoExtractor implements OAuth2UserInfoExtractor {
     @Override
     public void updateProvider(User user, OAuth2User oAuth2User) {
         user.setProvider(AuthProvider.GITHUB);
-        user.setProviderId(oAuth2User.getAttribute("id"));
+        user.setProviderId(Objects.requireNonNull(oAuth2User.getAttribute("id")).toString());
         userRepository.save(user);
     }
 }

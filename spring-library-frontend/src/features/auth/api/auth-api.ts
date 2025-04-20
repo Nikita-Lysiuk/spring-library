@@ -4,7 +4,9 @@ import {
   SignUpType,
   JwtAuthResponse,
   LogoutType,
+  ResetPasswordType,
 } from '@/features/auth/types';
+import { ApiResponse } from '@/types';
 
 export const signIn = async (data: SignInType): Promise<JwtAuthResponse> => {
   const response = await axiosInstance.post('/api/auth/login', data);
@@ -58,5 +60,10 @@ export const forgotPassword = async (email: string) => {
   const response = await axiosInstance.post('/api/auth/forgot-password', {
     email,
   });
-  return response.data as { success: boolean; message: string };
+  return response.data as ApiResponse;
+};
+
+export const resetPassword = async (data: ResetPasswordType) => {
+  const response = await axiosInstance.post('/api/user/reset-password', data);
+  return response.data as ApiResponse;
 };

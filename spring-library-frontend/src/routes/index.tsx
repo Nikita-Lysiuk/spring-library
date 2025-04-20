@@ -1,5 +1,5 @@
 import { DashboardLayout, MainLayout } from '@/components/layouts';
-import { MainPage, OAuthRedirectPage } from '@/pages';
+import { MainPage, OAuthRedirectPage, ResetPasswordPage } from '@/pages';
 import {
   createBrowserRouter,
   createRoutesFromElements,
@@ -31,6 +31,7 @@ const router = createBrowserRouter(
           loader={() => isAuthenticated()}
         />
         <Route path="/oauth2-redirect" element={<OAuthRedirectPage />} />
+        <Route path="/reset-password" element={<ResetPasswordPage />} />
       </Route>
 
       {/* Dashboard routes can be added here */}
