@@ -4,6 +4,8 @@ import {
   faTwitter,
 } from '@fortawesome/free-brands-svg-icons';
 
+export { default as SidebarItems } from './sidebar-items';
+
 export const features = [
   {
     text: 'Search in the huge library',

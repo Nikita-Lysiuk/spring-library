@@ -11,3 +11,8 @@ export { default as AboutUsSection } from './aboutus-section';
 export { default as SectionName } from './section-name';
 export { default as Footer } from './footer';
 export { default as Spinner } from './spinner';
+export { default as AppSidebar } from './app-sidebar';
+export { default as NavUser } from './nav-user';
+export { default as ImageUpload } from './image-upload';
+export { default as Inputs } from './inputs';
+export { default as InputSection } from './input-section';

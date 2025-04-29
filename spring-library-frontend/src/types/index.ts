@@ -3,3 +3,10 @@ export type ApiResponse<T = undefined> = {
   message: string;
   data?: T;
 };
+
+export type FormStateType = {
+  fullName: string;
+  email: string;
+  imageUrl: string;
+  newImageFile: File | null;
+};
