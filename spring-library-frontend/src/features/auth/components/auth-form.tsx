@@ -46,7 +46,7 @@ const AuthForm = <T extends FieldValues>({
   const navigate = useNavigate();
   const isSignIn = type === 'SIGN_IN';
   const { close, isOpen } = useModalStore();
-  const { login } = useAuthStore();
+  const { login, setUserId } = useAuthStore();
 
   const form: UseFormReturn<T> = useForm({
     resolver: zodResolver(schema),
@@ -55,7 +55,11 @@ const AuthForm = <T extends FieldValues>({
 
   const handleSubmit: SubmitHandler<T> = async data => {
     const { success, error, tokens } = await onSubmit(data);
-    if (success && tokens) {
+    if (tokens?.is2FAEnabled && tokens?.userId) {
+      setUserId(tokens.userId);
+      isOpen && close();
+      navigate('/2fa');
+    } else if (success && tokens?.accessToken && tokens?.refreshToken) {
       toast.success(isSignIn ? 'Login successful' : 'Registration successful');
       isOpen && close();
       login(tokens.accessToken, tokens.refreshToken);

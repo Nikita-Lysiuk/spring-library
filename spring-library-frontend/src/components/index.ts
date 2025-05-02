@@ -16,3 +16,6 @@ export { default as NavUser } from './nav-user';
 export { default as ImageUpload } from './image-upload';
 export { default as Inputs } from './inputs';
 export { default as InputSection } from './input-section';
+export { default as Enable2FAModal } from './enable-2fa-modal';
+export { default as FA2Buttons } from './fa2-buttons';
+export { default as TwoFAComponent } from './two-fa-component';

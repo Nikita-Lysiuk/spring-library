@@ -88,7 +88,7 @@ const ImageUpload = ({
       ) : (
         <div
           className={cn(
-            'flex flex-row items-center justify-between p-4 rounded-lg',
+            'flex flex-row items-center justify-between p-4 rounded-lg bg-white shadow-sm',
             isDragging && 'border-2 border-dashed border-blue-400 bg-blue-50'
           )}
           onDrop={handleDrop}

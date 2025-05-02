@@ -4,7 +4,10 @@ export type ModalType =
   | 'signIn'
   | 'signUp'
   | 'forgotPassword'
-  | 'resetPassword';
+  | 'resetPassword'
+  | 'fa2Enable'
+  | 'twoFALogin'
+  | 'twoFADisable';
 
 export interface ModalState {
   isOpen: boolean;

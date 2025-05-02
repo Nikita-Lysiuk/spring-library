@@ -16,9 +16,12 @@ export interface AuthStore {
   accessToken: string | null;
   refreshToken: string | null;
   isAuthenticated: boolean;
+  userId: string | null;
   user: User | null;
   login: (accessToken: string, refreshToken: string) => void;
   logout: () => void;
+  updateUser: (user: User) => void;
+  setUserId: (userId: string) => void;
 }
 
 const persistConfig: PersistOptions<AuthStore> = {
@@ -32,6 +35,7 @@ export const useAuthStore = create<AuthStore>()(
       refreshToken: null,
       user: null,
       isAuthenticated: false,
+      userId: null,
 
       login: (accessToken: string, refreshToken: string) => {
         const { exp, ...userData }: DecodedToken = jwtDecode(accessToken);
@@ -41,6 +45,7 @@ export const useAuthStore = create<AuthStore>()(
           refreshToken,
           user: userData,
           isAuthenticated: true,
+          userId: userData.id,
         });
       },
 
@@ -50,6 +55,19 @@ export const useAuthStore = create<AuthStore>()(
           refreshToken: null,
           user: null,
           isAuthenticated: false,
+          userId: null,
+        });
+      },
+
+      updateUser: (user: User) => {
+        set(state => ({
+          user: { ...state.user, ...user },
+        }));
+      },
+
+      setUserId: (userId: string) => {
+        set({
+          userId: userId,
         });
       },
     }),

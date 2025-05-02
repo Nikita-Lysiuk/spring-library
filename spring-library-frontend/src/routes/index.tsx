@@ -4,6 +4,7 @@ import {
   OAuthRedirectPage,
   ProfilePage,
   ResetPasswordPage,
+  TwoFApage,
 } from '@/pages';
 import {
   createBrowserRouter,
@@ -37,6 +38,7 @@ const router = createBrowserRouter(
         />
         <Route path="/oauth2-redirect" element={<OAuthRedirectPage />} />
         <Route path="/reset-password" element={<ResetPasswordPage />} />
+        <Route path="2fa" element={<TwoFApage />} />
       </Route>
 
       {/* Dashboard routes can be added here */}

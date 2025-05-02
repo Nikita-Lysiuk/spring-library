@@ -1,4 +1,4 @@
-import { AuthModal } from '@/features/auth/components';
+import { Modal } from '@/features/auth/components';
 import { useModalStore } from '@/store';
 
 const ModalProvider = ({ children }: { children: React.ReactNode }) => {
@@ -8,7 +8,7 @@ const ModalProvider = ({ children }: { children: React.ReactNode }) => {
     <>
       {children}
       {isOpen && type && (
-        <AuthModal isOpen={isOpen} mode={type} onClose={close} />
+        <Modal isOpen={isOpen} mode={type} onClose={close} />
       )}
     </>
   );

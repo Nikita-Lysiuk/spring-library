@@ -33,21 +33,26 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 //        System.out.println("Request URI: " + request.getRequestURI());
 //        System.out.println("String hasText: " + StringUtils.hasText(token));
 //        System.out.println("Token valid: " + jwtService.validateToken(token));
-        if (StringUtils.hasText(token) && jwtService.validateToken(token)) {
-            String email = jwtService.extractUsername(token);
+        if (StringUtils.hasText(token)) {
+            if (jwtService.validateToken(token)) {
+                String email = jwtService.extractUsername(token);
 
-            try {
-                UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+                try {
+                    UserDetails userDetails = userDetailsService.loadUserByUsername(email);
 
-                var authenticationToken = new UsernamePasswordAuthenticationToken(
-                        userDetails,
-                        null,
-                        userDetails.getAuthorities()
-                );
+                    var authenticationToken = new UsernamePasswordAuthenticationToken(
+                            userDetails,
+                            null,
+                            userDetails.getAuthorities()
+                    );
 
-                authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-            } catch (UsernameNotFoundException e) {
+                    authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                } catch (UsernameNotFoundException e) {
+                    response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid token");
+                    return;
+                }
+            } else {
                 response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid token");
                 return;
             }

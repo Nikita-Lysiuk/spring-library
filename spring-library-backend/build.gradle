@@ -35,6 +35,12 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-mail'
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
+    implementation(platform('software.amazon.awssdk:bom:2.27.21'))
+    implementation('software.amazon.awssdk:s3')
+    implementation("com.eatthepath:java-otp:0.4.0")
+    implementation("com.google.zxing:core:3.5.3")
+    implementation 'com.google.zxing:javase:3.5.2'
+    implementation 'commons-codec:commons-codec:1.15'
     testImplementation 'org.springframework.security:spring-security-test'
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'

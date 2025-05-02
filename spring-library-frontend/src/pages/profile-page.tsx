@@ -1,12 +1,15 @@
-import { motion, useScroll, useTransform } from 'motion/react';
-import { ImageUpload, InputSection } from '@/components';
-import { Button } from '@/components/ui/button';
-import { useUser } from '@/features/user/hooks';
-import { FormStateType } from '@/types';
-import { useSetState } from 'react-use';
 import { useEffect } from 'react';
+import { motion, useScroll, useTransform } from 'motion/react';
+import { FA2Buttons, ImageUpload, InputSection } from '@/components';
+import { useImageUpload, useUpdateUser, useUser } from '@/features/user/hooks';
+import { FormStateType } from '@/features/user/types';
+import { useSetState } from 'react-use';
+import { useAuthStore } from '@/store';
+import { handleSave } from '@/lib';
 
 const ProfilePage = () => {
+  const accessToken = useAuthStore(state => state.accessToken);
+  const { handleUpdateUser } = useUpdateUser();
   const { data: user, isLoading } = useUser();
 
   const [formState, setFormState] = useSetState<FormStateType>({
@@ -15,6 +18,8 @@ const ProfilePage = () => {
     imageUrl: user?.avatarUrl || '/default-avatar.png',
     newImageFile: null,
   });
+
+  const { handleImageChange } = useImageUpload(setFormState);
 
   useEffect(() => {
     if (user) {
@@ -25,20 +30,6 @@ const ProfilePage = () => {
       });
     }
   }, [user, isLoading, setFormState]);
-
-  const handleImageChange = (file: File) => {
-    setFormState({ newImageFile: file });
-    const url = URL.createObjectURL(file);
-    setFormState({ imageUrl: url });
-  };
-
-  const handleSave = async () => {
-    // Логіка збереження даних профілю
-  };
-
-  const handleEnable2FA = async () => {
-    // Логіка увімкнення 2FA
-  };
 
   const containerVariants = {
     hidden: { opacity: 0, y: 20 },
@@ -95,19 +86,11 @@ const ProfilePage = () => {
               formState={formState}
               setFormState={setFormState}
               isLoading={isLoading}
-              handleSave={handleSave}
+              handleSave={() =>
+                handleSave(accessToken, user?.id, formState, handleUpdateUser)
+              }
             />
-            <div className="flex flex-col w-full md:max-w-sm">
-              <Button
-                variant="outline"
-                size="lg"
-                disabled={user?.twoFactorEnabled || isLoading}
-                className="w-full max-w-md mt-6 border-indigo-300 text-indigo-600 hover:bg-indigo-50 font-space-grotesk rounded-lg"
-                onClick={handleEnable2FA}
-              >
-                {user?.twoFactorEnabled ? '2FA Enabled' : 'Enable 2FA'}
-              </Button>
-            </div>
+            <FA2Buttons user={user} isLoading={isLoading} />
           </div>
         </div>
       </motion.div>

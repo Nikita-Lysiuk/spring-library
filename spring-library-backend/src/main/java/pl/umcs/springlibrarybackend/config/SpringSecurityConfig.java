@@ -40,7 +40,8 @@ public class SpringSecurityConfig {
                     authorize.requestMatchers("/api/auth/logout").authenticated();
                     authorize.requestMatchers("/api/auth/validate-token").authenticated();
                     authorize.requestMatchers("/api/auth/**").permitAll();
-                    authorize.requestMatchers("/api/user/reset-password").permitAll();
+                    authorize.requestMatchers("/api/users/reset-password").permitAll();
+                    authorize.requestMatchers("/api/users/**").authenticated();
                     authorize.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll();
                     authorize.anyRequest().authenticated();
                 });

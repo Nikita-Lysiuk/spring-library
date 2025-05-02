@@ -5,6 +5,7 @@ import {
   JwtAuthResponse,
   LogoutType,
   ResetPasswordType,
+  TwoFALoginType,
 } from '@/features/auth/types';
 import { ApiResponse } from '@/types';
 
@@ -64,6 +65,13 @@ export const forgotPassword = async (email: string) => {
 };
 
 export const resetPassword = async (data: ResetPasswordType) => {
-  const response = await axiosInstance.post('/api/user/reset-password', data);
+  const response = await axiosInstance.post('/api/users/reset-password', data);
   return response.data as ApiResponse;
+};
+
+export const send2FACode = async (
+  data: TwoFALoginType
+): Promise<JwtAuthResponse> => {
+  const response = await axiosInstance.post('/api/auth/2fa-login', data);
+  return response.data as JwtAuthResponse;
 };

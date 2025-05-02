@@ -1,7 +1,7 @@
+import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Inputs } from '@/components';
-import { FormStateType } from '@/types';
-import { cn } from '@/lib/utils';
+import { FormStateType } from '@/features/user/types';
 
 interface Props {
   formState: FormStateType;
