@@ -1,5 +1,6 @@
 package pl.umcs.springlibrarybackend.controller;
 
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -45,5 +46,10 @@ public class AuthController {
     public ResponseEntity<ApiResponse<Void>> forgotPassword(@Valid @RequestBody ForgotPasswordRequest forgotPasswordRequest) {
         authService.forgotPassword(forgotPasswordRequest.getEmail());
         return ResponseEntity.ok(ApiResponse.success("Password reset link sent to your email"));
+    }
+
+    @PostMapping("/2fa-login")
+    public ResponseEntity<JwtAuthResponse> twoFactorLogin(@Valid @RequestBody TwoFactorLoginDto twoFactorLoginDto) {
+        return ResponseEntity.ok(authService.twoFactorLogin(twoFactorLoginDto.getPin(), twoFactorLoginDto.getUserId()));
     }
 }

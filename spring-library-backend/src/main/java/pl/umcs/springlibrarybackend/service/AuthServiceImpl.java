@@ -40,6 +40,11 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
+    public JwtAuthResponse twoFactorLogin(String pin, String userId) {
+        return loginService.twoFactorLogin(pin, userId);
+    }
+
+    @Override
     public boolean validateAccessToken(String token) {
         String tokenWithoutBearer = token.substring(7);
         return jwtTokenProvider.validateToken(tokenWithoutBearer);

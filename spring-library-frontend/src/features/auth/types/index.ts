@@ -7,8 +7,10 @@ export type User = {
 };
 
 export type JwtAuthResponse = {
-  accessToken: string;
-  refreshToken: string;
+  accessToken?: string;
+  refreshToken?: string;
+  is2FAEnabled?: boolean;
+  userId?: string;
 };
 
 export type SignInType = {
@@ -31,4 +33,9 @@ export type LogoutType = {
 export type ResetPasswordType = {
   password: string;
   token: string;
+};
+
+export type TwoFALoginType = {
+  pin: string;
+  userId: string;
 };

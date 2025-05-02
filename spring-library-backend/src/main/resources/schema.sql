@@ -33,10 +33,3 @@ CREATE TABLE IF NOT EXISTS refresh_tokens (
 
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
-
-
-DELETE FROM roles;
-
-INSERT INTO roles (name) VALUES
-('ROLE_ADMIN'),
-('ROLE_USER');

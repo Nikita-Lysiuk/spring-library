@@ -12,4 +12,13 @@ import lombok.Setter;
 public class JwtAuthResponse {
     private String accessToken;
     private String refreshToken;
+    private Boolean is2FAEnabled;
+    private String userId;
+
+    public JwtAuthResponse(String accessToken, String refreshToken) {
+        this.accessToken = accessToken;
+        this.refreshToken = refreshToken;
+        this.is2FAEnabled = false;
+        this.userId = null;
+    }
 }

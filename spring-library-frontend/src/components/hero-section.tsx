@@ -1,5 +1,6 @@
 import { cn } from '@/lib/utils';
 import { RotatingLogos } from '@/components';
+import { motion } from 'motion/react';
 
 interface Props {
   className?: string;
@@ -7,7 +8,14 @@ interface Props {
 
 const HeroSection = ({ className }: Props) => {
   return (
-    <section id="hero" className={cn('max-w-full mx-auto', className)}>
+    <motion.section
+      id="hero"
+      className={cn('max-w-full mx-auto', className)}
+      initial={{ opacity: 0, y: 50 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8, ease: 'easeOut' }}
+      viewport={{ once: true, amount: 0.3 }}
+    >
       <div className="flex flex-col-reverse md:flex-row items-center justify-center min-h-screen gap-15 2xl:gap-52 px-6 sm:px-12 md:px-20">
         {/* Text Content */}
         <div className="flex flex-col gap-6 max-w-lg text-center md:text-left 2xl:max-w-2xl">
@@ -34,7 +42,7 @@ const HeroSection = ({ className }: Props) => {
 
       {/* Company logos */}
       <RotatingLogos />
-    </section>
+    </motion.section>
   );
 };
 

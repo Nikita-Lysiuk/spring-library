@@ -11,14 +11,20 @@ import {
   SignInForm,
   SignUpForm,
 } from '@/features/auth/components';
+import { Enable2FAModal, TwoFAComponent } from '@/components';
+import { useTwoFaLogin } from '@/features/auth/hooks';
+import { useDisable2FA } from '@/features/user/hooks';
 
-interface AuthModalProps {
+interface ModalProps {
   isOpen: boolean;
   mode: ModalType;
   onClose: () => void;
 }
 
-const AuthModal = ({ isOpen, mode, onClose }: AuthModalProps) => {
+const Modal = ({ isOpen, mode, onClose }: ModalProps) => {
+  const { handleTwoFALogin } = useTwoFaLogin();
+  const { handleDisable2FA } = useDisable2FA();
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[425px]">
@@ -29,6 +35,9 @@ const AuthModal = ({ isOpen, mode, onClose }: AuthModalProps) => {
               signUp: 'Sign Up',
               forgotPassword: 'Forgot Password',
               resetPassword: 'Reset Password',
+              fa2Enable: 'Enabling two-factor Aunthentication',
+              twoFALogin: 'Two-factor Aunthentication',
+              twoFADisable: 'Disabling two-factor Aunthentication',
             }[mode] || 'Unknown Mode'}
           </DialogTitle>
         </DialogHeader>
@@ -37,9 +46,16 @@ const AuthModal = ({ isOpen, mode, onClose }: AuthModalProps) => {
         {mode === 'signUp' && <SignUpForm />}
         {mode === 'forgotPassword' && <ForgotPasswordForm />}
         {mode === 'resetPassword' && <ResetPasswordForm />}
+        {mode === 'fa2Enable' && <Enable2FAModal />}
+        {mode === 'twoFALogin' && (
+          <TwoFAComponent handleSubmit={handleTwoFALogin} />
+        )}
+        {mode === 'twoFADisable' && (
+          <TwoFAComponent handleSubmit={handleDisable2FA} />
+        )}
       </DialogContent>
     </Dialog>
   );
 };
 
-export default AuthModal;
+export default Modal;

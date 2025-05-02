@@ -1,4 +1,8 @@
 spring:
+  servlet:
+    multipart:
+      max-request-size: 10MB
+      max-file-size: 10MB
   security:
     oauth2:
       client:
@@ -33,7 +37,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: validate
     properties:
       hibernate:
         format_sql: true
@@ -67,3 +71,11 @@ app:
   jwt-secret: ${JWT_SECRET}
   jwt-expiration:
     milliseconds: 300000 # 5 minutes
+
+
+amazon:
+  s3:
+    bucket: spring-library
+    region: us-east-1
+    access-key: ${AWS_ACCESS_KEY}
+    secret-key: ${AWS_SECRET_KEY}

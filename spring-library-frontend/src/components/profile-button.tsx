@@ -44,7 +44,7 @@ const ProfileButton = ({ user, logout, className }: Props) => {
           </DropdownMenuLabel>
           <DropdownMenuItem asChild>
             <Link
-              to="/profile"
+              to="/dashboard/profile"
               className="flex items-center gap-2 px-2 py-2 hover:bg-gray-100 rounded-md transition-all"
             >
               <UserIcon className="w-5 h-5 text-gray-600" />

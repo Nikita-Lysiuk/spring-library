@@ -1,5 +1,11 @@
 import { DashboardLayout, MainLayout } from '@/components/layouts';
-import { MainPage, OAuthRedirectPage, ResetPasswordPage } from '@/pages';
+import {
+  MainPage,
+  OAuthRedirectPage,
+  ProfilePage,
+  ResetPasswordPage,
+  TwoFApage,
+} from '@/pages';
 import {
   createBrowserRouter,
   createRoutesFromElements,
@@ -32,12 +38,14 @@ const router = createBrowserRouter(
         />
         <Route path="/oauth2-redirect" element={<OAuthRedirectPage />} />
         <Route path="/reset-password" element={<ResetPasswordPage />} />
+        <Route path="2fa" element={<TwoFApage />} />
       </Route>
 
       {/* Dashboard routes can be added here */}
       <Route path="/dashboard" element={<Protected />}>
         <Route element={<DashboardLayout />}>
-          <Route path="library" element={<div>My Library</div>} />
+          <Route index element={<div>My Library</div>} />
+          <Route path="profile" element={<ProfilePage />} />
           <Route path="store" element={<div>Store</div>} />
           <Route path="recommendations" element={<div>Recommendations</div>} />
           <Route path="download-pdf" element={<div>Download PDF</div>} />
