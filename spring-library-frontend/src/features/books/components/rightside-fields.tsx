@@ -3,6 +3,7 @@ import { BookFormValues } from '@/features/books/types';
 import { cn, getInputValue } from '@/lib/utils';
 import { FieldWrapper } from '@/components';
 import { Textarea } from '@/components/ui/textarea';
+import DropdownFileField from './dropdown-file-field';
 
 interface Props {
   form: UseFormReturn<BookFormValues>;
@@ -20,6 +21,20 @@ const RightsideFields = ({ form, className }: Props) => {
             rows={6}
             {...field}
             value={getInputValue(field.value)}
+          />
+        )}
+      </FieldWrapper>
+
+      <FieldWrapper<BookFormValues>
+        name="pdf"
+        label="Upload pdf here"
+        form={form}
+      >
+        {field => (
+          <DropdownFileField<BookFormValues>
+            name="pdf"
+            field={field}
+            className="w-full"
           />
         )}
       </FieldWrapper>

@@ -72,10 +72,14 @@ const LeftsideFields = ({ form, className }: Props) => {
         {field => (
           <Input
             placeholder="Enter book price"
-            type="text"
+            type="number"
             className="w-full px-4 py-2 border border-gray-300 rounded-md"
             {...field}
-            value={getInputValue(field.value)}
+            value={field.value ? Number(field.value) : ''}
+            onChange={e => {
+              const value = e.target.value;
+              field.onChange(value ? parseFloat(value) : undefined);
+            }}
           />
         )}
       </FieldWrapper>

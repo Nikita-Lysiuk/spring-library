@@ -9,8 +9,8 @@ export const bookSchema = z.object({
         .string()
         .max(500, { message: 'Description must be less than 500 characters' })
     ),
-  publishedDate: z.date(),
-  publisher: z.string(),
+  publishedDate: z.date({ message: 'Published date is required' }),
+  publisher: z.string({ message: 'Publisher is required' }),
   pdf: z
     .instanceof(File, { message: 'File is required' })
     .refine(file => file.type === 'application/pdf', {
@@ -22,7 +22,7 @@ export const bookSchema = z.object({
   language: z.string({
     required_error: 'Please select a language.',
   }),
-  price: z.number(),
+  price: z.number().min(0, { message: 'Price must be a positive number' }),
   categories: z.array(
     z.object({
       id: z.string(),
