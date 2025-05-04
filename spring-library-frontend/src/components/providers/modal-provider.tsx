@@ -7,9 +7,7 @@ const ModalProvider = ({ children }: { children: React.ReactNode }) => {
   return (
     <>
       {children}
-      {isOpen && type && (
-        <Modal isOpen={isOpen} mode={type} onClose={close} />
-      )}
+      {isOpen && type && <Modal isOpen={isOpen} mode={type} onClose={close} />}
     </>
   );
 };

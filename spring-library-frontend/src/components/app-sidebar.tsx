@@ -9,9 +9,10 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarSeparator,
 } from '@/components/ui/sidebar';
 import { useAuthStore } from '@/store';
-import { Home } from 'lucide-react';
+import { Home, ShieldUser } from 'lucide-react';
 import { Link, useLocation } from 'react-router';
 import { cn } from '@/lib/utils';
 import sidebarItems from '@/constants/sidebar-items';
@@ -113,6 +114,40 @@ const AppSidebar: React.FC = () => {
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
+
+        {/*Admin Group */}
+
+        {user.role === 'ROLE_ADMIN' && (
+          <>
+            <SidebarSeparator className="my-1" />
+            <SidebarGroup>
+              <SidebarGroupLabel className="font-space-grotesk text-sm text-gray-500 px-4">
+                Admin Panel
+              </SidebarGroupLabel>
+              <SidebarGroupContent>
+                <SidebarMenu>
+                  <SidebarMenuItem>
+                    <SidebarMenuButton
+                      asChild
+                      isActive={getIsActive('/dashboard/add-book')}
+                      className={cn(
+                        'transition-all duration-200',
+                        'hover:bg-emerald-100',
+                        getIsActive('/add-book') &&
+                          'bg-emerald-100 text-emerald-600'
+                      )}
+                    >
+                      <Link to="/dashboard/add-book">
+                        <ShieldUser className="h-5 w-5" />
+                        <span>Add Books</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                </SidebarMenu>
+              </SidebarGroupContent>
+            </SidebarGroup>
+          </>
+        )}
       </SidebarContent>
 
       <SidebarFooter>

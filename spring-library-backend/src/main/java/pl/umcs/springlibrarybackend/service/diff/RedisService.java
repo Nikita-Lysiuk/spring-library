@@ -1,4 +1,4 @@
-package pl.umcs.springlibrarybackend.service;
+package pl.umcs.springlibrarybackend.service.diff;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;

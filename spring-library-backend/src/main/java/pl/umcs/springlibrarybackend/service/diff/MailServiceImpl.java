@@ -1,4 +1,4 @@
-package pl.umcs.springlibrarybackend.service;
+package pl.umcs.springlibrarybackend.service.diff;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;

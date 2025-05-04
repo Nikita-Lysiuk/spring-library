@@ -1,4 +1,4 @@
-package pl.umcs.springlibrarybackend.service;
+package pl.umcs.springlibrarybackend.service.auth;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -7,9 +7,6 @@ import pl.umcs.springlibrarybackend.dto.auth.JwtAuthResponse;
 import pl.umcs.springlibrarybackend.dto.auth.LoginDto;
 import pl.umcs.springlibrarybackend.dto.auth.RegisterDto;
 import pl.umcs.springlibrarybackend.security.JwtTokenProvider;
-import pl.umcs.springlibrarybackend.service.auth.LoginService;
-import pl.umcs.springlibrarybackend.service.auth.PasswordService;
-import pl.umcs.springlibrarybackend.service.auth.RegisterService;
 import pl.umcs.springlibrarybackend.service.interfaces.AuthService;
 import pl.umcs.springlibrarybackend.security.interfaces.RefreshTokenService;
 

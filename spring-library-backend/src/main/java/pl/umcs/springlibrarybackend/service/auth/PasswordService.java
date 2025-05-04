@@ -11,7 +11,7 @@ import pl.umcs.springlibrarybackend.model.User;
 import pl.umcs.springlibrarybackend.model.auth.AuthProvider;
 import pl.umcs.springlibrarybackend.model.mail.MailRequest;
 import pl.umcs.springlibrarybackend.repository.UserRepository;
-import pl.umcs.springlibrarybackend.service.RedisService;
+import pl.umcs.springlibrarybackend.service.diff.RedisService;
 import pl.umcs.springlibrarybackend.service.interfaces.MailService;
 import pl.umcs.springlibrarybackend.utils.RedisUtils;
 

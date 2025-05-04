@@ -1,4 +1,4 @@
-package pl.umcs.springlibrarybackend.service;
+package pl.umcs.springlibrarybackend.service.user;
 
 import com.google.zxing.WriterException;
 import lombok.RequiredArgsConstructor;
@@ -6,21 +6,20 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import pl.umcs.springlibrarybackend.dto.user.Enable2FAResponse;
-import pl.umcs.springlibrarybackend.dto.user.FetchUser;
 import pl.umcs.springlibrarybackend.exception.EmailAlreadyCorrupted;
-import pl.umcs.springlibrarybackend.exception.UserAlreadyExistsException;
 import pl.umcs.springlibrarybackend.exception.UserNotFoundException;
 import pl.umcs.springlibrarybackend.exception.UsersException;
 import pl.umcs.springlibrarybackend.model.User;
 import pl.umcs.springlibrarybackend.model.auth.AuthProvider;
 import pl.umcs.springlibrarybackend.model.auth.CustomUserDetails;
 import pl.umcs.springlibrarybackend.repository.UserRepository;
+import pl.umcs.springlibrarybackend.service.diff.RedisService;
+import pl.umcs.springlibrarybackend.service.diff.S3Service;
 import pl.umcs.springlibrarybackend.service.interfaces.UserService;
 import pl.umcs.springlibrarybackend.utils.QRCodeUtil;
 import pl.umcs.springlibrarybackend.utils.RedisUtils;
 import pl.umcs.springlibrarybackend.utils.TOTPUtils;
 
-import java.io.File;
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.time.Duration;

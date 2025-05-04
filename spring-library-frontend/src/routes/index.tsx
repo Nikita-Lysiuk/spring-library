@@ -1,5 +1,6 @@
 import { DashboardLayout, MainLayout } from '@/components/layouts';
 import {
+  AddBookPage,
   MainPage,
   OAuthRedirectPage,
   ProfilePage,
@@ -14,6 +15,7 @@ import {
 import Protected from './protected';
 import isAuthenticated from './helpers';
 import SignRedirect from './sign-redirect';
+import AdminProtected from './admin-protected';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -49,6 +51,10 @@ const router = createBrowserRouter(
           <Route path="store" element={<div>Store</div>} />
           <Route path="recommendations" element={<div>Recommendations</div>} />
           <Route path="download-pdf" element={<div>Download PDF</div>} />
+
+          <Route element={<AdminProtected />}>
+            <Route path="add-book" element={<AddBookPage />} />
+          </Route>
         </Route>
       </Route>
     </>
