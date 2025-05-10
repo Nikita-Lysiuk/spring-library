@@ -1,13 +1,17 @@
 package pl.umcs.springlibrarybackend.model.meta;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 import pl.umcs.springlibrarybackend.model.Book;
 
 import java.util.HashSet;
 import java.util.Set;
 
-@Data
+@Setter
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "categories")
 public class Category {
@@ -20,5 +24,6 @@ public class Category {
     private String name;
 
     @ManyToMany(mappedBy = "categories")
+    @JsonIgnore
     private Set<Book> books = new HashSet<>();
 }

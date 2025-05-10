@@ -9,6 +9,7 @@ import pl.umcs.springlibrarybackend.repository.AuthorRepository;
 import pl.umcs.springlibrarybackend.service.interfaces.MetaService;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -26,5 +27,10 @@ public class AuthorService implements MetaService<Author> {
     public List<Author> getMeta(String search) {
         Pageable pageable = PageRequest.of(0, 5);
         return authorRepository.findByNameContainingIgnoreCase(search, pageable);
+    }
+
+    @Override
+    public Set<Author> getMeta(List<String> ids) {
+        return Set.copyOf(authorRepository.findAllById(ids));
     }
 }

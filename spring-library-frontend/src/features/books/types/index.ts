@@ -30,3 +30,9 @@ export type Author = {
   id: string;
   name: string;
 };
+
+export type SearchBook = {
+  id: string;
+  title: string;
+  coverUrl: string;
+};

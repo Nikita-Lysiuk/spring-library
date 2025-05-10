@@ -1,6 +1,6 @@
 import { extractFirstPage } from '@/lib/extract-pdf-utils';
 import { cn } from '@/lib/utils';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { ControllerRenderProps, FieldValues, Path } from 'react-hook-form';
 
 interface Props<TFormValues extends FieldValues> {
@@ -17,6 +17,15 @@ const DropdownFileField = <TFormValues extends FieldValues>({
   const [isDragging, setIsDragging] = useState(false);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [fileName, setFileName] = useState<string | null>(null);
+  const [wasPreviewed, setWasPreviewed] = useState(false);
+
+  useEffect(() => {
+    if (!field.value && wasPreviewed) {
+      setPreviewUrl(null);
+      setFileName(null);
+      setWasPreviewed(false);
+    }
+  }, [field.value, wasPreviewed]);
 
   const handleFileChange = useCallback(
     async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -26,6 +35,7 @@ const DropdownFileField = <TFormValues extends FieldValues>({
         const url = await extractFirstPage(file);
         setPreviewUrl(url);
         setFileName(file.name);
+        setWasPreviewed(true);
         return;
       }
     },
@@ -42,6 +52,7 @@ const DropdownFileField = <TFormValues extends FieldValues>({
         const url = await extractFirstPage(file);
         setPreviewUrl(url);
         setFileName(file.name);
+        setWasPreviewed(true);
         return;
       }
     },

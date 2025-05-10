@@ -7,7 +7,7 @@ export const bookSchema = z.object({
     .and(
       z
         .string()
-        .max(500, { message: 'Description must be less than 500 characters' })
+        .max(3000, { message: 'Description must be less than 3000 characters' })
     ),
   publishedDate: z.date({ message: 'Published date is required' }),
   publisher: z.string({ message: 'Publisher is required' }),

@@ -1,8 +1,8 @@
 spring:
   servlet:
     multipart:
-      max-request-size: 10MB
-      max-file-size: 10MB
+      max-request-size: 60MB
+      max-file-size: 60MB
   security:
     oauth2:
       client:
@@ -28,8 +28,8 @@ spring:
     password: ${DB_PASSWORD}
     driver-class-name: org.mariadb.jdbc.Driver
     hikari:
-      max-life-time: 30000000 # 30 minutes
-      idle-timeout: 600000 # 10 minutes
+      max-life-time: 300000 # 5 minutes
+      idle-timeout: 300000 # 5 minutes
       maximum-pool-size: 10
   sql:
     init:
@@ -79,3 +79,9 @@ amazon:
     region: us-east-1
     access-key: ${AWS_ACCESS_KEY}
     secret-key: ${AWS_SECRET_KEY}
+
+google:
+  drive:
+    service-account-key-file: src/main/resources/pet-lombart-32e441cb0ef5.json
+    application-name: spring-library
+    folder-id: 1_28PbaT9GTY5ikRYOzzDjKDCe36kW2La

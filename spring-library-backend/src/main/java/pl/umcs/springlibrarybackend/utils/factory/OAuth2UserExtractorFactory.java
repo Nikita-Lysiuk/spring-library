@@ -1,4 +1,4 @@
-package pl.umcs.springlibrarybackend.utils.oauthFactory;
+package pl.umcs.springlibrarybackend.utils.factory;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;

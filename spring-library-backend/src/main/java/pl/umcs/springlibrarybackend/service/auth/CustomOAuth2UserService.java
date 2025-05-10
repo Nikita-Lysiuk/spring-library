@@ -12,7 +12,7 @@ import pl.umcs.springlibrarybackend.model.auth.AuthProvider;
 import pl.umcs.springlibrarybackend.model.auth.CustomUserDetails;
 import pl.umcs.springlibrarybackend.model.auth.OAuth2UserDetailsAdapter;
 import pl.umcs.springlibrarybackend.repository.UserRepository;
-import pl.umcs.springlibrarybackend.utils.oauthFactory.OAuth2UserExtractorFactory;
+import pl.umcs.springlibrarybackend.utils.factory.OAuth2UserExtractorFactory;
 
 @Service
 @RequiredArgsConstructor

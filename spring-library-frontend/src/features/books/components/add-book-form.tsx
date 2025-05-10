@@ -1,31 +1,10 @@
+import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
-import { useForm } from 'react-hook-form';
-import { z } from 'zod';
-import { bookSchema } from '@/features/books/types/schema';
-import { zodResolver } from '@hookform/resolvers/zod';
 import { LeftsideFields, RightsideFields } from '@/features/books/components';
+import { useBookForm } from '@/features/books/hooks';
 
 const AddBookForm = () => {
-  // Винести в useBookForm
-  const form = useForm<z.infer<typeof bookSchema>>({
-    resolver: zodResolver(bookSchema),
-    defaultValues: {
-      title: '',
-      description: '',
-      publishedDate: undefined,
-      publisher: '',
-      pdf: undefined,
-      language: 'en',
-      price: 0,
-      categories: [],
-      authors: [],
-    },
-  });
-
-  const onSubmit = async (data: z.infer<typeof bookSchema>) => {
-    console.log('Form submitted:', data);
-    // Handle form submission logic here, such as sending data to an API
-  };
+  const { form, onSubmit } = useBookForm();
 
   return (
     <Form {...form}>
@@ -42,13 +21,15 @@ const AddBookForm = () => {
               <RightsideFields form={form} />
             </div>
           </div>
-          <div className="flex justify-end mt-6">
-            <button
+          <div className="flex justify-center mt-12">
+            <Button
               type="submit"
-              className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition duration-200"
+              variant={'outline'}
+              size={'lg'}
+              className="hover:scale-105 transition-transform duration-200 text-lg"
             >
-              Submit
-            </button>
+              Add Book
+            </Button>
           </div>
         </form>
       </div>

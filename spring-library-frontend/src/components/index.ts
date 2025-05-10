@@ -21,3 +21,4 @@ export { default as FA2Buttons } from './fa2-buttons';
 export { default as TwoFAComponent } from './two-fa-component';
 export { default as AddBookForm } from '../features/books/components/add-book-form';
 export { default as FieldWrapper } from './field-wrapper';
+export { default as SearchInput } from './search-input';

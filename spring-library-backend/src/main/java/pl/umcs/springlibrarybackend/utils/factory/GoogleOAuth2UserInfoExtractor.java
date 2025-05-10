@@ -1,4 +1,4 @@
-package pl.umcs.springlibrarybackend.utils.oauthFactory;
+package pl.umcs.springlibrarybackend.utils.factory;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;

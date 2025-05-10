@@ -1,4 +1,4 @@
-package pl.umcs.springlibrarybackend.utils.oauthFactory;
+package pl.umcs.springlibrarybackend.utils.factory;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

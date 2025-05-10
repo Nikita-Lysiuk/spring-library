@@ -33,6 +33,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 //        System.out.println("Request URI: " + request.getRequestURI());
 //        System.out.println("String hasText: " + StringUtils.hasText(token));
 //        System.out.println("Token valid: " + jwtService.validateToken(token));
+
         if (StringUtils.hasText(token)) {
             if (jwtService.validateToken(token)) {
                 String email = jwtService.extractUsername(token);

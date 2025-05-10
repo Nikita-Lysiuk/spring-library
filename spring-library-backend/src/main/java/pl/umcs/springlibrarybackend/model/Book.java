@@ -1,5 +1,6 @@
 package pl.umcs.springlibrarybackend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import pl.umcs.springlibrarybackend.model.meta.Author;
@@ -35,8 +36,8 @@ public class Book {
     @Column(name = "cover_url", nullable = false)
     private String coverUrl;
 
-    @Column(name = "pdf_url", nullable = false)
-    private String pdfUrl;
+    @Column(name = "google_pdf_id", nullable = false)
+    private String googlePdfId;
 
     @Column(name = "language", nullable = false)
     private String language;

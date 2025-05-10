@@ -1,4 +1,4 @@
-package pl.umcs.springlibrarybackend.config;
+package pl.umcs.springlibrarybackend.property;
 
 import lombok.Getter;
 import lombok.Setter;

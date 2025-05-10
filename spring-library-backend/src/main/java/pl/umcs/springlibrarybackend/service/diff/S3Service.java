@@ -8,6 +8,7 @@ import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
 
@@ -29,6 +30,21 @@ public class S3Service {
                 .build();
 
         s3Client.putObject(putObjectRequest, RequestBody.fromInputStream(file.getInputStream(), file.getSize()));
+
+        return s3Client.utilities().getUrl(b -> b.bucket(bucketName).key(fileName)).toString();
+    }
+
+    public String uploadFile(File file) {
+        String fileName = UUID.randomUUID() + "_" + file.getName();
+        String contentType = file.getName().substring(file.getName().lastIndexOf(".") + 1);
+
+        PutObjectRequest putObjectRequest = PutObjectRequest.builder()
+                .bucket(bucketName)
+                .key(fileName)
+                .contentType("image/" + contentType)
+                .build();
+
+        s3Client.putObject(putObjectRequest, RequestBody.fromFile(file));
 
         return s3Client.utilities().getUrl(b -> b.bucket(bucketName).key(fileName)).toString();
     }

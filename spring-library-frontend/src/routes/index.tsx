@@ -1,4 +1,4 @@
-import { DashboardLayout, MainLayout } from '@/components/layouts';
+import { BookLayout, DashboardLayout, MainLayout } from '@/components/layouts';
 import {
   AddBookPage,
   MainPage,
@@ -48,7 +48,9 @@ const router = createBrowserRouter(
         <Route element={<DashboardLayout />}>
           <Route index element={<div>My Library</div>} />
           <Route path="profile" element={<ProfilePage />} />
-          <Route path="store" element={<div>Store</div>} />
+          <Route element={<BookLayout />}>
+            <Route path="store" element={<div>Store</div>} />
+          </Route>
           <Route path="recommendations" element={<div>Recommendations</div>} />
           <Route path="download-pdf" element={<div>Download PDF</div>} />
 

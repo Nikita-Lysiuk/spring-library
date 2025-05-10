@@ -22,7 +22,7 @@ const DashboardLayout = () => {
       <SidebarProvider>
         <AppSidebar />
         <SidebarInset>
-          <header className="sticky top-0 z-10 shadow-sm bg-white flex h-12 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
+          <header className="sticky top-0 z-10 bg-white flex h-12 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
             <div className="flex items-center gap-2 px-4">
               <SidebarTrigger className="-ml-1" />
               <hr className="h-4 w-px bg-gray-200" />
@@ -30,7 +30,7 @@ const DashboardLayout = () => {
                 <BreadcrumbList>
                   {path.map((item, index) => (
                     <React.Fragment key={index}>
-                      <BreadcrumbItem className="hidden sm:block">
+                      <BreadcrumbItem className="block">
                         <BreadcrumbLink
                           href={`/${path.slice(0, index + 1).join('/')}`}
                         >
