@@ -10,15 +10,21 @@ import { axiosInstance } from '@/lib';
 export const fetchCategories = async (
   data: FetchCategoryRequest
 ): Promise<ApiResponse<Category[]>> => {
+  const { token, query, page, size } = data;
+  const params = new URLSearchParams();
+
+  if (query) params.append('search', query);
+  if (page) params.append('page', page.toString());
+  if (size) params.append('size', size.toString());
+
   const response = await axiosInstance.get<ApiResponse<Category[]>>(
-    `/api/meta/categories?search=${data.query}`,
+    `/api/meta/categories?${params.toString()}`,
     {
       headers: {
-        Authorization: `Bearer ${data.token}`,
+        Authorization: `Bearer ${token}`,
       },
     }
   );
-
   return response.data;
 };
 
@@ -41,11 +47,18 @@ export const createCategory = async (
 export const fetchAuthors = async (
   data: FetchAuthorRequest
 ): Promise<ApiResponse<Author[]>> => {
+  const { token, query, page, size } = data;
+  const params = new URLSearchParams();
+
+  if (query) params.append('search', query);
+  if (page) params.append('page', page.toString());
+  if (size) params.append('size', size.toString());
+
   const response = await axiosInstance.get<ApiResponse<Author[]>>(
-    `/api/meta/authors?search=${data.query}`,
+    `/api/meta/authors?${params.toString()}`,
     {
       headers: {
-        Authorization: `Bearer ${data.token}`,
+        Authorization: `Bearer ${token}`,
       },
     }
   );

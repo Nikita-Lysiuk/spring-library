@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface AuthorRepository extends JpaRepository<Author, String> {
     List<Author> findByNameContainingIgnoreCase(String name, Pageable pageable);
+    List<Author> findByNameContainingIgnoreCase(String name);
 }

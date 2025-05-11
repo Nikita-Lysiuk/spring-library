@@ -1,4 +1,4 @@
-package pl.umcs.springlibrarybackend.utils;
+package pl.umcs.springlibrarybackend.utils.utils;
 
 import lombok.experimental.UtilityClass;
 

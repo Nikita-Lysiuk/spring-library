@@ -2,6 +2,7 @@ package pl.umcs.springlibrarybackend.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.umcs.springlibrarybackend.dto.ApiResponse;
@@ -20,8 +21,11 @@ public class MetaController {
     private final MetaService<Author> authorService;
 
     @GetMapping("/categories")
-    public ResponseEntity<ApiResponse<List<Category>>> getCategories(@RequestParam String search) {
-        List<Category> categories = categoryService.getMeta(search);
+    public ResponseEntity<ApiResponse<List<Category>>> getCategories(
+            @RequestParam(value = "search", defaultValue = "") String search,
+            Pageable pageable
+    ) {
+        List<Category> categories = categoryService.getMeta(search, pageable);
         return ResponseEntity.ok(
                 ApiResponse.success("Categories retrieved successfully", categories)
         );
@@ -36,8 +40,11 @@ public class MetaController {
     }
 
     @GetMapping("/authors")
-    public ResponseEntity<ApiResponse<List<Author>>> getAuthors(@RequestParam String search) {
-        List<Author> authors = authorService.getMeta(search);
+    public ResponseEntity<ApiResponse<List<Author>>> getAuthors(
+            @RequestParam(value = "search", defaultValue = "") String search,
+            Pageable pageable
+    ) {
+        List<Author> authors = authorService.getMeta(search, pageable);
         return ResponseEntity.ok(
                 ApiResponse.success("Authors retrieved successfully", authors)
         );

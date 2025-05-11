@@ -16,8 +16,8 @@ import pl.umcs.springlibrarybackend.model.auth.RefreshToken;
 import pl.umcs.springlibrarybackend.dto.auth.JwtAuthResponse;
 import pl.umcs.springlibrarybackend.repository.UserRepository;
 import pl.umcs.springlibrarybackend.security.JwtTokenProvider;
-import pl.umcs.springlibrarybackend.utils.AccountValidator;
-import pl.umcs.springlibrarybackend.utils.TOTPUtils;
+import pl.umcs.springlibrarybackend.utils.validator.AccountValidator;
+import pl.umcs.springlibrarybackend.utils.utils.TOTPUtils;
 import pl.umcs.springlibrarybackend.utils.refreshToken.RefreshTokenManager;
 import pl.umcs.springlibrarybackend.utils.refreshToken.RefreshTokenValidator;
 

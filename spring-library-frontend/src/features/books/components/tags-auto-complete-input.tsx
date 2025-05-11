@@ -14,7 +14,7 @@ import {
 } from '@/components/ui/popover';
 import { cn } from '@/lib/utils';
 import { ChevronsUpDown, X } from 'lucide-react';
-import { useState, KeyboardEvent, useCallback } from 'react';
+import { useState, KeyboardEvent, useCallback, useRef, useEffect } from 'react';
 import { ControllerRenderProps, FieldValues, Path } from 'react-hook-form';
 import { useDebounce } from 'react-use';
 import { Tag } from '@/features/books/types';
@@ -38,12 +38,14 @@ const TagsAutoCompleteInput = <T extends Tag, TFormValues extends FieldValues>({
   const [inputValue, setInputValue] = useState('');
   const [suggestions, setSuggestions] = useState<T[]>([]);
   const [open, setOpen] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   useDebounce(
     async () => {
       const results = await fetchSuggestions(inputValue);
       if (results.success && results.data) {
-        setSuggestions(results.data);
+        setSuggestions([...results.data]);
+        console.log('Suggestions fetched: ', suggestions);
       } else {
         setSuggestions([]);
         console.log('Error fetching suggestions:', results.message);
@@ -52,6 +54,12 @@ const TagsAutoCompleteInput = <T extends Tag, TFormValues extends FieldValues>({
     300,
     [inputValue, open]
   );
+
+  useEffect(() => {
+    if (open && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [suggestions]);
 
   const addTag = useCallback(
     async (tagName: string) => {
@@ -120,15 +128,18 @@ const TagsAutoCompleteInput = <T extends Tag, TFormValues extends FieldValues>({
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-full p-0">
-          <Command>
+          <Command key={suggestions.map(s => s.id).join(',')}>
             <CommandInput
+              ref={inputRef}
               value={inputValue}
               onValueChange={setInputValue}
               onKeyDown={onKeyDown}
               placeholder={`Search ${name}...`}
             />
             <CommandList>
-              <CommandEmpty>No {name} found.</CommandEmpty>
+              {suggestions.length === 0 && (
+                <CommandEmpty>No {name} found.</CommandEmpty>
+              )}
               <CommandGroup>
                 {suggestions.map((tag: T) => (
                   <CommandItem

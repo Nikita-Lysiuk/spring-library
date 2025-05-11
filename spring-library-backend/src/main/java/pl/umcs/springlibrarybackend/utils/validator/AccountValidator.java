@@ -1,4 +1,4 @@
-package pl.umcs.springlibrarybackend.utils;
+package pl.umcs.springlibrarybackend.utils.validator;
 
 import org.springframework.stereotype.Component;
 import pl.umcs.springlibrarybackend.exception.OAuthOnlyAccountException;

@@ -61,4 +61,7 @@ public class User {
 
     @Column(name = "otp_secret")
     private String otpSecret;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private Set<Review> reviews;
 }

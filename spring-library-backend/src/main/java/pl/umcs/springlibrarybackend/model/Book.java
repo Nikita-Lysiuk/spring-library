@@ -1,6 +1,5 @@
 package pl.umcs.springlibrarybackend.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import pl.umcs.springlibrarybackend.model.meta.Author;
@@ -69,4 +68,7 @@ public class Book {
             inverseJoinColumns = @JoinColumn(name = "category_id")
     )
     private Set<Category> categories = new HashSet<>();
+
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Review> reviews = new HashSet<>();
 }

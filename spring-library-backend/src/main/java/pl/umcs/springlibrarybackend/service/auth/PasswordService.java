@@ -13,7 +13,7 @@ import pl.umcs.springlibrarybackend.model.mail.MailRequest;
 import pl.umcs.springlibrarybackend.repository.UserRepository;
 import pl.umcs.springlibrarybackend.service.diff.RedisService;
 import pl.umcs.springlibrarybackend.service.interfaces.MailService;
-import pl.umcs.springlibrarybackend.utils.RedisUtils;
+import pl.umcs.springlibrarybackend.utils.utils.RedisUtils;
 
 import java.time.Duration;
 import java.util.Map;

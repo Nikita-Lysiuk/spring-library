@@ -1,4 +1,4 @@
-package pl.umcs.springlibrarybackend.utils;
+package pl.umcs.springlibrarybackend.utils.factory;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

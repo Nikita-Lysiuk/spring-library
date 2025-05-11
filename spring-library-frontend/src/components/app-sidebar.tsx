@@ -9,7 +9,6 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarSeparator,
 } from '@/components/ui/sidebar';
 import { useAuthStore } from '@/store';
 import { Home, ShieldUser } from 'lucide-react';
@@ -104,7 +103,7 @@ const AppSidebar: React.FC = () => {
                       getIsActive(item.url) && 'bg-emerald-100 text-emerald-600'
                     )}
                   >
-                    <Link to={item.url}>
+                    <Link to={item.url} replace={true}>
                       <item.icon className="h-5 w-5" />
                       <span>{item.title}</span>
                     </Link>
@@ -119,7 +118,7 @@ const AppSidebar: React.FC = () => {
 
         {user.role === 'ROLE_ADMIN' && (
           <>
-            <SidebarSeparator className="my-1" />
+            <hr className="my-2 border-t border-gray-200" />
             <SidebarGroup>
               <SidebarGroupLabel className="font-space-grotesk text-sm text-gray-500 px-4">
                 Admin Panel

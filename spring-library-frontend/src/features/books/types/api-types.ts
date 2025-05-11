@@ -1,5 +1,7 @@
 export type FetchCategoryRequest = {
-  query: string;
+  page?: number;
+  size?: number;
+  query?: string;
   token: string;
 };
 
@@ -9,7 +11,9 @@ export type CreateCategoryRequest = {
 };
 
 export type FetchAuthorRequest = {
-  query: string;
+  page?: number;
+  size?: number;
+  query?: string;
   token: string;
 };
 

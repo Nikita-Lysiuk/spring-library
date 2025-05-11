@@ -24,9 +24,12 @@ public class CategoryService implements MetaService<Category> {
     }
 
     @Override
-    public List<Category> getMeta(String search) {
-        Pageable pageable = PageRequest.of(0, 5);
-        return categoryRepository.findByNameContainingIgnoreCase(search, pageable);
+    public List<Category> getMeta(String search, Pageable pageable) {
+        if (pageable.isPaged()) {
+            return categoryRepository.findByNameContainingIgnoreCase(search, pageable);
+        } else {
+            return categoryRepository.findByNameContainingIgnoreCase(search);
+        }
     }
 
     @Override

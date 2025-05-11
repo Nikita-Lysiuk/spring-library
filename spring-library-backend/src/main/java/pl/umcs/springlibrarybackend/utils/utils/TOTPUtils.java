@@ -1,4 +1,4 @@
-package pl.umcs.springlibrarybackend.utils;
+package pl.umcs.springlibrarybackend.utils.utils;
 
 import com.eatthepath.otp.HmacOneTimePasswordGenerator;
 import org.apache.commons.codec.binary.Base32;

@@ -1,11 +1,15 @@
 package pl.umcs.springlibrarybackend.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import pl.umcs.springlibrarybackend.dto.ApiResponse;
+import pl.umcs.springlibrarybackend.dto.book.BookFilterRequest;
+import pl.umcs.springlibrarybackend.dto.book.BookFilterResponse;
 import pl.umcs.springlibrarybackend.dto.book.SearchBookDto;
 import pl.umcs.springlibrarybackend.service.interfaces.BookService;
 
@@ -41,4 +45,14 @@ public class BookController {
         );
     }
 
+    @GetMapping("/filter")
+    public ResponseEntity<ApiResponse<BookFilterResponse>> filterBooks(
+            @ModelAttribute BookFilterRequest bookFilterRequest,
+            @PageableDefault(sort = "publishedDate")Pageable pageable
+            ) {
+            BookFilterResponse response = bookService.filterBooks(bookFilterRequest, pageable);
+        return ResponseEntity.ok(
+                ApiResponse.success("Books filtered successfully", response)
+        );
+    }
 }

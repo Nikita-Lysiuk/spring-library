@@ -16,9 +16,9 @@ import pl.umcs.springlibrarybackend.repository.UserRepository;
 import pl.umcs.springlibrarybackend.service.diff.RedisService;
 import pl.umcs.springlibrarybackend.service.diff.S3Service;
 import pl.umcs.springlibrarybackend.service.interfaces.UserService;
-import pl.umcs.springlibrarybackend.utils.QRCodeUtil;
-import pl.umcs.springlibrarybackend.utils.RedisUtils;
-import pl.umcs.springlibrarybackend.utils.TOTPUtils;
+import pl.umcs.springlibrarybackend.utils.utils.QRCodeUtils;
+import pl.umcs.springlibrarybackend.utils.utils.RedisUtils;
+import pl.umcs.springlibrarybackend.utils.utils.TOTPUtils;
 
 import java.io.IOException;
 import java.security.InvalidKeyException;
@@ -80,8 +80,8 @@ public class UserServiceImpl implements UserService {
 
         try {
             String qrCodeUrl = TOTPUtils.getOtpAuthUrl(user.getEmail(), otpSecret);
-            byte[] qrCodeImage = QRCodeUtil.generateQRCode(qrCodeUrl);
-            String base64QRCode = QRCodeUtil.generateBase32QRCode(qrCodeImage);
+            byte[] qrCodeImage = QRCodeUtils.generateQRCode(qrCodeUrl);
+            String base64QRCode = QRCodeUtils.generateBase32QRCode(qrCodeImage);
             return new Enable2FAResponse(base64QRCode);
         } catch (WriterException | IOException e) {
             System.err.println("Error generating QR code: " + e.getMessage());

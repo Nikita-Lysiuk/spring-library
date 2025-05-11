@@ -28,7 +28,7 @@ spring:
     password: ${DB_PASSWORD}
     driver-class-name: org.mariadb.jdbc.Driver
     hikari:
-      max-life-time: 300000 # 5 minutes
+      max-life-time: 60000 # 1 minute
       idle-timeout: 300000 # 5 minutes
       maximum-pool-size: 10
   sql:

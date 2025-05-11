@@ -24,9 +24,13 @@ public class AuthorService implements MetaService<Author> {
     }
 
     @Override
-    public List<Author> getMeta(String search) {
-        Pageable pageable = PageRequest.of(0, 5);
-        return authorRepository.findByNameContainingIgnoreCase(search, pageable);
+    public List<Author> getMeta(String search, Pageable pageable) {
+        if (pageable.isPaged()){
+            return authorRepository.findByNameContainingIgnoreCase(search, pageable);
+        } else {
+            return authorRepository.findByNameContainingIgnoreCase(search);
+        }
+
     }
 
     @Override

@@ -1,8 +1,19 @@
+import { SortOptions } from '@/features/books/hooks/use-sort';
 import {
   faGithub,
   faLinkedin,
   faTwitter,
 } from '@fortawesome/free-brands-svg-icons';
+import { ForwardRefExoticComponent } from 'react';
+import {
+  ArrowDown10,
+  ArrowDownAZ,
+  ArrowUp10,
+  ArrowUpAZ,
+  CalendarCheck,
+  CalendarDays,
+  LucideProps,
+} from 'lucide-react';
 
 export { default as SidebarItems } from './sidebar-items';
 
@@ -114,4 +125,34 @@ export const FIELD_TYPES = {
   email: 'email',
   password: 'password',
   confirmPassword: 'password',
+};
+
+export const sortOptionsMap: Record<
+  SortOptions,
+  { label: string; icon: ForwardRefExoticComponent<Omit<LucideProps, 'ref'>> }
+> = {
+  'price,asc': {
+    label: 'Price: Low to High',
+    icon: ArrowDown10,
+  },
+  'price,desc': {
+    label: 'Price: High to Low',
+    icon: ArrowUp10,
+  },
+  'title,asc': {
+    label: 'Name: A to Z',
+    icon: ArrowDownAZ,
+  },
+  'title,desc': {
+    label: 'Name: Z to A',
+    icon: ArrowUpAZ,
+  },
+  'publishedDate,asc': {
+    label: 'Date: Oldest First',
+    icon: CalendarDays,
+  },
+  'publishedDate,desc': {
+    label: 'Date: Newest First',
+    icon: CalendarCheck,
+  },
 };

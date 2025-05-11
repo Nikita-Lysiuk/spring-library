@@ -1,4 +1,4 @@
-package pl.umcs.springlibrarybackend.utils;
+package pl.umcs.springlibrarybackend.utils.utils;
 
 import lombok.extern.log4j.Log4j2;
 import org.springframework.web.multipart.MultipartFile;

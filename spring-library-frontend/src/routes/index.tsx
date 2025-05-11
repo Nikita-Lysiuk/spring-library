@@ -5,6 +5,7 @@ import {
   OAuthRedirectPage,
   ProfilePage,
   ResetPasswordPage,
+  StorePage,
   TwoFApage,
 } from '@/pages';
 import {
@@ -49,7 +50,7 @@ const router = createBrowserRouter(
           <Route index element={<div>My Library</div>} />
           <Route path="profile" element={<ProfilePage />} />
           <Route element={<BookLayout />}>
-            <Route path="store" element={<div>Store</div>} />
+            <Route path="store" element={<StorePage />} />
           </Route>
           <Route path="recommendations" element={<div>Recommendations</div>} />
           <Route path="download-pdf" element={<div>Download PDF</div>} />
