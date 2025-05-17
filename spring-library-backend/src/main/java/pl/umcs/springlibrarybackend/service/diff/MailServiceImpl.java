@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
-import pl.umcs.springlibrarybackend.model.mail.MailRequest;
+import pl.umcs.springlibrarybackend.dto.mail.MailRequest;
 import pl.umcs.springlibrarybackend.service.interfaces.MailService;
 import pl.umcs.springlibrarybackend.utils.interfaces.MailTemplateEngine;
 

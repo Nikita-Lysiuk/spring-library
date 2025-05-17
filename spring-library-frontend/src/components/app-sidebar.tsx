@@ -19,7 +19,7 @@ import { NavUser } from '@/components';
 import { motion } from 'motion/react';
 
 const AppSidebar: React.FC = () => {
-  const { user, logout } = useAuthStore();
+  const { user, logout, accessToken, refreshToken } = useAuthStore();
   const { pathname } = useLocation();
 
   // Логіка активного пункту
@@ -150,7 +150,12 @@ const AppSidebar: React.FC = () => {
       </SidebarContent>
 
       <SidebarFooter>
-        <NavUser user={user} logout={logout} />
+        <NavUser
+          user={user}
+          accessToken={accessToken!}
+          refreshToken={refreshToken!}
+          logout={logout}
+        />
       </SidebarFooter>
     </Sidebar>
   );

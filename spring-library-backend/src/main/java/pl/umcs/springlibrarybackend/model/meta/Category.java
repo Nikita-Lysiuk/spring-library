@@ -7,6 +7,7 @@ import pl.umcs.springlibrarybackend.model.Book;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 @Setter
 @Getter

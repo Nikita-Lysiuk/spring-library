@@ -24,14 +24,27 @@ import {
   Sparkles,
 } from 'lucide-react';
 import { Link } from 'react-router';
+import { useLogout } from '@/features/auth/hooks';
 
 interface NavUserProps {
   user: User;
+  accessToken: string;
+  refreshToken: string;
   logout: () => void;
 }
 
-const NavUser = ({ user, logout }: NavUserProps) => {
+const NavUser = ({ user, accessToken, refreshToken, logout }: NavUserProps) => {
   const { isMobile } = useSidebar();
+  const { handleLogout } = useLogout();
+
+  const onLogout = async () => {
+    try {
+      await handleLogout({ accessToken, refreshToken });
+      logout();
+    } catch (error) {
+      console.error('Logout failed:', error);
+    }
+  };
 
   return (
     <SidebarMenu>
@@ -104,7 +117,7 @@ const NavUser = ({ user, logout }: NavUserProps) => {
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={logout}>
+            <DropdownMenuItem onClick={onLogout}>
               <LogOut />
               Log out
             </DropdownMenuItem>

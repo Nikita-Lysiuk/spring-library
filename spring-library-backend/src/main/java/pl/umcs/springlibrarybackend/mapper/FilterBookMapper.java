@@ -13,8 +13,9 @@ public class FilterBookMapper {
                 book.getTitle(),
                 book.getCoverUrl(),
                 book.getReviews().stream()
-                        .map(Review::getRating)
-                        .reduce(0, Integer::sum).doubleValue() / book.getReviews().size(),
+                        .mapToInt(Review::getRating)
+                        .average()
+                        .orElse(0.0),
                 book.getReviews().size(),
                 book.getPrice().doubleValue(),
                 book.getPublisher()

@@ -4,3 +4,4 @@ export { default as TagsAutoCompleteInput } from './tags-auto-complete-input';
 export { default as RightsideFields } from './rightside-fields';
 export { default as DropdownFileField } from './dropdown-file-field';
 export { default as AddBookForm } from './add-book-form';
+export { default as BookCard } from './book-card';

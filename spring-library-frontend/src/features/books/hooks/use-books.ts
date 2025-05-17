@@ -3,6 +3,7 @@ import { useAuthStore } from '@/store';
 import { ApiResponse } from '@/types';
 import { useQuery } from '@tanstack/react-query';
 import { useSearchParams } from 'react-router';
+import { BookStoreResponse } from '@/features/books/types/api-types';
 
 const useBooks = () => {
   const token = useAuthStore(state => state.accessToken);
@@ -15,7 +16,7 @@ const useBooks = () => {
         throw new Error('No token found');
       }
 
-      const response = await axiosInstance.get<ApiResponse>(
+      const response = await axiosInstance.get<ApiResponse<BookStoreResponse>>(
         '/api/books/filter',
         {
           headers: {
@@ -24,8 +25,11 @@ const useBooks = () => {
           params: searchParams,
         }
       );
-      console.log('response', response.data.data);
-      return response.data as ApiResponse;
+      if (response.data.success && response.data.data) {
+        return response.data.data;
+      } else {
+        throw new Error(response.data.message || 'Failed to fetch books');
+      }
     },
   });
 };

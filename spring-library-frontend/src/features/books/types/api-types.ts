@@ -39,3 +39,18 @@ export type CreateBookType = {
   token: string;
   pdf: File;
 };
+
+export type BookStore = {
+  id: string;
+  title: string;
+  coverUrl: string;
+  averageRating: number;
+  numberOfRatings: number;
+  price: number;
+  publisher: string;
+};
+
+export type BookStoreResponse = {
+  books: BookStore[];
+  totalPages: number;
+};

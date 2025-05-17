@@ -45,10 +45,8 @@ const TagsAutoCompleteInput = <T extends Tag, TFormValues extends FieldValues>({
       const results = await fetchSuggestions(inputValue);
       if (results.success && results.data) {
         setSuggestions([...results.data]);
-        console.log('Suggestions fetched: ', suggestions);
       } else {
         setSuggestions([]);
-        console.log('Error fetching suggestions:', results.message);
       }
     },
     300,

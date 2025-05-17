@@ -42,6 +42,7 @@ public class SpringSecurityConfig {
                     authorize.requestMatchers("/api/auth/**").permitAll();
                     authorize.requestMatchers("/api/users/reset-password").permitAll();
                     authorize.requestMatchers("/api/users/**").authenticated();
+                    authorize.requestMatchers(HttpMethod.GET, "/api/meta/**").authenticated();
                     authorize.requestMatchers("/api/meta/**").hasRole("ADMIN");
                     authorize.requestMatchers(HttpMethod.GET, "/api/books/**").authenticated();
                     authorize.requestMatchers("/api/books/**").hasRole("ADMIN");

@@ -23,14 +23,8 @@ spring:
   application:
     name: spring-library-backend
   datasource:
-    url: jdbc:mariadb://${DB_HOST}/${DB_NAME}
-    username: ${DB_USER}
-    password: ${DB_PASSWORD}
-    driver-class-name: org.mariadb.jdbc.Driver
-    hikari:
-      max-life-time: 60000 # 1 minute
-      idle-timeout: 300000 # 5 minutes
-      maximum-pool-size: 10
+    url: ${DATABASE_URL}
+    driver-class-name: org.postgresql.Driver
   sql:
     init:
       mode: always
@@ -42,7 +36,6 @@ spring:
       hibernate:
         format_sql: true
         use_sql_comments: true
-        dialect: org.hibernate.dialect.MariaDBDialect
     show-sql: false
   data:
     redis:
@@ -51,7 +44,7 @@ spring:
       password: ${REDIS_PASSWORD}
   devtools:
     restart:
-      enabled: false
+      enabled: true
 
   mail:
     host: smtp.gmail.com

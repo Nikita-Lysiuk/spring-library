@@ -3,7 +3,6 @@ package pl.umcs.springlibrarybackend.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import pl.umcs.springlibrarybackend.converter.StringListJsonConverter;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -33,12 +32,14 @@ public class ExternalBook {
     @Column(name = "publisher", nullable = false)
     private String publisher;
 
-    @Column(name = "authors", columnDefinition = "LONGTEXT")
-    @Convert(converter = StringListJsonConverter.class)
+    // @Column(name = "authors", columnDefinition = "LONGTEXT")
+    // @Convert(converter = StringListJsonConverter.class)
+    @Column(name = "authors", columnDefinition = "json")
     private List<String> authors;
 
-    @Column(name = "categories", columnDefinition = "LONGTEXT")
-    @Convert(converter = StringListJsonConverter.class)
+    // @Column(name = "categories", columnDefinition = "LONGTEXT")
+    // @Convert(converter = StringListJsonConverter.class)
+    @Column(name = "categories", columnDefinition = "json")
     private List<String> categories;
 
     @Column(name = "page_count")

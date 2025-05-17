@@ -1,4 +1,4 @@
-package pl.umcs.springlibrarybackend.model.mail;
+package pl.umcs.springlibrarybackend.dto.mail;
 
 import lombok.Builder;
 import lombok.Getter;

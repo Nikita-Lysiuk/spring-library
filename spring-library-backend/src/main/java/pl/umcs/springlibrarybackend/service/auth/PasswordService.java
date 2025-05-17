@@ -9,7 +9,7 @@ import pl.umcs.springlibrarybackend.exception.ForgotPasswordException;
 import pl.umcs.springlibrarybackend.exception.ResetPasswordException;
 import pl.umcs.springlibrarybackend.model.User;
 import pl.umcs.springlibrarybackend.model.auth.AuthProvider;
-import pl.umcs.springlibrarybackend.model.mail.MailRequest;
+import pl.umcs.springlibrarybackend.dto.mail.MailRequest;
 import pl.umcs.springlibrarybackend.repository.UserRepository;
 import pl.umcs.springlibrarybackend.service.diff.RedisService;
 import pl.umcs.springlibrarybackend.service.interfaces.MailService;
