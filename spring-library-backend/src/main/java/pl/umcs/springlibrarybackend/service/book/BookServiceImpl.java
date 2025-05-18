@@ -10,10 +10,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import pl.umcs.springlibrarybackend.dto.book.BookFilterRequest;
-import pl.umcs.springlibrarybackend.dto.book.BookFilterResponse;
-import pl.umcs.springlibrarybackend.dto.book.SearchBookDto;
-import pl.umcs.springlibrarybackend.dto.book.CreateBookDto;
+import pl.umcs.springlibrarybackend.dto.book.*;
+import pl.umcs.springlibrarybackend.mapper.BookMapper;
 import pl.umcs.springlibrarybackend.mapper.FilterBookMapper;
 import pl.umcs.springlibrarybackend.mapper.SearchBookMapper;
 import pl.umcs.springlibrarybackend.model.Book;
@@ -23,9 +21,9 @@ import pl.umcs.springlibrarybackend.service.diff.PdfService;
 import pl.umcs.springlibrarybackend.service.diff.S3Service;
 import pl.umcs.springlibrarybackend.service.interfaces.BookService;
 import pl.umcs.springlibrarybackend.utils.specification.BookSpecification;
-import pl.umcs.springlibrarybackend.utils.utils.Utils;
 import pl.umcs.springlibrarybackend.utils.factory.BookFactory;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -42,34 +40,32 @@ public class BookServiceImpl implements BookService {
     private final BookFactory bookFactory;
     private final SearchBookMapper searchBookMapper;
     private final FilterBookMapper filterBookMapper;
+    private final BookMapper bookMapper;
 
     @Override
-    public void uploadBook(MultipartFile pdf, String book) throws IOException {
-        CreateBookDto createBookDto = objectMapper.readValue(book, new TypeReference<>() {});
-        File file = Utils.convertMultipartFileToFile(pdf);
-        String googleDriveId = googleDriveService.uploadPdf(file, pdf.getOriginalFilename());
-        File coverImage = pdfService.getCoverImage(file);
-        Integer numberOfPages = pdfService.getNumberOfPages(file);
-        String coverImageUrl = s3Service.uploadFile(coverImage);
-
-
-        Book bookToSave = bookFactory.create(
-                createBookDto,
-                coverImageUrl,
-                googleDriveId,
-                numberOfPages
-        );
-
-        bookRepository.save(bookToSave);
+    public void uploadBook(MultipartFile pdf, String book) {
         try {
-            if (!file.delete()) {
-                log.warn("Failed to delete file: {}", file.getAbsolutePath());
-            }
-            if (!coverImage.delete()) {
-                log.warn("Failed to delete cover image: {}", coverImage.getAbsolutePath());
-            }
-        } catch (Exception e) {
-            log.error("Exception while deleting temp files", e);
+            CreateBookDto createBookDto = objectMapper.readValue(book, new TypeReference<>() {});
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            pdf.getInputStream().transferTo(outputStream);
+            String googleDriveId = googleDriveService.uploadPdf(outputStream, pdf.getOriginalFilename());
+            File coverImage = pdfService.getCoverImage(outputStream);
+            Integer numberOfPages = pdfService.getNumberOfPages(outputStream);
+            String coverImageUrl = s3Service.uploadFile(coverImage);
+
+
+            Book bookToSave = bookFactory.create(
+                    createBookDto,
+                    coverImageUrl,
+                    googleDriveId,
+                    numberOfPages
+            );
+
+            bookRepository.save(bookToSave);
+            log.info("Book uploaded successfully: {}", bookToSave.getTitle());
+        } catch (IOException ex) {
+            log.error("Failed to upload book: {}", ex.getMessage());
+            throw new RuntimeException("Failed to upload book", ex);
         }
     }
 
@@ -96,5 +92,25 @@ public class BookServiceImpl implements BookService {
                         .toList(),
                 pageResult.getTotalPages()
         );
+    }
+
+    @Override
+    public BookDto getBookById(String id) {
+        Book book = bookRepository.findWithDetailsById(id)
+                .orElseThrow(() -> new RuntimeException("Book not found"));
+
+        try {
+            ByteArrayOutputStream pdfFile = googleDriveService.getFileById(book.getGooglePdfId());
+            byte[] pdfSample = pdfService.getPdfSample(pdfFile);
+
+            BookDto bookDto = bookMapper.toDto(book);
+            bookDto.setPdfSample(pdfSample);
+
+            return bookDto;
+        } catch (IOException e) {
+            log.error("Failed to download PDF file from Google Drive: {}", e.getMessage());
+            throw new RuntimeException("Failed to download PDF file from Google Drive", e);
+        }
+
     }
 }

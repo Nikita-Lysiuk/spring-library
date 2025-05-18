@@ -29,11 +29,11 @@ const BookCard = ({
       className={cn('flex flex-col items-center', className)}
       onClick={() => onClick && onClick(id)}
     >
-      <div className="p-4 flex flex-col itemcs-center max-w-[200px] cursor-pointer">
+      <div className="p-4 flex flex-col itemcs-center max-w-[200px] 2xl:max-w-[250px] cursor-pointer">
         <img
           src={coverUrl}
           alt={title}
-          className="w-42 h-auto rounded-lg cursor-pointer"
+          className="w-42 2xl:w-56 h-auto rounded-lg cursor-pointer"
         />
         <h3 className="text-md font-semibold mt-2">{title}</h3>
         <p className="text-sm text-gray-500">{publisher}</p>

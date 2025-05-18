@@ -1,6 +1,7 @@
 import { BookLayout, DashboardLayout, MainLayout } from '@/components/layouts';
 import {
   AddBookPage,
+  BookPage,
   MainPage,
   OAuthRedirectPage,
   ProfilePage,
@@ -52,6 +53,7 @@ const router = createBrowserRouter(
           <Route element={<BookLayout />}>
             <Route path="store" element={<StorePage />} />
           </Route>
+          <Route path="books/:bookId" element={<BookPage />} />
           <Route path="recommendations" element={<div>Recommendations</div>} />
           <Route path="download-pdf" element={<div>Download PDF</div>} />
 

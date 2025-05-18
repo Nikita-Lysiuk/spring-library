@@ -46,6 +46,9 @@ public class SpringSecurityConfig {
                     authorize.requestMatchers("/api/meta/**").hasRole("ADMIN");
                     authorize.requestMatchers(HttpMethod.GET, "/api/books/**").authenticated();
                     authorize.requestMatchers("/api/books/**").hasRole("ADMIN");
+                    authorize.requestMatchers(HttpMethod.GET, "/api/reviews/**").authenticated();
+                    authorize.requestMatchers(HttpMethod.POST, "/api/reviews/**").authenticated();
+                    authorize.requestMatchers("/api/reviews/**").hasRole("ADMIN");
                     authorize.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll();
                     authorize.anyRequest().authenticated();
                 });

@@ -1,3 +1,5 @@
+import { Author, Category, Review } from '@/features/books/types';
+
 export type FetchCategoryRequest = {
   page?: number;
   size?: number;
@@ -53,4 +55,20 @@ export type BookStore = {
 export type BookStoreResponse = {
   books: BookStore[];
   totalPages: number;
+};
+
+export type BookDto = {
+  id: string;
+  title: string;
+  publisher: string;
+  publishedDate: string;
+  description: string;
+  language: string;
+  price: number;
+  coverImageUrl: string;
+  pdfSampleBase64: string;
+  pageCount: number;
+  authors: Author[];
+  categories: Category[];
+  reviews: Review[];
 };

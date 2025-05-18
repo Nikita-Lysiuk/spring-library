@@ -1,3 +1,4 @@
+import { Pagination } from '@/components';
 import { Skeleton } from '@/components/ui/skeleton';
 import { BookCard } from '@/features/books/components';
 import { useBooks } from '@/features/books/hooks';
@@ -8,7 +9,7 @@ const StorePage = () => {
   const navigate = useNavigate();
 
   const handleBookClick = (id: string) => {
-    navigate(`/books/${id}`, { replace: true });
+    navigate(`/dashboard/books/${id}`, { replace: true });
   };
 
   if (isLoading) {
@@ -35,7 +36,7 @@ const StorePage = () => {
   return (
     <>
       {data && data.books.length > 0 && (
-        <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 p-4">
+        <div className="grid grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4 p-4 overflow-hidden">
           {data.books.map(book => (
             <BookCard
               key={book.id}
@@ -46,12 +47,14 @@ const StorePage = () => {
               averageRating={book.averageRating}
               numberOfRatings={book.numberOfRatings}
               price={book.price}
-              className="w-full h-[420px]"
+              className="w-full h-[500px]"
               onClick={() => handleBookClick(book.id)}
             />
           ))}
         </div>
       )}
+
+      {data && <Pagination totalPages={data.totalPages} className="mt-1" />}
     </>
   );
 };

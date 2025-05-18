@@ -8,6 +8,7 @@ import pl.umcs.springlibrarybackend.model.meta.Category;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -71,4 +72,8 @@ public class Book {
 
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Review> reviews = new HashSet<>();
+
+    public DateTimeFormatter getDateFormatter() {
+        return DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    }
 }

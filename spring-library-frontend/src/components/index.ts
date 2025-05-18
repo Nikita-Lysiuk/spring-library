@@ -27,3 +27,4 @@ export { FilterCheckbox } from './filter-checkbox';
 export { default as CheckboxFiltersGroup } from './checkbox-filters-group';
 export { default as SortByButton } from './sort-by-button';
 export { default as StarRating } from './star-rating';
+export { default as Pagination } from './pagination';

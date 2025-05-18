@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import pl.umcs.springlibrarybackend.dto.ApiResponse;
+import pl.umcs.springlibrarybackend.dto.book.BookDto;
 import pl.umcs.springlibrarybackend.dto.book.BookFilterRequest;
 import pl.umcs.springlibrarybackend.dto.book.BookFilterResponse;
 import pl.umcs.springlibrarybackend.dto.book.SearchBookDto;
@@ -49,11 +50,21 @@ public class BookController {
     @GetMapping("/filter")
     public ResponseEntity<ApiResponse<BookFilterResponse>> filterBooks(
             @ModelAttribute BookFilterRequest bookFilterRequest,
-            @PageableDefault(sort = "publishedDate", direction = Sort.Direction.DESC)Pageable pageable
+            @PageableDefault(size = 9, sort = "publishedDate", direction = Sort.Direction.DESC)Pageable pageable
             ) {
             BookFilterResponse response = bookService.filterBooks(bookFilterRequest, pageable);
         return ResponseEntity.ok(
                 ApiResponse.success("Books filtered successfully", response)
+        );
+    }
+
+    @GetMapping("/{bookId}")
+    public ResponseEntity<ApiResponse<BookDto>> getBookById(
+            @PathVariable String bookId
+    ) {
+        BookDto book = bookService.getBookById(bookId);
+        return ResponseEntity.ok(
+                ApiResponse.success("Book found", book)
         );
     }
 }

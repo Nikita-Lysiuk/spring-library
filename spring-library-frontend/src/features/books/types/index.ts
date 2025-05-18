@@ -31,6 +31,13 @@ export type Author = {
   name: string;
 };
 
+export type Review = {
+  id: string;
+  rating: number;
+  content: string;
+  createdAt: string;
+};
+
 export type SearchBook = {
   id: string;
   title: string;

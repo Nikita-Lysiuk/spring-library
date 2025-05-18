@@ -70,7 +70,7 @@ const SearchInput = ({ className }: Props) => {
                 onClick={onClickItem}
                 key={book.id}
                 className="flex items-center gap-3 w-full px-4 py-2 hover:bg-gray-100 rounded-lg"
-                to={`/books/${book.id}`}
+                to={`/dashboard/books/${book.id}`}
               >
                 <img
                   className="w-8 h-auto"
