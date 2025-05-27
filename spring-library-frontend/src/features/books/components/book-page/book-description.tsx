@@ -1,28 +1,25 @@
 import { StarRating } from '@/components';
 import { Button } from '@/components/ui/button';
-import { useMemo } from 'react';
-import { Review } from '@/features/books/types';
+
+interface BookDescriptionProps {
+  title: string;
+  authors: { id: string; name: string }[];
+  averageRating: number;
+  reviewCount: number;
+  description: string;
+  price: number;
+  onAddToCart?: () => void;
+}
 
 const BookDescription = ({
   title,
   authors,
-  reviews,
+  averageRating,
+  reviewCount,
   description,
   price,
   onAddToCart,
-}: {
-  title: string;
-  authors: { id: string; name: string }[];
-  reviews: Review[];
-  description: string;
-  price: number;
-  onAddToCart?: () => void;
-}) => {
-  const averageRating = useMemo(() => {
-    if (reviews.length === 0) return 0;
-    return reviews.reduce((acc, r) => acc + r.rating, 0) / reviews.length;
-  }, [reviews]);
-
+}: BookDescriptionProps) => {
   return (
     <header>
       <h1 className="text-3xl font-bold mb-2">{title}</h1>
@@ -39,7 +36,7 @@ const BookDescription = ({
       <div className="flex items-center gap-2">
         <StarRating rating={averageRating} />
         <span className="text-sm text-gray-600 font-light">
-          {averageRating.toFixed(1)} ({reviews.length} ratings)
+          {averageRating.toFixed(1)} ({reviewCount} ratings)
         </span>
       </div>
 

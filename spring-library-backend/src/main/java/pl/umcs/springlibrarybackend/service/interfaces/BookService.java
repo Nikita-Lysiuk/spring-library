@@ -15,4 +15,5 @@ public interface BookService {
     List<SearchBookDto> searchBook(String query);
     BookFilterResponse filterBooks(BookFilterRequest books, Pageable pageable);
     BookDto getBookById(String id);
+    String getBookSamplePdf(String bookId);
 }

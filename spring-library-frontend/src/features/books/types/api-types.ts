@@ -1,4 +1,4 @@
-import { Author, Category, Review } from '@/features/books/types';
+import { Author, Category } from '@/features/books/types';
 
 export type FetchCategoryRequest = {
   page?: number;
@@ -66,9 +66,25 @@ export type BookDto = {
   language: string;
   price: number;
   coverImageUrl: string;
-  pdfSampleBase64: string;
   pageCount: number;
+  averageRating: number;
+  reviewCount: number;
   authors: Author[];
   categories: Category[];
-  reviews: Review[];
+};
+
+export type UserDto = {
+  id: string;
+  fullName: string;
+  email: string;
+  avatarUrl?: string;
+};
+
+export type ReviewDto = {
+  id: string;
+  user: UserDto;
+  book: BookDto;
+  rating: number;
+  content?: string;
+  createdAt: string;
 };

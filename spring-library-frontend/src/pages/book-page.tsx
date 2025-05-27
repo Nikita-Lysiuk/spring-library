@@ -12,7 +12,6 @@ import {
 const BookPage = () => {
   const { bookId } = useParams();
   const { isLoading, data } = useBook(bookId as string);
-
   if (isLoading) return <LoadingSkeleton />;
 
   if (!data) {
@@ -43,15 +42,16 @@ const BookPage = () => {
       "
       >
         <BookInfo
+          bookId={data.id}
           title={data.title}
           coverImageUrl={data.coverImageUrl}
-          pdfSampleBase64={data.pdfSampleBase64}
         />
         <article className="md:w-1/2 2xl:w-1/3 flex flex-col gap-6">
           <BookDescription
             title={data.title}
             authors={data.authors}
-            reviews={data.reviews}
+            averageRating={data.averageRating}
+            reviewCount={data.reviewCount}
             description={data.description}
             price={data.price}
             onAddToCart={() => {
@@ -72,11 +72,12 @@ const BookPage = () => {
           languageValue={data.language}
           hardCover={data.pageCount}
           categories={data.categories}
-          reviews={data.reviews}
+          averageRating={data.averageRating}
+          reviewCount={data.reviewCount}
         />
       </section>
       <section className="container mx-auto py-6 border-t">
-        <BookReview bookId={data.id} reviews={data.reviews} />
+        <BookReview bookId={data.id} />
       </section>
     </>
   );

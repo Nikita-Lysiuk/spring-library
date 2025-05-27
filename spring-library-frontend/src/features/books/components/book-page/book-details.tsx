@@ -1,15 +1,15 @@
 import { StarRating } from '@/components';
-import { languages, Review } from '@/features/books/types';
-import { useMemo } from 'react';
+import { languages } from '@/features/books/types';
 
 type Category = { id: string; name: string };
 
 interface BookDetailsProps {
-  publisher?: string;
-  languageValue?: string;
-  hardCover?: number;
-  categories?: Category[];
-  reviews: Review[];
+  publisher: string;
+  languageValue: string;
+  hardCover: number;
+  categories: Category[];
+  averageRating: number;
+  reviewCount: number;
 }
 
 const BookDetails = ({
@@ -17,17 +17,13 @@ const BookDetails = ({
   languageValue,
   hardCover,
   categories = [],
-  reviews = [],
+  averageRating,
+  reviewCount,
 }: BookDetailsProps) => {
   const language =
     languages.find(lang => lang.value === languageValue)?.label ||
     languageValue ||
     'N/A';
-
-  const averageRating = useMemo(() => {
-    if (reviews.length === 0) return 0;
-    return reviews.reduce((acc, r) => acc + r.rating, 0) / reviews.length;
-  }, [reviews]);
 
   const detailRow = (label: string, value: React.ReactNode) => (
     <div className="flex justify-between py-2 border-b border-gray-200">
@@ -65,11 +61,11 @@ const BookDetails = ({
           'Customer Reviews',
           <div className="flex flex-row gap-2">
             <span className="text-sm text-gray-600 font-light">
-              {averageRating}
+              {averageRating.toFixed(1)}
             </span>
             <StarRating rating={averageRating} size={18} />
             <span className="text-sm font-light text-blue-600 underline">
-              {reviews.length} ratings
+              {reviewCount} ratings
             </span>
           </div>
         )}

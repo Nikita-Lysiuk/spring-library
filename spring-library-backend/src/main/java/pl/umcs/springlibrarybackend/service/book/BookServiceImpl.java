@@ -26,6 +26,7 @@ import pl.umcs.springlibrarybackend.utils.factory.BookFactory;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.util.Base64;
 import java.util.List;
 
 @Service
@@ -97,20 +98,23 @@ public class BookServiceImpl implements BookService {
     @Override
     public BookDto getBookById(String id) {
         Book book = bookRepository.findWithDetailsById(id)
-                .orElseThrow(() -> new RuntimeException("Book not found"));
+                .orElseThrow(() -> new IndexOutOfBoundsException("Book not found with id: " + id));
+        return bookMapper.toDto(book);
+    }
 
+    @Override
+    public String getBookSamplePdf(String bookId) {
         try {
-            ByteArrayOutputStream pdfFile = googleDriveService.getFileById(book.getGooglePdfId());
-            byte[] pdfSample = pdfService.getPdfSample(pdfFile);
+            Book book = bookRepository
+                    .findById(bookId)
+                    .orElseThrow(() -> new IndexOutOfBoundsException("Book not found with id: " + bookId));
 
-            BookDto bookDto = bookMapper.toDto(book);
-            bookDto.setPdfSample(pdfSample);
-
-            return bookDto;
+            ByteArrayOutputStream outputStream = googleDriveService.getFileById(book.getGooglePdfId());
+            byte[] bytes = pdfService.getPdfSample(outputStream);
+            return Base64.getEncoder().encodeToString(bytes);
         } catch (IOException e) {
-            log.error("Failed to download PDF file from Google Drive: {}", e.getMessage());
-            throw new RuntimeException("Failed to download PDF file from Google Drive", e);
+            log.error("Failed to get book sample PDF: {}", e.getMessage());
+            throw new RuntimeException("Failed to get book sample PDF", e);
         }
-
     }
 }

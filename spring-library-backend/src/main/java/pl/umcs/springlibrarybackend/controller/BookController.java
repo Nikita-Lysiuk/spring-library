@@ -67,4 +67,14 @@ public class BookController {
                 ApiResponse.success("Book found", book)
         );
     }
+
+    @GetMapping("/{bookId}/sample")
+    public ResponseEntity<ApiResponse<String>> getBookSamplePdf(
+            @PathVariable String bookId
+    ) {
+        String samplePdf = bookService.getBookSamplePdf(bookId);
+        return ResponseEntity.ok(
+                ApiResponse.success("Sample PDF retrieved successfully", samplePdf)
+        );
+    }
 }

@@ -24,14 +24,11 @@ public class BookDto {
     private String language;
     private Double price;
     private String coverImageUrl;
-    private String pdfSampleBase64;
     private Integer pageCount;
+    private Double averageRating;
+    private Integer reviewCount;
 
     private List<Author> authors;
     private List<Category> categories;
-    private List<Review> reviews;
 
-    public void setPdfSample(byte[] pdfSample) {
-        this.pdfSampleBase64 = Base64.getEncoder().encodeToString(pdfSample);
-    }
 }

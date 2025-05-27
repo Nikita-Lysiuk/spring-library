@@ -10,3 +10,5 @@ export { default as usePage } from './use-page';
 export { default as usePageQuery } from './use-page-query';
 export { default as useBook } from './use-book';
 export { default as useReviewForm } from './use-review-form';
+export { default as useReviews } from './use-reviews';
+export { default as useDeleteReview } from './use-delete-review';

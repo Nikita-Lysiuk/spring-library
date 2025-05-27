@@ -1,11 +1,16 @@
 import { Button } from '@/components/ui/button';
-import { useReviewForm } from '../../hooks';
-import { Review } from '../../types';
+import {
+  useDeleteReview,
+  useReviewForm,
+  useReviews,
+} from '@/features/books/hooks';
+import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib/utils';
 import { FC } from 'react';
+import { ReviewCard } from '@/components';
+import { useAuthStore } from '@/store';
 
 interface BookReviewProps {
-  reviews: Review[];
   bookId: string;
   className?: string;
 }
@@ -27,13 +32,12 @@ const Star: FC<{ filled: boolean; onClick?: () => void }> = ({
   </svg>
 );
 
-export const BookReview = ({ reviews, bookId, className }: BookReviewProps) => {
+export const BookReview = ({ bookId, className }: BookReviewProps) => {
   const { form, onSubmit } = useReviewForm(bookId);
+  const { data: reviews = [], isLoading } = useReviews(bookId);
+  const { onDelete } = useDeleteReview(bookId);
   const rating = form.watch('rating');
-
-  const averageRating = reviews.length
-    ? reviews.reduce((acc, review) => acc + review.rating, 0) / reviews.length
-    : 0;
+  const isAdmin = useAuthStore(state => state.user)?.role === 'ROLE_ADMIN';
 
   return (
     <section
@@ -87,44 +91,49 @@ export const BookReview = ({ reviews, bookId, className }: BookReviewProps) => {
 
         {/* RIGHT: Review List */}
         <div>
-          <div className="flex items-center mb-4">
-            <div className="flex">
-              {Array(5)
-                .fill(0)
-                .map((_, i) => (
-                  <Star key={i} filled={i < Math.round(averageRating)} />
-                ))}
-            </div>
-            <span className="ml-2 text-gray-700 font-semibold text-lg">
-              {averageRating.toFixed(1)}
-            </span>
-            <span className="ml-2 text-sm text-gray-500">
-              ({reviews.length} reviews)
-            </span>
-          </div>
-
           <div className="max-h-64 overflow-y-auto space-y-4 pr-2">
-            {!reviews.length && (
-              <p className="text-sm text-gray-500">No reviews yet.</p>
-            )}
-            {reviews.map(review => (
-              <div key={review.id} className="border-b pb-2">
-                <div className="flex mb-1">
-                  {Array(5)
-                    .fill(0)
-                    .map((_, i) => (
-                      <Star key={i} filled={i < review.rating} />
-                    ))}
-                </div>
-                <p className="text-sm text-gray-700 mb-1">{review.content}</p>
-                <time
-                  className="text-xs text-gray-400"
-                  dateTime={review.createdAt}
-                >
-                  {new Date(review.createdAt).toLocaleDateString()}
-                </time>
+            {isLoading ? (
+              <div className="space-y-4">
+                {Array(3)
+                  .fill(0)
+                  .map((_, i) => (
+                    <div key={i} className="space-y-2">
+                      <div className="flex space-x-1">
+                        {Array(5)
+                          .fill(0)
+                          .map((_, j) => (
+                            <Skeleton
+                              key={j}
+                              className="w-5 h-5 rounded-full"
+                            />
+                          ))}
+                      </div>
+                      <Skeleton className="h-4 w-3/4" />
+                      <Skeleton className="h-3 w-1/4" />
+                    </div>
+                  ))}
               </div>
-            ))}
+            ) : (
+              <>
+                {!reviews.length && (
+                  <p className="text-sm text-gray-500">No reviews yet.</p>
+                )}
+                {reviews.map(review => (
+                  <div key={review.id} className="border-b pb-2">
+                    <ReviewCard
+                      reviewId={review.id}
+                      rating={review.rating}
+                      content={review.content}
+                      createdAt={review.createdAt}
+                      authorName={review.user.fullName}
+                      authorAvatarUrl={review.user.avatarUrl}
+                      isAllowEdit={isAdmin}
+                      onDelete={onDelete}
+                    />
+                  </div>
+                ))}
+              </>
+            )}
           </div>
         </div>
       </div>

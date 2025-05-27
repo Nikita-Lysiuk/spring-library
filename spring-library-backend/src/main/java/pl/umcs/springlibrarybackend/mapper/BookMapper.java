@@ -16,11 +16,13 @@ public class BookMapper {
                 book.getLanguage(),
                 book.getPrice().doubleValue(),
                 book.getCoverUrl(),
-                "",
                 book.getPageCount(),
+                book.getReviews()
+                        .stream()
+                        .map(review -> review.getRating().doubleValue()).reduce(0.0, Double::sum) / book.getReviews().size(),
+                book.getReviews().size(),
                 book.getAuthors().stream().toList(),
-                book.getCategories().stream().toList(),
-                book.getReviews().stream().toList()
+                book.getCategories().stream().toList()
         );
     }
 }

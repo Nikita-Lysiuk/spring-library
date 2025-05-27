@@ -41,7 +41,9 @@ const StarRating = ({
         );
       })}
 
-      {ratingNumber && <span>{ratingNumber}</span>}
+      {ratingNumber !== null && (
+        <span className="font-light text-gray-500 ml-1">{ratingNumber}</span>
+      )}
     </div>
   );
 };
