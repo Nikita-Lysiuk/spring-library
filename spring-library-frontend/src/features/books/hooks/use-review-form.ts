@@ -3,12 +3,13 @@ import { z } from 'zod';
 import { reviewSchema } from '@/features/books/types/schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { axiosInstance } from '@/lib';
 import toast from 'react-hot-toast';
 
 const useReviewForm = (bookId: string) => {
   const token = useAuthStore.getState().accessToken;
+  const queryClient = useQueryClient();
 
   const form = useForm<z.infer<typeof reviewSchema>>({
     resolver: zodResolver(reviewSchema),
@@ -45,6 +46,16 @@ const useReviewForm = (bookId: string) => {
     },
     onSettled: () => {
       toast.dismiss();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['reviews', bookId],
+        exact: true,
+      });
+      queryClient.invalidateQueries({
+        queryKey: ['book', bookId],
+        exact: true,
+      });
     },
   });
 

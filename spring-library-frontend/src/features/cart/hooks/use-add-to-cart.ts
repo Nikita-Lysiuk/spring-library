@@ -1,12 +1,13 @@
 import { axiosInstance } from '@/lib';
 import { useAuthStore } from '@/store';
 import { ApiResponse } from '@/types';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 
 const useAddToCart = (bookId: string) => {
   const accessToken = useAuthStore(state => state.accessToken);
+  const queryClient = useQueryClient();
 
   const mutation = useMutation({
     mutationFn: async () => {
@@ -39,6 +40,10 @@ const useAddToCart = (bookId: string) => {
       }
     },
     onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['cart', bookId],
+        exact: true,
+      });
       toast.success('Book added to cart successfully!');
     },
   });

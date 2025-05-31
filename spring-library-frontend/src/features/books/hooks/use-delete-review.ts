@@ -39,6 +39,10 @@ const useDeleteReview = (bookId: string) => {
         queryKey: ['reviews', bookId],
         exact: true,
       });
+      queryClient.invalidateQueries({
+        queryKey: ['book', bookId],
+        exact: true,
+      });
     },
   });
 

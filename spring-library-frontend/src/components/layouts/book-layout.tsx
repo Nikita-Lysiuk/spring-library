@@ -3,6 +3,7 @@ import { Suspense, useState } from 'react';
 import { Outlet } from 'react-router';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Button } from '../ui/button';
+import { CartButton } from '@/features/cart/components';
 
 const BookLayout = () => {
   const [open, setOpen] = useState(false);
@@ -11,10 +12,13 @@ const BookLayout = () => {
     <div className="flex flex-col h-full">
       <header className="sticky top-0 z-20 bg-white pb-4 flex justify-between items-center border-b px-4 flex-col lg:flex-row space-y-4 lg:space-y-0">
         <div className="flex-1 flex justify-center">
-          <SearchInput className="max-w-lg w-full" />
+          <SearchInput className="max-w-lg w-full mt-2" />
         </div>
-        <div className="flex items-end gap-2">
-          <SortByButton />
+        <div className="flex items-end mt-2">
+          <div className="flex flex-col gap-2">
+            <CartButton className="ml-auto" />
+            <SortByButton />
+          </div>
           <div className="block lg:hidden">
             <Sheet open={open} onOpenChange={setOpen}>
               <SheetTrigger asChild>
