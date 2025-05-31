@@ -50,6 +50,7 @@ public class SpringSecurityConfig {
                     authorize.requestMatchers(HttpMethod.POST, "/api/reviews/**").authenticated();
                     authorize.requestMatchers("/api/reviews/**").hasRole("ADMIN");
                     authorize.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll();
+                    authorize.requestMatchers("/api/cart/**").authenticated();
                     authorize.anyRequest().authenticated();
                 });
 

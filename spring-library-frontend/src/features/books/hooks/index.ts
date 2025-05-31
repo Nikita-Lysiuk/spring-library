@@ -12,3 +12,4 @@ export { default as useBook } from './use-book';
 export { default as useReviewForm } from './use-review-form';
 export { default as useReviews } from './use-reviews';
 export { default as useDeleteReview } from './use-delete-review';
+export { default as useGetSample } from './use-get-sample';

@@ -17,9 +17,12 @@ public class BookMapper {
                 book.getPrice().doubleValue(),
                 book.getCoverUrl(),
                 book.getPageCount(),
-                book.getReviews()
+                book.getReviews().isEmpty()
+                        ? 0.0
+                        : book.getReviews()
                         .stream()
-                        .map(review -> review.getRating().doubleValue()).reduce(0.0, Double::sum) / book.getReviews().size(),
+                        .map(review -> review.getRating().doubleValue())
+                        .reduce(0.0, Double::sum) / book.getReviews().size(),
                 book.getReviews().size(),
                 book.getAuthors().stream().toList(),
                 book.getCategories().stream().toList()

@@ -17,7 +17,7 @@ interface ISidebarItems {
 
 export const SidebarItems: ISidebarItems[] = [
   { title: 'Library', url: '/dashboard', icon: BookOpen },
-  { title: 'Store', url: '/dashboard/store', icon: Store },
+  { title: 'Store', url: '/dashboard/books', icon: Store },
   {
     title: 'Recommendations',
     url: '/dashboard/recommendations',

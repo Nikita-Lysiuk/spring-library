@@ -14,7 +14,7 @@ interface BookDescriptionProps {
 const BookDescription = ({
   title,
   authors,
-  averageRating,
+  averageRating = 0,
   reviewCount,
   description,
   price,

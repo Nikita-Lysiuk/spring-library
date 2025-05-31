@@ -42,6 +42,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User getUserById(String id) {
+        return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("User not found with id: " + id));
+    }
+
+    @Override
     public void updateUser(String id, MultipartFile file, String fullName, String email) throws IOException {
         User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("Error in finding user"));
 

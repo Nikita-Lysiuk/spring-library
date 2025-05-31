@@ -8,9 +8,11 @@ import {
   BookStats,
   LoadingSkeleton,
 } from '@/features/books/components';
+import { useAddToCart } from '@/features/cart/hooks';
 
 const BookPage = () => {
   const { bookId } = useParams();
+  const { addToCart } = useAddToCart(bookId as string);
   const { isLoading, data } = useBook(bookId as string);
   if (isLoading) return <LoadingSkeleton />;
 
@@ -30,6 +32,8 @@ const BookPage = () => {
       </div>
     );
   }
+
+  console.log('Book data:', data);
 
   return (
     <>
@@ -54,9 +58,7 @@ const BookPage = () => {
             reviewCount={data.reviewCount}
             description={data.description}
             price={data.price}
-            onAddToCart={() => {
-              console.log('Add to cart clicked');
-            }}
+            onAddToCart={addToCart}
           />
           <BookStats
             publisher={data.publisher}

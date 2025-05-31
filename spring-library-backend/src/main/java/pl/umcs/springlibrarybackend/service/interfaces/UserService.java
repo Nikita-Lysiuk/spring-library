@@ -8,6 +8,7 @@ import java.io.IOException;
 
 public interface UserService {
     User getCurrentUser();
+    User getUserById(String id);
     void updateUser(String id, MultipartFile file, String fullName, String email) throws IOException;
     Enable2FAResponse enable2FA();
     void validate2FA(String code);

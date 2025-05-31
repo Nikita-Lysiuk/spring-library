@@ -51,7 +51,7 @@ const router = createBrowserRouter(
           <Route index element={<div>My Library</div>} />
           <Route path="profile" element={<ProfilePage />} />
           <Route element={<BookLayout />}>
-            <Route path="store" element={<StorePage />} />
+            <Route path="books" element={<StorePage />} />
           </Route>
           <Route path="books/:bookId" element={<BookPage />} />
           <Route path="recommendations" element={<div>Recommendations</div>} />

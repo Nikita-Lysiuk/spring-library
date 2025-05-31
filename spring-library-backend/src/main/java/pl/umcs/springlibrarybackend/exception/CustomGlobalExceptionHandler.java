@@ -59,4 +59,9 @@ public class CustomGlobalExceptionHandler {
     public ResponseEntity<ApiResponse<Void>> handleEmailAlreadyCorrupted(UsersException ex) {
         return ResponseEntity.badRequest().body(ApiResponse.failure(ex.getMessage()));
     }
+
+    @ExceptionHandler(CartException.class)
+    public ResponseEntity<ApiResponse<Void>> handleCartException(CartException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(ApiResponse.failure(ex.getMessage()));
+    }
 }
