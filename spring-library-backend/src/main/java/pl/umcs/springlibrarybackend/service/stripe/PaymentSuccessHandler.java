@@ -23,7 +23,7 @@ public class PaymentSuccessHandler implements PaymentHandler {
     public void handle(Event event) {
         EventDataObjectDeserializer deserializer = event.getDataObjectDeserializer();
 
-        if (deserializer.getObject().isPresent()) {
+        if (deserializer.getObject().isEmpty()) {
             log.warn("PaymentIntent data not found in event: {}", event);
             return;
         }
