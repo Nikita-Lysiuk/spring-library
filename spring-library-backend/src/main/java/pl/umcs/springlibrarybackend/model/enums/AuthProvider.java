@@ -1,4 +1,4 @@
-package pl.umcs.springlibrarybackend.model.auth;
+package pl.umcs.springlibrarybackend.model.enums;
 
 
 public enum AuthProvider {

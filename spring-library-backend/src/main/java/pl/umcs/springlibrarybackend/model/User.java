@@ -8,7 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import pl.umcs.springlibrarybackend.model.auth.AuthProvider;
+import pl.umcs.springlibrarybackend.model.enums.AuthProvider;
 
 import java.util.Set;
 

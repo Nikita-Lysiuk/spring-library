@@ -10,7 +10,7 @@ import pl.umcs.springlibrarybackend.exception.EmailAlreadyCorrupted;
 import pl.umcs.springlibrarybackend.exception.UserNotFoundException;
 import pl.umcs.springlibrarybackend.exception.UsersException;
 import pl.umcs.springlibrarybackend.model.User;
-import pl.umcs.springlibrarybackend.model.auth.AuthProvider;
+import pl.umcs.springlibrarybackend.model.enums.AuthProvider;
 import pl.umcs.springlibrarybackend.model.auth.CustomUserDetails;
 import pl.umcs.springlibrarybackend.repository.UserRepository;
 import pl.umcs.springlibrarybackend.service.diff.RedisService;

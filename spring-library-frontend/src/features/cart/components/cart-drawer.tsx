@@ -12,18 +12,17 @@ import {
   useCart,
   useCartItems,
   useDeleteCartItem,
+  usePlaceOrder,
 } from '@/features/cart/hooks';
 import { cn } from '@/lib/utils';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { CartDrawerItem } from '@/features/cart/components';
-import { Link } from 'react-router';
-import { useState } from 'react';
 
 const CartDrawer: React.FC<React.PropsWithChildren> = ({ children }) => {
-  const [redirecting, setRedirecting] = useState(false);
   const { cart } = useCart();
   const { data: items } = useCartItems();
   const { deleteCartItem } = useDeleteCartItem();
+  const { placeOrder, isLoading } = usePlaceOrder(cart?.id || '');
 
   return (
     <Sheet>
@@ -94,17 +93,15 @@ const CartDrawer: React.FC<React.PropsWithChildren> = ({ children }) => {
                     </span>
                   </div>
 
-                  <Link to="/place-order">
-                    <Button
-                      onClick={() => setRedirecting(true)}
-                      disabled={redirecting}
-                      size="lg"
-                      className="w-full"
-                    >
-                      Place Order
-                      <ArrowRight className="w-4 ml-2" />
-                    </Button>
-                  </Link>
+                  <Button
+                    onClick={placeOrder}
+                    disabled={isLoading}
+                    size="lg"
+                    className="w-full"
+                  >
+                    Place Order
+                    <ArrowRight className="w-4 ml-2" />
+                  </Button>
                 </div>
               </SheetFooter>
             </>

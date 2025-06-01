@@ -78,3 +78,9 @@ google:
     service-account-key-file: src/main/resources/pet-lombart-32e441cb0ef5.json
     application-name: spring-library
     folder-id: 1_28PbaT9GTY5ikRYOzzDjKDCe36kW2La
+
+stripe:
+  api-key: ${STRIPE_API_KEY}
+  webhook-secret: ${STRIPE_WEBHOOK_SECRET}
+  success-url: ${FRONTEND_URL}/checkout/?status=success
+  cancel-url: ${FRONTEND_URL}/checkout/?status=cancel

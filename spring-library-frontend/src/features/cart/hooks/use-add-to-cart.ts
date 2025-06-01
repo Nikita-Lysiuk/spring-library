@@ -30,7 +30,8 @@ const useAddToCart = (bookId: string) => {
     onError: (error: any) => {
       if (axios.isAxiosError(error) && error.response?.status === 409) {
         toast.error(
-          'This book is already in your cart. Please check your cart before adding it again.'
+          error.response.data.message ||
+            'This book is already in your cart. Please check your cart.'
         );
       } else {
         console.error('Error adding book to cart:', error.message);

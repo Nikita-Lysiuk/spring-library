@@ -8,7 +8,7 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Service;
 import pl.umcs.springlibrarybackend.model.User;
-import pl.umcs.springlibrarybackend.model.auth.AuthProvider;
+import pl.umcs.springlibrarybackend.model.enums.AuthProvider;
 import pl.umcs.springlibrarybackend.model.auth.CustomUserDetails;
 import pl.umcs.springlibrarybackend.model.auth.OAuth2UserDetailsAdapter;
 import pl.umcs.springlibrarybackend.repository.UserRepository;

@@ -9,8 +9,6 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CartDto {
-    private String id;
-    private Double totalPrice;
-    private Integer totalQuantity;
+public class CheckoutResponse {
+    private String url;
 }

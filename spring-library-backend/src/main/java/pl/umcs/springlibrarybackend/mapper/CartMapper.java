@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 public class CartMapper {
     private final BookMapper bookMapper;
 
-    public CartDto toDto(List<CartItem> cartItems) {
+    public CartDto toDto(String cartId, List<CartItem> cartItems) {
         double totalPrice = cartItems.stream()
                 .mapToDouble(item -> item.getBook().getPrice().doubleValue() * item.getQuantity())
                 .sum();
@@ -22,7 +22,7 @@ public class CartMapper {
                 .mapToInt(CartItem::getQuantity)
                 .sum();
 
-        return new CartDto(totalPrice, totalQuantity);
+        return new CartDto(cartId, totalPrice, totalQuantity);
     }
 
     public List<CartItemDto> toItemDtos(List<CartItem> cartItems) {

@@ -7,7 +7,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Component;
 import pl.umcs.springlibrarybackend.model.Role;
 import pl.umcs.springlibrarybackend.model.User;
-import pl.umcs.springlibrarybackend.model.auth.AuthProvider;
+import pl.umcs.springlibrarybackend.model.enums.AuthProvider;
 import pl.umcs.springlibrarybackend.repository.RoleRepository;
 import pl.umcs.springlibrarybackend.repository.UserRepository;
 import pl.umcs.springlibrarybackend.utils.interfaces.OAuth2UserInfoExtractor;

@@ -6,6 +6,11 @@ export type CartItemDto = {
 };
 
 export type CartDto = {
+  id: string;
   totalPrice: number;
   totalQuantity: number;
+};
+
+export type CheckoutResponse = {
+  url: string;
 };

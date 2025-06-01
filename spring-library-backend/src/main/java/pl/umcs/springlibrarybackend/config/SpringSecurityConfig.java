@@ -40,17 +40,24 @@ public class SpringSecurityConfig {
                     authorize.requestMatchers("/api/auth/logout").authenticated();
                     authorize.requestMatchers("/api/auth/validate-token").authenticated();
                     authorize.requestMatchers("/api/auth/**").permitAll();
+
                     authorize.requestMatchers("/api/users/reset-password").permitAll();
                     authorize.requestMatchers("/api/users/**").authenticated();
+
                     authorize.requestMatchers(HttpMethod.GET, "/api/meta/**").authenticated();
                     authorize.requestMatchers("/api/meta/**").hasRole("ADMIN");
+
                     authorize.requestMatchers(HttpMethod.GET, "/api/books/**").authenticated();
                     authorize.requestMatchers("/api/books/**").hasRole("ADMIN");
+
                     authorize.requestMatchers(HttpMethod.GET, "/api/reviews/**").authenticated();
                     authorize.requestMatchers(HttpMethod.POST, "/api/reviews/**").authenticated();
                     authorize.requestMatchers("/api/reviews/**").hasRole("ADMIN");
-                    authorize.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll();
+
                     authorize.requestMatchers("/api/cart/**").authenticated();
+
+                    authorize.requestMatchers("/api/stripe/webhook").permitAll();
+                    authorize.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll();
                     authorize.anyRequest().authenticated();
                 });
 

@@ -96,10 +96,16 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public BookDto getBookById(String id) {
+    public BookDto getBookDtoById(String id) {
         Book book = bookRepository.findWithDetailsById(id)
                 .orElseThrow(() -> new IndexOutOfBoundsException("Book not found with id: " + id));
         return bookMapper.toDto(book);
+    }
+
+    @Override
+    public Book getBookById(String id) {
+        return bookRepository.findWithDetailsById(id)
+                .orElseThrow(() -> new IndexOutOfBoundsException("Book not found with id: " + id));
     }
 
     @Override

@@ -208,13 +208,14 @@ CREATE TABLE IF NOT EXISTS cart_items
 
 CREATE TABLE IF NOT EXISTS orders
 (
-    id             VARCHAR(255) PRIMARY KEY,
-    user_id        VARCHAR(255)   NOT NULL,
-    total          DECIMAL(10, 2) NOT NULL,
-    status         VARCHAR(50)    NOT NULL,
-    payment_method VARCHAR(50)    NOT NULL,
-    created_at     TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at     TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    id                VARCHAR(255) PRIMARY KEY,
+    user_id           VARCHAR(255)   NOT NULL,
+    total             DECIMAL(10, 2) NOT NULL,
+    status            VARCHAR(50)    NOT NULL,
+    payment_method    VARCHAR(50)    NULL,
+    stripe_session_id VARCHAR(255)   NULL,
+    created_at        TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at        TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
     FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE ON UPDATE CASCADE
 );

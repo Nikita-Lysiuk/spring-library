@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import pl.umcs.springlibrarybackend.exception.UserAlreadyExistsException;
 import pl.umcs.springlibrarybackend.model.Role;
 import pl.umcs.springlibrarybackend.model.User;
-import pl.umcs.springlibrarybackend.model.auth.AuthProvider;
+import pl.umcs.springlibrarybackend.model.enums.AuthProvider;
 import pl.umcs.springlibrarybackend.model.auth.RefreshToken;
 import pl.umcs.springlibrarybackend.dto.auth.JwtAuthResponse;
 import pl.umcs.springlibrarybackend.repository.RoleRepository;

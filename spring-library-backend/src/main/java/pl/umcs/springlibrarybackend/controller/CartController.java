@@ -8,6 +8,7 @@ import pl.umcs.springlibrarybackend.dto.ApiResponse;
 import pl.umcs.springlibrarybackend.dto.cart.AddToCartRequest;
 import pl.umcs.springlibrarybackend.dto.cart.CartDto;
 import pl.umcs.springlibrarybackend.dto.cart.CartItemDto;
+import pl.umcs.springlibrarybackend.dto.cart.CheckoutResponse;
 import pl.umcs.springlibrarybackend.model.auth.CustomUserDetails;
 import pl.umcs.springlibrarybackend.service.interfaces.CartService;
 
@@ -28,6 +29,16 @@ public class CartController {
         cartService.addToCart(request.getBookId(), userDetails.getId());
         return ResponseEntity.ok(
                 ApiResponse.success("Book added to cart successfully")
+        );
+    }
+
+    @PostMapping("/{cartId}/checkout")
+    public ResponseEntity<ApiResponse<CheckoutResponse>> checkout(
+            @PathVariable String cartId
+    ) {
+        CheckoutResponse response = cartService.createCheckoutSession(cartId);
+        return ResponseEntity.ok(
+                ApiResponse.success("Checkout session created successfully", response)
         );
     }
 

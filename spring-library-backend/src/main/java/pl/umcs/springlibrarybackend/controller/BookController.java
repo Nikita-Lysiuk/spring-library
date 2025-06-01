@@ -62,7 +62,7 @@ public class BookController {
     public ResponseEntity<ApiResponse<BookDto>> getBookById(
             @PathVariable String bookId
     ) {
-        BookDto book = bookService.getBookById(bookId);
+        BookDto book = bookService.getBookDtoById(bookId);
         return ResponseEntity.ok(
                 ApiResponse.success("Book found", book)
         );
