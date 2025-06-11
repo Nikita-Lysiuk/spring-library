@@ -48,6 +48,7 @@ public class SpringSecurityConfig {
                     authorize.requestMatchers("/api/meta/**").hasRole("ADMIN");
 
                     authorize.requestMatchers(HttpMethod.GET, "/api/books/**").authenticated();
+                    authorize.requestMatchers(HttpMethod.PUT, "/api/books/{bookId}/notes/{page}").authenticated();
                     authorize.requestMatchers("/api/books/**").hasRole("ADMIN");
 
                     authorize.requestMatchers(HttpMethod.GET, "/api/reviews/**").authenticated();
@@ -55,6 +56,8 @@ public class SpringSecurityConfig {
                     authorize.requestMatchers("/api/reviews/**").hasRole("ADMIN");
 
                     authorize.requestMatchers("/api/cart/**").authenticated();
+
+                    authorize.requestMatchers("/api/user-books").authenticated();
 
                     authorize.requestMatchers("/api/stripe/webhook").permitAll();
                     authorize.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll();

@@ -146,3 +146,18 @@
   font-weight: 400;
   font-style: normal;
 }
+
+.rpv-core__viewer {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.rpv-core__inner-page {
+  display: flex;
+  justify-content: center;
+}
+
+.rpv-core__canvas {
+  max-width: 100%;
+  height: auto !important;
+}

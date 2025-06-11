@@ -44,8 +44,6 @@ const usePlaceOrder = (cartId: string) => {
         return;
       }
 
-      console.log('Order placed successfully:', data);
-
       window.location.href = data.data.url;
     },
   });

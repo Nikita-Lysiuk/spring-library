@@ -29,3 +29,4 @@ export { default as SortByButton } from './sort-by-button';
 export { default as StarRating } from './star-rating';
 export { default as Pagination } from './pagination';
 export { default as ReviewCard } from './review-card';
+export { default as ErrorComponent } from './error';

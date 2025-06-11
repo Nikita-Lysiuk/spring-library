@@ -25,7 +25,8 @@ const useCart = () => {
       return response.data.data;
     },
     enabled: !!accessToken,
-    refetchInterval: 10000,
+    refetchInterval: 1000,
+    refetchOnWindowFocus: true,
   });
 
   return {

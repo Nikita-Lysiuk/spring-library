@@ -83,6 +83,12 @@ const Header = ({ className }: Props) => {
         {/* Desktop Navigation */}
         <div className="hidden sm:flex items-center justify-between gap-15">
           <nav className="flex items-end gap-8 font-space-grotesk text-md">
+            <Link
+              to="/dashboard/books"
+              className="hover:text-gray-500 cursor-pointer"
+            >
+              Store
+            </Link>
             <ScrollLink
               to="features"
               smooth={true}
@@ -143,6 +149,12 @@ const Header = ({ className }: Props) => {
       {isMenuOpen && (
         <div className="sm:hidden flex flex-col items-center gap-5 py-5 bg-gray-100">
           <nav className="flex flex-col items-center gap-4 font-space-grotesk text-md">
+            <Link
+              to="/dashboard/books"
+              className="hover:text-gray-500 cursor-pointer"
+            >
+              Store
+            </Link>
             <ScrollLink
               to="features"
               smooth={true}

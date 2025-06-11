@@ -2,6 +2,7 @@ import { BookLayout, DashboardLayout, MainLayout } from '@/components/layouts';
 import {
   AddBookPage,
   BookPage,
+  LibraryPage,
   MainPage,
   OAuthRedirectPage,
   ProfilePage,
@@ -18,6 +19,7 @@ import Protected from './protected';
 import isAuthenticated from './helpers';
 import SignRedirect from './sign-redirect';
 import AdminProtected from './admin-protected';
+import CheckoutStatus from '@/pages/checkout-status';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -43,12 +45,13 @@ const router = createBrowserRouter(
         <Route path="/oauth2-redirect" element={<OAuthRedirectPage />} />
         <Route path="/reset-password" element={<ResetPasswordPage />} />
         <Route path="2fa" element={<TwoFApage />} />
+        <Route path="/checkout" element={<CheckoutStatus />} />
       </Route>
 
       {/* Dashboard routes can be added here */}
       <Route path="/dashboard" element={<Protected />}>
         <Route element={<DashboardLayout />}>
-          <Route index element={<div>My Library</div>} />
+          <Route index element={<LibraryPage />} />
           <Route path="profile" element={<ProfilePage />} />
           <Route element={<BookLayout />}>
             <Route path="books" element={<StorePage />} />

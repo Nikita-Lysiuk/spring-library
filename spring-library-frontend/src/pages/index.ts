@@ -6,3 +6,4 @@ export { default as TwoFApage } from './twfa-page';
 export { default as AddBookPage } from './add-book-page';
 export { default as StorePage } from './store-page';
 export { default as BookPage } from './book-page';
+export { default as LibraryPage } from './library-page';

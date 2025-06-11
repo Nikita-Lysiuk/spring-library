@@ -19,6 +19,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+import java.util.Base64;
 import java.util.List;
 
 @Service
@@ -68,5 +69,9 @@ public class GoogleDriveService {
                 .executeMediaAndDownloadTo(outputStream);
 
         return outputStream;
+    }
+
+    public String convertStreamToBase64(ByteArrayOutputStream outputStream) {
+        return Base64.getEncoder().encodeToString(outputStream.toByteArray());
     }
 }

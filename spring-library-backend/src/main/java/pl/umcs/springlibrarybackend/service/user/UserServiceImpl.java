@@ -63,6 +63,7 @@ public class UserServiceImpl implements UserService {
         String avatarUrl = user.getAvatarUrl();
 
         if (file != null) {
+            s3Service.deleteFile(avatarUrl);
             avatarUrl = s3Service.uploadFile(file);
         }
 

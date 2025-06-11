@@ -9,6 +9,7 @@ import {
   LoadingSkeleton,
 } from '@/features/books/components';
 import { useAddToCart } from '@/features/cart/hooks';
+import { ErrorComponent } from '@/components';
 
 const BookPage = () => {
   const { bookId } = useParams();
@@ -18,18 +19,11 @@ const BookPage = () => {
 
   if (!data) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[60vh] text-center">
-        <h1 className="text-[6rem] sm:text-[8rem] lg:text-[10rem] font-space-grotesk font-bold leading-none">
-          <span className="text-yellow-400">404</span>
-        </h1>
-        <p className="text-xl sm:text-2xl font-medium text-gray-700 mt-2">
-          Book not found
-        </p>
-        <p className="text-sm text-gray-500 mt-1 max-w-md">
-          The book you are looking for might have been removed, had its name
-          changed, or is temporarily unavailable.
-        </p>
-      </div>
+      <ErrorComponent
+        title="Book not found"
+        description="The book you are looking for might have been removed, had its name
+        changed, or is temporarily unavailable."
+      />
     );
   }
 
